@@ -1090,15 +1090,63 @@ body{background:var(--bg);color:var(--text)}
 <div class="share-link-backdrop" id="shareLinkBackdrop" hidden>
   <div class="share-link-modal" role="dialog" aria-modal="true" aria-labelledby="shareLinkTitle">
     <button class="share-link-close" id="shareLinkClose" type="button" aria-label="Zavřít">×</button>
-    <div class="share-link-icon" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M10 13.9a4 4 0 0 0 5.7.1l2.1-2.1a4 4 0 0 0-5.7-5.7l-1.2 1.2"/>
-        <path d="M14 10.1a4 4 0 0 0-5.7-.1l-2.1 2.1a4 4 0 0 0 5.7 5.7l1.2-1.2"/>
-      </svg>
+    <div class="share-link-head">
+      <div class="share-link-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 13.9a4 4 0 0 0 5.7.1l2.1-2.1a4 4 0 0 0-5.7-5.7l-1.2 1.2"/>
+          <path d="M14 10.1a4 4 0 0 0-5.7-.1l-2.1 2.1a4 4 0 0 0 5.7 5.7l1.2-1.2"/>
+        </svg>
+      </div>
+      <h3 id="shareLinkTitle" data-i18n="share.popup.title">Odkaz na návrh</h3>
     </div>
-    <h3 id="shareLinkTitle" data-i18n="share.popup.title">Odkaz na návrh</h3>
-    <p class="share-link-status" data-i18n="share.popup.copied">Odkaz byl zkopírován do schránky.</p>
+    <p class="share-link-status" id="shareLinkStatus" data-i18n="share.popup.copied">Odkaz byl zkopírován do schránky.</p>
     <div class="share-link-value" id="shareLinkValue" tabindex="0"></div>
+    <div class="share-link-actions">
+      <button type="button" class="btn primary" id="shareLinkCopy" data-i18n="share.popup.copy">Kopírovat odkaz</button>
+    </div>
+  </div>
+</div>
+
+<!--
+  A shared link used to drop straight into the studio and overwrite whatever
+  was on the board. It shows here first: both boards side by side - what is
+  on the desk now and what it would become - and the plain warning that the
+  left one goes away. Nothing is applied until the second button is pressed.
+-->
+<div class="share-link-backdrop" id="sharePreviewBackdrop" hidden>
+  <div class="share-link-modal" role="dialog" aria-modal="true" aria-labelledby="sharePreviewTitle">
+    <button class="share-link-close" id="sharePreviewX" type="button" aria-label="Zavřít">×</button>
+    <div class="share-link-head">
+      <div class="share-link-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="16" rx="2.5"/>
+          <path d="M3 10h18M10 10v10"/>
+        </svg>
+      </div>
+      <h3 id="sharePreviewTitle" data-i18n="share.preview.title">Sdílený návrh</h3>
+    </div>
+    <p class="share-link-status" data-i18n="share.preview.desc">Někdo ti poslal tenhle návrh.</p>
+    <div class="share-preview-pair">
+      <div class="share-preview-side">
+        <p class="share-preview-cap" data-i18n="share.preview.now">Teď</p>
+        <canvas id="sharePreviewCanvasMine" class="share-preview-canvas" width="560" height="420"></canvas>
+      </div>
+      <div class="share-preview-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 12h15M13 6l6 6-6 6"/>
+        </svg>
+      </div>
+      <div class="share-preview-side">
+        <p class="share-preview-cap" data-i18n="share.preview.after">Po převzetí</p>
+        <canvas id="sharePreviewCanvas" class="share-preview-canvas" width="560" height="420"></canvas>
+      </div>
+    </div>
+    <p class="share-preview-facts" id="sharePreviewFacts"></p>
+    <p class="share-preview-warn" id="sharePreviewWarn"></p>
+    <div class="share-link-actions">
+      <button type="button" class="btn" id="sharePreviewClose" data-i18n="share.preview.close">Zavřít</button>
+      <button type="button" class="btn primary" id="sharePreviewTake" data-i18n="share.preview.take">Převzít návrh</button>
+    </div>
   </div>
 </div>
 

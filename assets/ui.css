@@ -1196,6 +1196,36 @@ body.light .signin-error{background:#fdecee;border-color:#e8bcc2;color:#b5303f}
   overflow-wrap:anywhere;
   user-select:all;
 }
+/* Icon and title on one row. Stacked, the title sat under the icon with a
+   gap on its right where the close button lives, which read as a mistake. */
+.share-link-head{display:flex;align-items:center;gap:11px;margin:0 42px 8px 0}
+.share-link-head .share-link-icon{margin-bottom:0;flex:0 0 auto}
+.share-link-head h3{margin:0}
+/* The two boards, with the arrow that says which becomes which. */
+.share-preview-pair{display:flex;align-items:center;gap:10px;margin:4px 0 12px}
+.share-preview-side{flex:1 1 0;min-width:0}
+.share-preview-cap{margin:0 0 4px;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.share-preview-arrow{flex:0 0 auto;color:var(--muted);display:flex;align-items:center;margin-top:17px}
+@media (max-width:560px){
+  .share-preview-pair{flex-direction:column;align-items:stretch}
+  .share-preview-arrow{margin:0;justify-content:center;transform:rotate(90deg)}
+}
+/* Drawn from the shared project's own boxes, so what is offered is what
+   will land on the board. */
+.share-preview-canvas{
+  display:block;
+  width:100%;
+  height:auto;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--panel2);
+}
+.share-preview-facts{margin:0 0 6px;color:var(--text);font-size:12.5px}
+.share-preview-warn{margin:0;color:var(--muted);font-size:12px;line-height:1.45}
+.share-preview-warn.is-warning{color:var(--bad)}
+.share-link-actions{display:flex;gap:9px;justify-content:flex-end;margin-top:14px}
+.share-link-actions .btn{flex:0 0 auto}
+body.light .share-preview-canvas{background:#f6f8fb}
 body.light .share-link-backdrop{background:rgba(20,25,32,.34)}
 body.light .share-link-modal{background:#fff;box-shadow:0 22px 70px rgba(0,0,0,.18)}
 body.light .share-link-value{background:#f6f8fb}

@@ -222,7 +222,7 @@ const I18N={
     'nav.home':'Home','nav.generate':'Generate','nav.edit':'Edit layout','nav.boxdetails':'Box details','nav.export':'Export','nav.share':'Share','nav.load':'Load project','nav.howto':'How to use','nav.about':'About','nav.collapse':'Collapse menu','nav.expand':'Expand menu','nav.dims':'Drawer size','nav.print':'Print area','nav.grid':'Grid','nav.layout':'Layout','nav.inspector':'Overview','nav.account':'Account','nav.admin':'Administration','nav.signout':'Sign out','nav.signin':'Sign in','nav.prefs':'Preferences','nav.quickSettings':'Quick settings','pref.units':'Units','pref.language':'Language','pref.theme':'Theme','onboard.title':'Welcome to the studio','onboard.lede':'Choose how the studio should look. You can change any of this later under Preferences.','onboard.language':'Language','onboard.units':'Units','onboard.theme':'Theme','onboard.start':'Start designing','export.json.label':'Save project','export.json.desc':'Download the layout as a file you can load again later.','export.json.locked':'Sign in to save and share your project.','lock.title':'Available after sign in','lock.print':'Set your printer bed so a box that will not fit is flagged before export.','lock.layout':'Auto-fill the drawer with boxes by your own rules - min/max size, fill level and style.','lock.inspector':'Live overview: box count, used and free cells, validity and a one-click Fix.','lock.load':'Open a saved project file and pick up your design where you left off.','lock.walls':'Split boxes into compartments with internal dividers. Set their positions directly on the box grid; the dividers are printed as part of the box.',
     'ct.drawer':'Drawer size','ct.selected':'Selected box','credits.title':'Credits and exports','credits.balance':'Credits','credits.free':'Free exports','credits.reset':'Allowance resets in','credits.cost':'Price per export','credits.note':'Free exports are used first; credits only when they run out.','credits.manage':'Manage account and credits','credits.unlimited':'Unlimited','credits.cr':'credits',
     'status.dims':'Drawer size','status.boxes':'Total boxes','status.cells':'Used cells','status.saved':'Last saved','status.now':'Just now','status.minsAgo':'{0} min ago','status.hoursAgo':'{0} h ago',
-    'tool.select':'Select and edit','tool.pan':'Pan the canvas','tool.undo':'Undo (Ctrl+Z)','tool.redo':'Redo (Ctrl+Shift+Z)','tool.grid':'Toggle grid','tool.labels':'Toggle labels','tool.fit':'Fit to view','tool.zoomout':'Zoom out','tool.zoomin':'Zoom in','tool.center':'Center view','share.saved':'Layout saved as a file','share.title':'Share project','share.desc':'Create a link without project data in the URL. The design is stored under a secure key.','share.locked':'Sign in to create a share link for the project.','share.created':'Share link copied to clipboard','share.popup.title':'Share link','share.popup.copied':'The link was copied to the clipboard.','share.loaded':'Shared project loaded','share.error':'The share link could not be created or loaded.','load.bad':'Could not read that project file',
+    'tool.select':'Select and edit','tool.pan':'Pan the canvas','tool.undo':'Undo (Ctrl+Z)','tool.redo':'Redo (Ctrl+Shift+Z)','tool.grid':'Toggle grid','tool.labels':'Toggle labels','tool.fit':'Fit to view','tool.zoomout':'Zoom out','tool.zoomin':'Zoom in','tool.center':'Center view','share.saved':'Layout saved as a file','share.title':'Share project','share.desc':'Create a link without project data in the URL. The design is stored under a secure key.','share.locked':'Sign in to create a share link for the project.','share.created':'Share link copied to clipboard','share.popup.title':'Share link','share.popup.copied':'The link was copied to the clipboard.','share.loaded':'Shared project loaded','share.error':'The share link could not be created or loaded.','load.bad':'Could not read that project file','share.popup.copy':'Copy link','share.popup.copyHint':'Copy it with the button below.','share.preview.title':'Shared design','share.preview.desc':'Someone sent you this design. Have a look first - it does not go into the studio until you say so.','share.preview.summary':'Drawer {0} · {1} boxes · grid {2} × {3}','share.preview.warn':'Taking it over replaces the design you have open now, and that cannot be undone.','share.preview.empty':'Your drawer is empty, so nothing of yours is lost.','share.preview.now':'Now','share.preview.after':'After taking it','share.preview.close':'Close','share.preview.take':'Take the design','share.preview.taken':'Shared design taken over',
     'help.intro':'Design a custom drawer organizer and export it as a print-ready 3MF or STL file. Everything updates live as you change it.',
     'help.dims.t':'Drawer size','help.dims.b':'Measure the drawer inside, not the front, and type the width, depth and height. Below them sit wall thickness, floor thickness, corner radius and the gap between boxes - the gap is why finished boxes are a little smaller than the cell they stand in, and why they drop in instead of wedging.',
     'help.grid.t':'Grid','help.grid.b':'Columns and rows are the raster every box snaps to. Changing them keeps what you have already drawn. The + and - squares around the edge of the drawing add or remove a whole column or row on that side; a column that still holds a box will not go.',
@@ -462,7 +462,7 @@ const I18N={
     'nav.home':'Domů','nav.generate':'Generovat','nav.edit':'Upravit layout','nav.boxdetails':'Detaily boxu','nav.export':'Export','nav.share':'Sdílet','nav.load':'Načíst projekt','nav.howto':'Návod','nav.about':'O aplikaci','nav.collapse':'Sbalit menu','nav.expand':'Rozbalit menu','nav.dims':'Rozměry zásuvky','nav.print':'Tisková plocha','nav.grid':'Mřížka','nav.layout':'Generátor','nav.inspector':'Inspektor','nav.account':'Účet','nav.admin':'Administrace','nav.signout':'Odhlásit se','nav.signin':'Přihlásit se','nav.prefs':'Předvolby','nav.quickSettings':'Rychlé nastavení','pref.units':'Jednotky','pref.language':'Jazyk','pref.theme':'Motiv','onboard.title':'Vítej ve studiu','onboard.lede':'Vyber, jak má studio vypadat. Vše lze později změnit v Předvolbách.','onboard.language':'Jazyk','onboard.units':'Jednotky','onboard.theme':'Motiv','onboard.start':'Začít navrhovat','export.json.label':'Uložit projekt','export.json.desc':'Stáhne layout jako soubor, který lze později načíst.','export.json.locked':'Přihlas se pro uložení a sdílení projektu.','lock.title':'Dostupné po přihlášení','lock.print':'Nastav plochu tiskárny, ať se box, který se nevejde, označí ještě před exportem.','lock.layout':'Automaticky vyplní zásuvku boxy podle tvých pravidel - min/max velikost, zaplnění a styl.','lock.inspector':'Živý přehled: počet boxů, využité a volné buňky, platnost a Opravit jedním klikem.','lock.load':'Otevře uložený soubor projektu a naváže na návrh tam, kde jsi skončil.','lock.walls':'Rozdělí box na přihrádky pomocí vnitřních příček. Jejich pozici nastavíš přímo v mřížce boxu a příčky se tisknou jako součást boxu.',
     'ct.drawer':'Rozměry šuplíku','ct.selected':'Vybraný box','credits.title':'Kredity a exporty','credits.balance':'Kredity','credits.free':'Volné exporty','credits.reset':'Obnova limitu za','credits.cost':'Cena exportu','credits.note':'Nejdřív se čerpají volné exporty, kredity až po jejich vyčerpání.','credits.manage':'Spravovat účet a kredity','credits.unlimited':'Neomezeně','credits.cr':'kreditů',
     'status.dims':'Rozměry zásuvky','status.boxes':'Celkem boxů','status.cells':'Využité buňky','status.saved':'Poslední uložení','status.now':'Právě teď','status.minsAgo':'před {0} min','status.hoursAgo':'před {0} h',
-    'tool.select':'Výběr a úpravy','tool.pan':'Posun plátna','tool.undo':'Zpět (Ctrl+Z)','tool.redo':'Vpřed (Ctrl+Shift+Z)','tool.grid':'Přepnout mřížku','tool.labels':'Přepnout popisky','tool.fit':'Přizpůsobit pohled','tool.zoomout':'Oddálit','tool.zoomin':'Přiblížit','tool.center':'Na střed','share.saved':'Layout uložen jako soubor','share.title':'Sdílet návrh','share.desc':'Vytvoří odkaz bez dat návrhu v URL. Návrh je uložen pod bezpečným klíčem.','share.locked':'Přihlas se pro vytvoření odkazu na návrh.','share.created':'Odkaz na návrh byl zkopírován do schránky','share.popup.title':'Odkaz na návrh','share.popup.copied':'Odkaz byl zkopírován do schránky.','share.loaded':'Sdílený návrh byl načten','share.error':'Odkaz na návrh se nepodařilo vytvořit nebo načíst.','load.bad':'Soubor projektu se nepodařilo načíst',
+    'tool.select':'Výběr a úpravy','tool.pan':'Posun plátna','tool.undo':'Zpět (Ctrl+Z)','tool.redo':'Vpřed (Ctrl+Shift+Z)','tool.grid':'Přepnout mřížku','tool.labels':'Přepnout popisky','tool.fit':'Přizpůsobit pohled','tool.zoomout':'Oddálit','tool.zoomin':'Přiblížit','tool.center':'Na střed','share.saved':'Layout uložen jako soubor','share.title':'Sdílet návrh','share.desc':'Vytvoří odkaz bez dat návrhu v URL. Návrh je uložen pod bezpečným klíčem.','share.locked':'Přihlas se pro vytvoření odkazu na návrh.','share.created':'Odkaz na návrh byl zkopírován do schránky','share.popup.title':'Odkaz na návrh','share.popup.copied':'Odkaz byl zkopírován do schránky.','share.loaded':'Sdílený návrh byl načten','share.error':'Odkaz na návrh se nepodařilo vytvořit nebo načíst.','load.bad':'Soubor projektu se nepodařilo načíst','share.popup.copy':'Kopírovat odkaz','share.popup.copyHint':'Zkopíruj ho tlačítkem níž.','share.preview.title':'Sdílený návrh','share.preview.desc':'Někdo ti poslal tenhle návrh. Nejdřív si ho prohlédni - do studia se nedostane, dokud neřekneš.','share.preview.summary':'Šuplík {0} · {1} boxů · mřížka {2} × {3}','share.preview.warn':'Převzetím se nahradí návrh, který máš teď otevřený, a vrátit to nejde.','share.preview.empty':'Tvůj šuplík je prázdný, takže o nic nepřijdeš.','share.preview.now':'Teď','share.preview.after':'Po převzetí','share.preview.close':'Zavřít','share.preview.take':'Převzít návrh','share.preview.taken':'Sdílený návrh převzat',
     'help.intro':'Navrhni si vlastní organizér do zásuvky a exportuj ho jako 3MF nebo STL připravené k tisku. Vše se přepočítává živě.',
     'help.dims.t':'Rozměry šuplíku','help.dims.b':'Změř šuplík zevnitř, ne přední čelo, a zadej šířku, hloubku a výšku. Pod tím je tloušťka stěny, tloušťka dna, zaoblení rohů a mezera mezi boxy - kvůli mezeře je hotový box o kousek menší než buňka, ve které stojí, a proto do šuplíku zapadne místo aby se vzpříčil.',
     'help.grid.t':'Mřížka','help.grid.b':'Sloupce a řádky jsou rastr, do kterého boxy zapadají. Při změně zůstane, co už je nakreslené. Čtverečky + a - po okrajích kresby přidají nebo uberou celý sloupec či řádek na té straně; sloupec, ve kterém ještě stojí box, odebrat nejde.',
@@ -2522,6 +2522,10 @@ function draw(){
  }
  $('sizeBadge').textContent=`${formatUnit(getMM('dw'))} × ${formatUnit(getMM('dd'))} × ${formatUnit(getMM('dh'))} ${currentUnit()}`;
  if($('delBtn')) $('delBtn').disabled=selected===null;
+ // The shared-design dialog shows this board on its left and says whether
+ // taking the other one costs anything. Both follow the board.
+ const shareBd=$('sharePreviewBackdrop');
+ if(shareBd&&!shareBd.hidden&&typeof updateSharePreviewWarning==='function') updateSharePreviewWarning();
 
  // The bubble by the selected box: cells, real size, clone and delete. The
  // drawer size keeps its corner either way - the two no longer share a row,
@@ -5584,6 +5588,41 @@ renderQuota();
       }))
     });
   };
+  /**
+   * Puts a link on the clipboard and says whether it got there.
+   *
+   * The modern API needs a secure origin and can be refused outright, so the
+   * old hidden-textarea trick stays as the fallback; between them they cover
+   * about everything, but neither is guaranteed, hence the answer.
+   */
+  async function copyShareLink(url){
+    if(!url)return false;
+    try{
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        await navigator.clipboard.writeText(url);
+        return true;
+      }
+    }catch(_){}
+    try{
+      const ta=document.createElement('textarea');
+      ta.value=url; ta.setAttribute('readonly','');
+      ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      const ok=document.execCommand('copy');
+      ta.remove();
+      return !!ok;
+    }catch(_){ return false; }
+  }
+
+  if($('shareLinkCopy')) $('shareLinkCopy').addEventListener('click',async()=>{
+    const value=$('shareLinkValue');
+    const url=value?value.textContent.trim():'';
+    const copied=await copyShareLink(url);
+    const status=$('shareLinkStatus');
+    if(status) status.textContent=copied?t('share.popup.copied'):t('share.popup.copyHint');
+    if(copied&&typeof showExportNote==='function') showExportNote(t('share.created'));
+  });
+
   window.shareProject=async function(){
     if(!window.H3D_QUOTA || !window.H3D_QUOTA.signedIn || !window.H3D_QUOTA.verified){
       window.location.href='login.php?next=index.php';
@@ -5596,22 +5635,163 @@ renderQuota();
       const r=await fetch('api/share.php',{method:'POST',body:fd,credentials:'same-origin',cache:'no-store'});
       const d=await r.json();
       if(!r.ok || !d.ok || !d.url) throw new Error('share');
-      try{ await navigator.clipboard.writeText(d.url); }
-      catch(_){
-        const ta=document.createElement('textarea');
-        ta.value=d.url; ta.setAttribute('readonly','');
-        ta.style.position='fixed'; ta.style.opacity='0';
-        document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
-      }
+      const copied=await copyShareLink(d.url);
       const value=$('shareLinkValue');
       const backdrop=$('shareLinkBackdrop');
       if(value) value.textContent=d.url;
+      // Say what actually happened. The clipboard is refused often enough -
+      // an insecure origin, a permission prompt, an embedded browser - and
+      // "copied to the clipboard" over an empty clipboard sends people
+      // hunting for a link they never got.
+      const status=$('shareLinkStatus');
+      if(status) status.textContent=copied?t('share.popup.copied'):t('share.popup.copyHint');
       if(backdrop){ backdrop.hidden=false; document.body.classList.add('share-link-open'); }
-      if(typeof showExportNote==='function') showExportNote(t('share.created'));
+      if(copied&&typeof showExportNote==='function') showExportNote(t('share.created'));
     }catch(_){
       if(typeof showExportError==='function') showExportError(t('share.error'));
     }
   };
+
+  /*
+   * A thumbnail of a design, drawn from the project itself.
+   *
+   * The drawer keeps its own proportions, so a long shallow one looks like
+   * one, and each box is filled cell by cell with the outline drawn only
+   * along the edges that have no neighbour of the same box - which is what
+   * makes an L read as one piece rather than as three squares.
+   */
+  function drawSharePreview(p,cv){
+    const ctx=cv.getContext&&cv.getContext('2d');
+    if(!ctx)return;
+    const cols=Math.max(1,p.cols|0), rows=Math.max(1,p.rows|0);
+    const W=cv.width, H=cv.height, pad=16;
+    const dw=(+p.dw>0)?+p.dw:cols, dd=(+p.dd>0)?+p.dd:rows;
+    const s=Math.min((W-2*pad)/dw,(H-2*pad)/dd);
+    const ox=(W-dw*s)/2, oy=(H-dd*s)/2, bw=dw*s, bh=dd*s;
+    const css=getComputedStyle(document.body);
+    const line=(css.getPropertyValue('--line')||'').trim()||'#d8dee8';
+    const muted=(css.getPropertyValue('--muted')||'').trim()||'#8b93a1';
+
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle=line; ctx.lineWidth=2;
+    ctx.strokeRect(ox,oy,bw,bh);
+
+    const cw=bw/cols, ch=bh/rows;
+    ctx.strokeStyle=muted; ctx.globalAlpha=.2; ctx.lineWidth=1;
+    ctx.beginPath();
+    for(let i=1;i<cols;i++){ const x=ox+cw*i; ctx.moveTo(x,oy); ctx.lineTo(x,oy+bh); }
+    for(let j=1;j<rows;j++){ const y=oy+ch*j; ctx.moveTo(ox,y); ctx.lineTo(ox+bw,y); }
+    ctx.stroke();
+    ctx.globalAlpha=1;
+
+    (Array.isArray(p.boxes)?p.boxes:[]).forEach((b,idx)=>{
+      const slot=Number.isInteger(b.colorSlot)
+        ? ((b.colorSlot%BOX_HUES.length)+BOX_HUES.length)%BOX_HUES.length
+        : ((idx*7+3)%BOX_HUES.length+BOX_HUES.length)%BOX_HUES.length;
+      const hue=BOX_HUES[slot];
+      const cells=(Array.isArray(b.cells)&&b.cells.length)
+        ? b.cells
+        : (()=>{ const a=[]; for(let y=0;y<(b.h|0);y++)for(let x=0;x<(b.w|0);x++)a.push({x:(b.x|0)+x,y:(b.y|0)+y}); return a; })();
+      const at=new Set(cells.map(c=>(c.x|0)+','+(c.y|0)));
+      ctx.fillStyle='hsla('+hue+',44%,63%,.62)';
+      cells.forEach(c=>{ ctx.fillRect(ox+(c.x|0)*cw,oy+(c.y|0)*ch,cw,ch); });
+      ctx.strokeStyle='hsl('+hue+',40%,42%)'; ctx.lineWidth=1.6;
+      ctx.beginPath();
+      cells.forEach(c=>{
+        const x=ox+(c.x|0)*cw, y=oy+(c.y|0)*ch, cx=c.x|0, cy=c.y|0;
+        if(!at.has(cx+','+(cy-1))){ ctx.moveTo(x,y); ctx.lineTo(x+cw,y); }
+        if(!at.has((cx+1)+','+cy)){ ctx.moveTo(x+cw,y); ctx.lineTo(x+cw,y+ch); }
+        if(!at.has(cx+','+(cy+1))){ ctx.moveTo(x,y+ch); ctx.lineTo(x+cw,y+ch); }
+        if(!at.has((cx-1)+','+cy)){ ctx.moveTo(x,y); ctx.lineTo(x,y+ch); }
+      });
+      ctx.stroke();
+    });
+  }
+
+  /*
+   * The design waiting to be accepted. It is held here rather than applied,
+   * because opening somebody's link used to wipe the board without asking.
+   */
+  let sharedPending=null;
+
+  function closeSharePreview(){
+    const bd=$('sharePreviewBackdrop');
+    if(bd){ bd.hidden=true; document.body.classList.remove('share-link-open'); }
+  }
+
+  /*
+   * The left-hand board and what taking the design would cost, both kept
+   * current while the person decides.
+   *
+   * The board fills in after the page loads - a signed-in workspace arrives
+   * on its own schedule, and the shared design usually beats it - so reading
+   * it once when the dialog opens gets the answer wrong. draw() calls this
+   * too, which covers the workspace arriving and anything else that changes
+   * the board while the dialog is up.
+   */
+  function updateSharePreviewWarning(){
+    const warn=$('sharePreviewWarn');
+    if(warn){
+      const mine=(typeof boxes!=='undefined'&&boxes.length>0);
+      // An empty drawer has nothing to lose, and saying so is friendlier
+      // than warning about the destruction of nothing.
+      warn.textContent=mine?t('share.preview.warn'):t('share.preview.empty');
+      warn.classList.toggle('is-warning',mine);
+    }
+    const mineCv=$('sharePreviewCanvasMine');
+    if(mineCv){
+      try{ drawSharePreview(JSON.parse(projectJSON()),mineCv); }
+      catch(_){ }
+    }
+  }
+  window.updateSharePreviewWarning=updateSharePreviewWarning;
+
+  function openSharePreview(p){
+    const bd=$('sharePreviewBackdrop');
+    if(!bd){ applyProject(p); return; }   // markup missing: better than losing the link
+    sharedPending=p;
+    const cv=$('sharePreviewCanvas');
+    if(cv) drawSharePreview(p,cv);
+    const facts=$('sharePreviewFacts');
+    if(facts){
+      const size=fmtNum(fromMM(+p.dw||0))+' × '+fmtNum(fromMM(+p.dd||0))+' × '
+                +fmtNum(fromMM(+p.dh||0))+' '+currentUnit();
+      facts.textContent=t('share.preview.summary',size,(Array.isArray(p.boxes)?p.boxes.length:0),p.cols|0,p.rows|0);
+    }
+    updateSharePreviewWarning();
+    bd.hidden=false;
+    document.body.classList.add('share-link-open');
+    const take=$('sharePreviewTake');
+    if(take) take.focus();
+  }
+
+  if($('sharePreviewClose')) $('sharePreviewClose').addEventListener('click',()=>{ sharedPending=null; closeSharePreview(); });
+  if($('sharePreviewX')) $('sharePreviewX').addEventListener('click',()=>{ sharedPending=null; closeSharePreview(); });
+  if($('sharePreviewBackdrop')) $('sharePreviewBackdrop').addEventListener('click',e=>{
+    if(e.target===$('sharePreviewBackdrop')){ sharedPending=null; closeSharePreview(); }
+  });
+  document.addEventListener('keydown',e=>{
+    const bd=$('sharePreviewBackdrop');
+    if(e.key==='Escape'&&bd&&!bd.hidden){ sharedPending=null; closeSharePreview(); }
+  });
+  if($('sharePreviewTake')) $('sharePreviewTake').addEventListener('click',()=>{
+    if(!sharedPending)return;
+    const p=sharedPending;
+    sharedPending=null;
+    closeSharePreview();
+    applyProject(p);
+    /*
+     * Take the key out of the address bar. Left there, a refresh - or the
+     * browser restoring the tab tomorrow - would hand the same design over
+     * again and throw away whatever was built on top of it in between.
+     */
+    try{
+      const u=new URL(window.location.href);
+      u.searchParams.delete('share');
+      history.replaceState(null,'',u.pathname+(u.search||'')+u.hash);
+    }catch(_){}
+    if(typeof showExportNote==='function') showExportNote(t('share.preview.taken'));
+  });
 
   async function loadSharedProjectFromUrl(){
     const key=window.H3D_SHARE_KEY;
@@ -5620,8 +5800,7 @@ renderQuota();
       const r=await fetch('api/share.php?key='+encodeURIComponent(key),{credentials:'same-origin',cache:'no-store'});
       const d=await r.json();
       if(!r.ok || !d.ok || !d.project) throw new Error('share-load');
-      applyProject(d.project);
-      if(typeof showExportNote==='function') showExportNote(t('share.loaded'));
+      openSharePreview(d.project);
     }catch(_){
       if(typeof showExportError==='function') showExportError(t('share.error'));
     }
