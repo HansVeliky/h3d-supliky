@@ -477,7 +477,6 @@ body{background:var(--bg);color:var(--text)}
       <div class="support-quick" id="supportQuick">
         <button type="button" class="support-chip" data-support-text="Moje balíčky">Moje balíčky</button>
         <button type="button" class="support-chip" data-support-text="Moje aktivní předplatné">Moje aktivní předplatné</button>
-        <button type="button" class="support-chip" data-support-text="Moje objednávky">Moje objednávky</button>
         <button type="button" class="support-chip" data-support-text="Moje kredity">Moje kredity</button>
         <button type="button" class="support-chip" data-support-text="Moje exporty">Moje exporty</button>
         <button type="button" class="support-chip" data-support-text="Nabídka kreditů / časového plánu">Nabídka kreditů / časového plánu</button>
@@ -1827,7 +1826,7 @@ window.H3D_AUTHENTICATED=<?= json_encode((bool)$me) ?>;</script>
     if(limitLabel) limitLabel.hidden=true;
     const info=document.getElementById('supportInfoPanel');
     if(info) info.hidden=true;
-    renderQuick(['Moje balíčky','Moje aktivní předplatné','Moje objednávky','Moje kredity','Moje exporty','Nabídka kreditů / časového plánu','Podmínky','Promo akce','Předat živému kolegovi']);
+    renderQuick(['Moje balíčky','Moje aktivní předplatné','Moje kredity','Moje exporty','Nabídka kreditů / časového plánu','Podmínky','Promo akce','Předat živému kolegovi']);
     scrollBottom();
   }
 
@@ -2188,7 +2187,7 @@ window.H3D_AUTHENTICATED=<?= json_encode((bool)$me) ?>;</script>
       log.appendChild(wrap);
       scrollBottom();
       quickProcessing=false;
-      renderQuick(['Moje kredity','Moje objednávky','Nabídka kreditů / časového plánu','Předat živému kolegovi']);
+      renderQuick(['Moje kredity','Nabídka kreditů / časového plánu','Předat živému kolegovi']);
     }catch(err){
       typing.remove();
       addMessage('helper','H3D Pomocník','Nepodařilo se mi najít relevantní odpověď. omlouvám se.');

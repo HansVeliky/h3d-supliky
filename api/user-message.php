@@ -67,7 +67,7 @@ if (($_POST['action'] ?? '') === 'assistant') {
                 }
                 $reply=implode('<br>',$parts);
             }
-            $quick=['Moje balíčky','Moje objednávky','Moje kredity'];
+            $quick=['Moje balíčky','Moje kredity'];
         } elseif (preg_match('/moje\s+bal[ií]čky|zakoupen[ée]\s+bal[ií]čky|moje\s+balicky/', $q)) {
             // Only paid time packages that are still waiting for activation.
             $rows = Orders::waitingFor($uid);
@@ -88,7 +88,7 @@ if (($_POST['action'] ?? '') === 'assistant') {
                     .implode('',$parts)
                     .'</div>';
             }
-            $quick=['Moje aktivní předplatné','Moje objednávky','Moje kredity'];
+            $quick=['Moje aktivní předplatné','Moje kredity'];
         } elseif (preg_match('/aktivn[ií]\s+p[rř]edplatn|p[rř]edplatn[eé]ní|subscription/', $q)) {
             // Give the user one complete account/export status instead of only
             // saying whether subscription_until is set.
@@ -144,7 +144,7 @@ if (($_POST['action'] ?? '') === 'assistant') {
             }
 
             $reply=implode('<br>',$replyParts);
-            $quick=['Moje balíčky','Moje objednávky','Moje kredity'];
+            $quick=['Moje balíčky','Moje kredity'];
         } elseif (preg_match('/historie\s+objednáv|historie\s+objednav|všechny\s+objednáv|vsechny\s+objednav/', $q)) {
             $st=$pdo->prepare(
                 'SELECT reference,status,credits,sub_days,price_cents,currency,created_at
@@ -168,7 +168,7 @@ if (($_POST['action'] ?? '') === 'assistant') {
                 }
                 $reply='<div class="support-orders"><div class="support-orders-title">Historie objednávek</div><div class="support-orders-grid">'.implode('',$parts).'</div></div>';
             }
-            $quick=['Moje objednávky','Moje kredity','Nabídka kreditů / časového plánu'];
+            $quick=['Moje kredity','Nabídka kreditů / časového plánu'];
         } elseif (preg_match('/moje\s+objednáv|objedn[aá]vky/', $q)) {
             $st=$pdo->prepare(
                 "SELECT reference,status,credits,sub_days,price_cents,currency,created_at
@@ -192,7 +192,7 @@ if (($_POST['action'] ?? '') === 'assistant') {
                 }
                 $reply='<div class="support-orders"><div class="support-orders-title">Otevřené objednávky</div><div class="support-orders-grid">'.implode('',$parts).'</div></div>';
             }
-            $quick=['Historie objednávek','Moje balíčky','Moje kredity'];
+            $quick=['Moje balíčky','Moje kredity'];
         } elseif (preg_match('/moje\s+export|exporty|historie\s+export/', $q)) {
             $st=$pdo->prepare('SELECT format,boxes,credits_spent,created_at FROM exports WHERE user_id=? ORDER BY id DESC LIMIT 8');
             $st->execute([$uid]);
@@ -208,7 +208,7 @@ if (($_POST['action'] ?? '') === 'assistant') {
                 }
                 $reply='Poslední exporty:<br>• '.implode('<br>• ',$parts);
             }
-            $quick=['Moje kredity','Moje objednávky','Moje balíčky'];
+            $quick=['Moje kredity','Moje balíčky'];
         } elseif (preg_match('/objednáv|objednav|zakáz|zakaz|order/', $q)) {
             if ($order) {
                 $labels = [
@@ -231,7 +231,6 @@ if (($_POST['action'] ?? '') === 'assistant') {
             }
         } elseif (preg_match('/kredit|credits|zůstatek|zustatek/', $q)) {
             $reply = 'Aktuální zůstatek účtu je <strong>' . number_format($credits, 0, ',', ' ') . ' kreditů</strong>.';
-            $quick[] = 'Moje objednávky';
         } elseif (preg_match('/platb|zaplat|payment/', $q)) {
             if ($order) {
                 $labels = ['pending'=>'čeká na platbu','accepted'=>'zpracovává se','paid'=>'zaplaceno','cancelled'=>'zrušeno','refund'=>'čeká na refundaci','refunded'=>'refundováno'];
@@ -306,7 +305,7 @@ if (($_POST['action'] ?? '') === 'assistant') {
             $quick[] = 'Předat živému kolegovi';
         } else {
             $reply = 'Nepodařilo se mi najít relevantní odpověď. omlouvám se.';
-            $quick = ['Moje objednávky','Kolik mám kreditů?','Předat živému kolegovi'];
+            $quick = ['Kolik mám kreditů?','Předat živému kolegovi'];
         }
 
         echo json_encode(['ok'=>true,'reply'=>$reply,'quick'=>$quick], JSON_UNESCAPED_UNICODE);
@@ -380,7 +379,7 @@ if (($_POST['action'] ?? '') === 'assistant_packages') {
             'ok' => true,
             'packages' => $items,
             'reply' => $items ? null : 'Na účtu nemáš žádný zakoupený balíček k aktivaci.',
-            'quick' => ['Moje aktivní předplatné','Moje objednávky','Moje kredity'],
+            'quick' => ['Moje aktivní předplatné','Moje kredity'],
         ], JSON_UNESCAPED_UNICODE);
     } catch (Throwable $e) {
         http_response_code(422);
