@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Honza3D Drawer Organizer">
+  <rect width="64" height="64" rx="14" fill="#0b131e"/>
+  <rect x="0.7" y="0.7" width="62.6" height="62.6" rx="13.4" fill="none" stroke="#294062" stroke-width="1.4"/>
+  <rect x="10.24" y="10.24" width="19.80" height="43.52" rx="4.79" fill="#6ea8ff"/>
+  <rect x="33.96" y="10.24" width="19.80" height="19.80" rx="4.79" fill="#5a8ad2"/>
+  <rect x="33.96" y="33.96" width="19.80" height="19.80" rx="4.79" fill="#466ca5"/>
+</svg>

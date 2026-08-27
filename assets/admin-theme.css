@@ -1,0 +1,859 @@
+/*
+ * H3D ADMIN THEME
+ * Single source of truth for H3D Light administration styling.
+ * Do not add body.dark-specific admin colors below; the admin mode is
+ * selected by body.h3d-light-admin.
+ */
+
+body.h3d-light-admin {
+  --adm-bg: var(--bg);
+  --adm-panel: var(--panel);
+  --adm-panel-2: var(--panel2);
+  --adm-line: var(--line);
+  --adm-text: var(--text);
+  --adm-muted: var(--muted);
+  --adm-accent: var(--accent);
+  --adm-accent-text: var(--accentText);
+  --adm-button: var(--button);
+  --adm-button-text: var(--buttonText);
+  --adm-button-hover: var(--buttonHover);
+  --adm-good: var(--good);
+  --adm-good-text: var(--goodText);
+  --adm-good-hover: var(--goodHover);
+  --adm-bad: var(--bad);
+
+  /* Table palette tokens — always follow the active H3D palette */
+  --adm-table-bg: var(--panel);
+  --adm-table-alt: var(--panel2);
+  --adm-table-hover: var(--buttonHover);
+  --adm-table-head-bg: var(--panel2);
+  --adm-table-border: var(--line);
+  --adm-table-text: var(--text);
+  --adm-table-muted: var(--muted);
+  --adm-surface-3: color-mix(in srgb, var(--panel2) 72%, var(--panel) 28%);
+  color-scheme: light;
+}
+
+/* Page shell */
+body.h3d-light-admin {
+  background: var(--adm-bg) !important;
+  color: var(--adm-text) !important;
+}
+
+body.h3d-light-admin .topbar .topbar {
+  background: var(--adm-panel) !important;
+  color: var(--adm-text) !important;
+  border-bottom: 1px solid var(--adm-line) !important;
+}
+
+body.h3d-light-admin .topbar nav a .topbar nav a {
+  color: var(--adm-muted) !important;
+  background: transparent !important;
+}
+
+body.h3d-light-admin .topbar nav a:hover .topbar nav a:hover {
+  background: var(--adm-panel-2) !important;
+  color: var(--adm-text) !important;
+}
+
+body.h3d-light-admin .topbar nav a.active .topbar nav a.active {
+  background: var(--adm-accent) !important;
+  color: var(--adm-accent-text) !important;
+}
+
+/* Typography */
+body.h3d-light-admin h1,
+body.h3d-light-admin h2,
+body.h3d-light-admin h3,
+body.h3d-light-admin h4,
+body.h3d-light-admin label,
+body.h3d-light-admin legend h1 h2 h3 h4 label legend {
+  color: var(--adm-text) !important;
+}
+
+body.h3d-light-admin .hint,
+body.h3d-light-admin .lede,
+body.h3d-light-admin small .hint .lede small {
+  color: var(--adm-muted) !important;
+}
+
+body.h3d-light-admin a a {
+  color: var(--adm-accent) !important;
+}
+
+/* Main navigation */
+body.h3d-light-admin .admin-tabs .admin-tabs {
+  background: var(--adm-panel-2) !important;
+  border: 1px solid var(--adm-line) !important;
+}
+
+body.h3d-light-admin .admin-tab .admin-tab {
+  color: var(--adm-muted) !important;
+  background: transparent !important;
+  border-color: transparent !important;
+}
+
+body.h3d-light-admin .admin-tab:hover .admin-tab:hover {
+  background: var(--adm-surface-3) !important;
+  color: var(--adm-text) !important;
+}
+
+body.h3d-light-admin .admin-tab.is-on .admin-tab.is-on {
+  background: var(--adm-accent) !important;
+  color: var(--adm-accent-text) !important;
+}
+
+/* Secondary tabs */
+body.h3d-light-admin .subtabs .subtabs {
+  border-bottom-color: var(--adm-line) !important;
+}
+
+body.h3d-light-admin .subtab .subtab {
+  color: var(--adm-muted) !important;
+}
+
+body.h3d-light-admin .subtab:hover .subtab:hover {
+  color: var(--adm-text) !important;
+  background: var(--adm-panel-2) !important;
+}
+
+body.h3d-light-admin .subtab.is-on .subtab.is-on {
+  color: var(--adm-accent) !important;
+  border-bottom-color: var(--adm-accent) !important;
+}
+
+/* Cards / panels */
+body.h3d-light-admin .card,
+body.h3d-light-admin .admin-card,
+body.h3d-light-admin .table-wrap,
+body.h3d-light-admin fieldset .card .admin-card .table-wrap fieldset {
+  background: var(--adm-panel) !important;
+  color: var(--adm-text) !important;
+  border-color: var(--adm-line) !important;
+}
+
+body.h3d-light-admin .card *,
+body.h3d-light-admin .admin-card * .card * .admin-card * {
+  border-color: inherit;
+}
+
+/* Inputs */
+body.h3d-light-admin input,
+body.h3d-light-admin select,
+body.h3d-light-admin textarea input select textarea {
+  background: var(--adm-panel-2) !important;
+  color: var(--adm-text) !important;
+  border-color: var(--adm-line) !important;
+}
+
+body.h3d-light-admin input::placeholder,
+body.h3d-light-admin textarea::placeholder input::placeholder textarea::placeholder {
+  color: var(--adm-muted) !important;
+  opacity: 1;
+}
+
+body.h3d-light-admin input:focus,
+body.h3d-light-admin select:focus,
+body.h3d-light-admin textarea:focus input:focus select:focus textarea:focus {
+  border-color: var(--adm-accent) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--adm-accent) 20%, transparent) !important;
+}
+
+/* Buttons: never inherit panel.css white/black hover colors */
+body.h3d-light-admin .btn .btn {
+  background: var(--adm-button) !important;
+  color: var(--adm-button-text) !important;
+  border-color: var(--adm-line) !important;
+}
+
+body.h3d-light-admin .btn:hover .btn:hover {
+  background: var(--adm-button-hover) !important;
+  color: var(--adm-text) !important;
+}
+
+body.h3d-light-admin .btn.primary .btn.primary {
+  background: var(--adm-accent) !important;
+  color: var(--adm-accent-text) !important;
+  border-color: transparent !important;
+}
+
+body.h3d-light-admin .btn.primary:hover .btn.primary:hover {
+  background: var(--adm-accent) !important;
+  filter: brightness(0.94);
+}
+
+body.h3d-light-admin .btn.danger .btn.danger {
+  background: color-mix(in srgb, var(--adm-bad) 12%, var(--adm-panel) 88%) !important;
+  color: var(--adm-bad) !important;
+  border-color: color-mix(in srgb, var(--adm-bad) 45%, var(--adm-line) 55%) !important;
+}
+
+/* Generic tables — all colors come from palette tokens */
+body.h3d-light-admin table table {
+  background: var(--adm-table-bg) !important;
+  color: var(--adm-table-text) !important;
+  border-color: var(--adm-table-border) !important;
+}
+
+body.h3d-light-admin table thead table thead {
+  background: var(--adm-table-head-bg) !important;
+}
+
+body.h3d-light-admin table thead th table thead th {
+  background: var(--adm-table-head-bg) !important;
+  color: var(--adm-table-text) !important;
+  border-color: var(--adm-table-border) !important;
+}
+
+body.h3d-light-admin table tbody table tbody {
+  background: var(--adm-table-bg) !important;
+}
+
+body.h3d-light-admin table tbody tr {
+  background: var(--adm-table-bg) !important;
+  color: var(--adm-table-text) !important;
+}
+
+body.h3d-light-admin table tbody tr:nth-child(even) {
+  background: var(--adm-table-alt) !important;
+}
+
+body.h3d-light-admin table tbody tr:hover {
+  background: var(--adm-table-hover) !important;
+  color: var(--adm-table-text) !important;
+}
+
+body.h3d-light-admin table tbody tr:hover td {
+  color: var(--adm-table-text) !important;
+}
+
+body.h3d-light-admin table td,
+body.h3d-light-admin table th table td table th {
+  color: var(--adm-table-text) !important;
+  border-bottom-color: var(--adm-table-border) !important;
+}
+
+body.h3d-light-admin table td small,
+body.h3d-light-admin table td .muted table td small table td .muted {
+  color: var(--adm-table-muted) !important;
+}
+
+/* Order status cards — same visual language as user role cards */
+body.h3d-light-admin .order-groups {
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin:14px 0 18px;
+  border:0 !important;
+  background:transparent !important;
+}
+
+body.h3d-light-admin .order-group-card {
+  position:relative;
+  min-height:82px;
+  display:grid !important;
+  grid-template-columns:42px minmax(0,1fr) auto;
+  align-items:center;
+  gap:11px;
+  padding:12px 13px !important;
+  box-sizing:border-box;
+  text-decoration:none !important;
+  border:1px solid var(--line) !important;
+  border-radius:12px !important;
+  background:var(--panel2) !important;
+  color:var(--text) !important;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+  transition:transform .16s ease,border-color .16s ease,background .16s ease,box-shadow .16s ease;
+}
+
+body.h3d-light-admin .order-group-card:hover {
+  transform:translateY(-1px);
+  background:var(--buttonHover) !important;
+  color:var(--text) !important;
+  border-color:var(--accent) !important;
+  box-shadow:0 5px 14px rgba(0,0,0,.10);
+}
+
+body.h3d-light-admin .order-group-card.is-on {
+  background:color-mix(in srgb,var(--accent) 10%,var(--panel) 90%) !important;
+  color:var(--text) !important;
+  border:1.5px solid var(--accent) !important;
+  box-shadow:0 4px 16px color-mix(in srgb,var(--accent) 16%,transparent);
+}
+
+.order-group-copy {
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  line-height:1.15;
+}
+
+.order-group-copy strong {
+  color:var(--text) !important;
+  font-size:13px;
+  font-weight:700;
+}
+
+.order-group-copy small {
+  color:var(--muted) !important;
+  font-size:10px;
+  line-height:1.3;
+}
+
+.order-group-card .order-count {
+  min-width:29px;
+  height:29px;
+  padding:0 7px;
+  display:flex !important;
+  align-items:center;
+  justify-content:center;
+  box-sizing:border-box;
+  border-radius:999px;
+  background:var(--button) !important;
+  color:var(--text) !important;
+  border:1px solid var(--line) !important;
+  font-size:11px;
+  font-weight:800;
+}
+
+.order-group-card.is-on .order-count {
+  background:var(--accent) !important;
+  color:var(--accentText) !important;
+  border-color:var(--accent) !important;
+}
+
+.order-group-icon {
+  width:42px;
+  height:42px;
+  display:block;
+  position:relative;
+  border-radius:11px;
+  background:color-mix(in srgb,var(--accent) 10%,var(--panel) 90%);
+  border:1px solid color-mix(in srgb,var(--accent) 30%,var(--line) 70%);
+  color:var(--accent);
+}
+
+.order-group-icon::before,
+.order-group-icon::after {
+  content:"";
+  position:absolute;
+  box-sizing:border-box;
+}
+
+/* All — stacked documents */
+.order-all .order-group-icon::before {
+  width:19px;height:23px;left:11px;top:9px;
+  border:2px solid currentColor;border-radius:3px;
+}
+.order-all .order-group-icon::after {
+  width:10px;height:2px;left:16px;top:17px;
+  background:currentColor;box-shadow:0 6px 0 currentColor;
+}
+
+/* Open — tray with upward indicator */
+.order-open .order-group-icon::before {
+  width:22px;height:13px;left:10px;top:18px;
+  border:2px solid currentColor;border-top:0;border-radius:0 0 5px 5px;
+}
+.order-open .order-group-icon::after {
+  width:10px;height:10px;left:16px;top:8px;
+  border-left:2px solid currentColor;border-top:2px solid currentColor;
+  transform:rotate(45deg);
+}
+
+/* Accepted — processing arrows */
+.order-accepted .order-group-icon::before {
+  width:22px;height:22px;left:10px;top:10px;
+  border:2px solid currentColor;border-radius:50%;
+}
+.order-accepted .order-group-icon::after {
+  width:9px;height:9px;left:17px;top:17px;
+  border-right:2px solid currentColor;border-bottom:2px solid currentColor;
+  transform:rotate(-45deg);
+}
+
+/* Paid — check mark */
+.order-paid .order-group-icon::before {
+  width:22px;height:22px;left:10px;top:10px;
+  border:2px solid currentColor;border-radius:50%;
+}
+.order-paid .order-group-icon::after {
+  width:12px;height:7px;left:15px;top:16px;
+  border-left:2px solid currentColor;border-bottom:2px solid currentColor;
+  transform:rotate(-45deg);
+}
+
+/* Refund — circular return arrow */
+.order-refund .order-group-icon::before {
+  width:22px;height:22px;left:10px;top:10px;
+  border:2px solid currentColor;border-right-color:transparent;border-radius:50%;
+}
+.order-refund .order-group-icon::after {
+  width:8px;height:8px;left:10px;top:10px;
+  border-left:2px solid currentColor;border-bottom:2px solid currentColor;
+  transform:rotate(45deg);
+}
+
+/* Cancelled — X */
+.order-cancelled .order-group-icon::before,
+.order-cancelled .order-group-icon::after {
+  width:23px;height:2px;left:9px;top:20px;
+  background:currentColor;border-radius:2px;
+}
+.order-cancelled .order-group-icon::before { transform:rotate(45deg); }
+.order-cancelled .order-group-icon::after { transform:rotate(-45deg); }
+
+@media (max-width:1000px) {
+  body.h3d-light-admin .order-groups {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+@media (max-width:620px) {
+  body.h3d-light-admin .order-groups {
+    grid-template-columns:1fr;
+  }
+}
+
+/* Users role cards — visual category cards, palette driven */
+body.h3d-light-admin .users-role-tabs {
+  display:grid !important;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:12px;
+  margin:14px 0 18px;
+  border:0 !important;
+  background:transparent !important;
+}
+
+body.h3d-light-admin .users-role-tab {
+  position:relative;
+  min-height:78px;
+  display:grid !important;
+  grid-template-columns:42px 1fr auto;
+  align-items:center;
+  gap:11px;
+  padding:12px 13px !important;
+  box-sizing:border-box;
+  text-decoration:none !important;
+  border:1px solid var(--line) !important;
+  border-radius:12px !important;
+  background:var(--panel2) !important;
+  color:var(--text) !important;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+  transition:transform .16s ease, border-color .16s ease, background .16s ease, box-shadow .16s ease;
+}
+
+body.h3d-light-admin .users-role-tab:hover {
+  transform:translateY(-1px);
+  background:var(--buttonHover) !important;
+  color:var(--text) !important;
+  border-color:var(--accent) !important;
+  box-shadow:0 5px 14px rgba(0,0,0,.10);
+}
+
+body.h3d-light-admin .users-role-tab.is-on {
+  background:color-mix(in srgb, var(--accent) 10%, var(--panel) 90%) !important;
+  color:var(--text) !important;
+  border:1.5px solid var(--accent) !important;
+  box-shadow:0 4px 16px color-mix(in srgb, var(--accent) 16%, transparent);
+}
+
+.users-role-copy {
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  line-height:1.15;
+}
+
+.users-role-copy strong {
+  color:var(--text) !important;
+  font-size:13px;
+  font-weight:700;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.users-role-copy small {
+  color:var(--muted) !important;
+  font-size:10px;
+}
+
+.users-role-count {
+  min-width:28px;
+  height:28px;
+  padding:0 7px;
+  box-sizing:border-box;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:999px;
+  background:var(--button) !important;
+  color:var(--text) !important;
+  border:1px solid var(--line) !important;
+  font-size:11px;
+  font-weight:800;
+}
+
+.users-role-tab.is-on .users-role-count {
+  background:var(--accent) !important;
+  color:var(--accentText) !important;
+  border-color:var(--accent) !important;
+}
+
+/* Small role glyphs, intentionally CSS-only so they follow the theme */
+.users-role-icon {
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  position:relative;
+  border-radius:11px;
+  background:color-mix(in srgb, var(--accent) 10%, var(--panel) 90%);
+  border:1px solid color-mix(in srgb, var(--accent) 30%, var(--line) 70%);
+  color:var(--accent);
+}
+
+.users-role-icon::before,
+.users-role-icon::after {
+  content:"";
+  position:absolute;
+  box-sizing:border-box;
+}
+
+.role-all .users-role-icon::before {
+  width:20px;height:20px;
+  border:2px solid currentColor;
+  border-radius:4px;
+  box-shadow:7px 0 0 -5px currentColor, 0 7px 0 -5px currentColor, 7px 7px 0 -5px currentColor;
+}
+
+.role-user .users-role-icon::before {
+  width:9px;height:9px;
+  top:9px;
+  border:2px solid currentColor;
+  border-radius:50%;
+}
+.role-user .users-role-icon::after {
+  width:20px;height:10px;
+  bottom:8px;
+  border:2px solid currentColor;
+  border-bottom:0;
+  border-radius:12px 12px 0 0;
+}
+
+.role-super .users-role-icon::before {
+  width:19px;height:19px;
+  border:2px solid currentColor;
+  transform:rotate(45deg);
+  border-radius:5px;
+}
+
+.role-manager .users-role-icon::before {
+  width:21px;height:15px;
+  bottom:9px;
+  border:2px solid currentColor;
+  border-radius:3px;
+}
+.role-manager .users-role-icon::after {
+  width:9px;height:4px;
+  top:10px;
+  border:2px solid currentColor;
+  border-bottom:0;
+  border-radius:3px 3px 0 0;
+}
+
+.role-admin .users-role-icon::before {
+  width:19px;height:22px;
+  top:9px;
+  border:2px solid currentColor;
+  clip-path:polygon(50% 0,100% 20%,92% 72%,50% 100%,8% 72%,0 20%);
+}
+
+@media (max-width:1050px) {
+  body.h3d-light-admin .users-role-tabs {
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+}
+@media (max-width:700px) {
+  body.h3d-light-admin .users-role-tabs {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+@media (max-width:480px) {
+  body.h3d-light-admin .users-role-tabs {
+    grid-template-columns:1fr;
+  }
+}
+
+/* Support inbox — no hard-coded white cards */
+body.h3d-light-admin .support-inbox .support-inbox,
+body.h3d-light-admin .support-rows,
+body.h3d-light-admin .support-row,
+body.h3d-light-admin .support-empty .support-empty,
+body.h3d-light-admin .support-workspace .support-workspace,
+body.h3d-light-admin .support-context .support-context,
+body.h3d-light-admin .support-composer .support-composer {
+  background: var(--adm-panel) !important;
+  color: var(--adm-text) !important;
+  border-color: var(--adm-line) !important;
+}
+
+body.h3d-light-admin .support-row * {
+  color: inherit;
+}
+
+body.h3d-light-admin .support-row:hover {
+  background: var(--adm-panel-2) !important;
+}
+
+body.h3d-light-admin .support-row.is-new {
+  background: color-mix(in srgb, var(--adm-accent) 8%, var(--adm-panel) 92%) !important;
+}
+
+body.h3d-light-admin .support-filters a .support-filters a {
+  background: var(--adm-panel-2) !important;
+  color: var(--adm-muted) !important;
+  border-color: var(--adm-line) !important;
+}
+
+body.h3d-light-admin .support-filters a:hover .support-filters a:hover,
+body.h3d-light-admin .support-filters a.is-on .support-filters a.is-on {
+  background: color-mix(in srgb, var(--adm-accent) 14%, var(--adm-panel) 86%) !important;
+  color: var(--adm-accent) !important;
+  border-color: var(--adm-accent) !important;
+}
+
+body.h3d-light-admin .support-thread .support-thread {
+  background: var(--adm-panel-2) !important;
+}
+
+body.h3d-light-admin .support-composer textarea .support-composer textarea {
+  background: var(--adm-panel-2) !important;
+  color: var(--adm-text) !important;
+}
+
+/* Messages / notices */
+body.h3d-light-admin .msg .msg {
+  color: var(--adm-text) !important;
+  background: var(--adm-panel-2) !important;
+  border-color: var(--adm-line) !important;
+}
+
+body.h3d-light-admin .msg.ok .msg.ok {
+  background: color-mix(in srgb, var(--adm-good) 12%, var(--adm-panel) 88%) !important;
+  color: var(--adm-good) !important;
+  border-color: color-mix(in srgb, var(--adm-good) 42%, var(--adm-line) 58%) !important;
+}
+
+body.h3d-light-admin .msg.err .msg.err {
+  background: color-mix(in srgb, var(--adm-bad) 12%, var(--adm-panel) 88%) !important;
+  color: var(--adm-bad) !important;
+  border-color: color-mix(in srgb, var(--adm-bad) 42%, var(--adm-line) 58%) !important;
+}
+
+/* Palette editor */
+body.h3d-light-admin .palette-preset .palette-preset,
+body.h3d-light-admin .palette-color .palette-color {
+  background: var(--adm-panel-2) !important;
+  color: var(--adm-text) !important;
+  border-color: var(--adm-line) !important;
+}
+
+body.h3d-light-admin .palette-preset.is-on .palette-preset.is-on {
+  border-color: var(--adm-accent) !important;
+  outline: 2px solid color-mix(in srgb, var(--adm-accent) 22%, transparent) !important;
+}
+
+body.h3d-light-admin .palette-preset b,
+body.h3d-light-admin .palette-preset small,
+body.h3d-light-admin .palette-color span .palette-preset b .palette-preset small .palette-color span {
+  color: var(--adm-text) !important;
+}
+
+body.h3d-light-admin .palette-color code .palette-color code {
+  color: var(--adm-muted) !important;
+  background: transparent !important;
+}
+
+/* Stat cards */
+body.h3d-light-admin .stat .stat {
+  background: var(--adm-panel-2) !important;
+  color: var(--adm-muted) !important;
+  border-color: var(--adm-line) !important;
+}
+
+body.h3d-light-admin .stat b .stat b {
+  color: var(--adm-text) !important;
+}
+
+/* Prevent old dark/light global selectors from leaking into admin */
+body.h3d-light-admin .dark-only .light-only {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  body.h3d-light-admin .users-role-tabs {
+    grid-template-columns: repeat(3, minmax(120px, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  body.h3d-light-admin .users-role-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Compact support history: conversations are records, not permanently
+   expanded chat windows. The full thread opens explicitly via Informace. */
+.support-history-card { margin-top: 0; }
+.support-history-card .ud-card-head {
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  margin-bottom:12px;
+}
+.support-history-card .ud-h { margin:0; }
+.support-history-table td { vertical-align:middle; }
+.support-history-preview {
+  display:block; margin-top:3px; max-width:520px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.support-history-table .user-conversation-state {
+  display:inline-flex; align-items:center; white-space:nowrap;
+}
+.audit li.audit-message-closed { border-left-color: var(--accent, #1769d1); }
+
+.message-reply-form{margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--panel2)}
+.active-message-thread{display:flex;flex-direction:column;gap:8px;max-height:42vh;overflow:auto;padding:4px 1px}
+
+
+/* Ledger audit diagnostics */
+.ledger-audit-card table td { vertical-align: top; }
+.ledger-audit-detail { display:block; margin-top:4px; line-height:1.35; }
+.audit li.audit-ledger-repair { border-left-color: var(--adm-accent, var(--accent, #1769d1)); background: color-mix(in srgb, var(--accent, #1769d1) 7%, var(--panel2, #f5f7fa) 93%); }
+.audit li.audit-ledger-repair .audit-what { font-weight:600; }
+
+.daily-credit-history .ud-table td,
+.daily-credit-history .ud-table th{vertical-align:middle}
+.daily-credit-history .hint{line-height:1.35}
+
+.support-feedback-admin{
+  margin-top:18px;
+}
+.support-feedback-admin-list{
+  display:grid;
+  gap:9px;
+}
+.support-feedback-admin-row{
+  display:grid;
+  grid-template-columns:minmax(160px,1fr) auto auto;
+  gap:14px;
+  align-items:center;
+  padding:13px 15px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--panel);
+}
+.support-feedback-admin-row > div{
+  display:grid;
+  gap:2px;
+}
+.support-feedback-admin-row > div span{
+  font-size:11px;
+  color:var(--muted);
+}
+.support-feedback-admin-row time{
+  color:var(--muted);
+  font-size:11px;
+}
+.support-feedback-admin-rating{
+  padding:5px 9px;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:900;
+  border:1px solid var(--line);
+}
+.support-feedback-admin-rating.is-good{color:var(--good,#07865a)}
+.support-feedback-admin-rating.is-partial{color:#9a6b00}
+.support-feedback-admin-rating.is-bad{color:var(--bad,#c22)}
+.support-feedback-admin-row p{
+  grid-column:1/-1;
+  margin:0;
+  padding-top:8px;
+  border-top:1px solid var(--line);
+  font-size:11px;
+  color:var(--text);
+}
+@media(max-width:700px){
+  .support-feedback-admin-row{
+    grid-template-columns:1fr auto;
+  }
+  .support-feedback-admin-row time{grid-column:2;grid-row:1}
+  .support-feedback-admin-row p{grid-column:1/-1}
+}
+
+/* Keep support messages compact in the admin workspace. */
+.support-workspace .support-bubble{display:block!important;align-self:flex-start!important;min-height:0!important;height:fit-content!important;max-height:none!important;padding:10px 13px!important;margin-bottom:10px!important;line-height:1.42!important}
+
+/* ---- Chips: a comma-separated setting as removable bubbles --------------
+   The source field stays in the form (and stays usable without JavaScript),
+   so it is only made quiet, never hidden. */
+.chips-editor{margin-top:10px}
+.chips-row{display:flex;gap:8px;align-items:center}
+.chips-row .chips-input{flex:1;min-width:0}
+.chips-list{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 8px;min-height:4px}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 6px 4px 10px;border-radius:999px;
+  border:1px solid var(--line,#d8dde4);background:var(--panel2,#f4f6f9);
+  font-size:12.5px;line-height:1.4;
+}
+.chip-x{
+  border:0;background:transparent;cursor:pointer;padding:0 2px;
+  font-size:15px;line-height:1;color:var(--muted,#68707a);border-radius:50%;
+}
+.chip-x:hover{color:#c0392b;background:#c0392b18}
+.chips-source{
+  width:100%;font-size:12px;color:var(--muted,#68707a);
+  background:transparent;border-style:dashed;
+}
+
+/* ---- Badge: how many things are waiting ---------------------------------
+   Reads at a glance from across the room, like the one on a phone icon.
+   The old "(3)" in the label was easy to mistake for part of the name. */
+.admin-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:18px;height:18px;padding:0 5px;margin-left:7px;
+  border-radius:999px;background:#d84357;color:#fff;
+  font-size:11px;font-weight:800;line-height:1;vertical-align:1px;
+}
+.admin-tab.is-on .admin-badge{background:#b8293c}
+
+/* ---- Overview: the panel's front page ----------------------------------
+   Every block is a link to the page its numbers come from, so the overview
+   is somewhere to leave rather than somewhere to read. Width follows the
+   window instead of a fixed column count. */
+.ov-waiting,
+.ov-blocks{
+  display:grid;gap:12px;margin-bottom:16px;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+}
+.ov-card{
+  display:block;padding:14px 16px;border-radius:12px;text-decoration:none;
+  border:1px solid var(--line,#d8dde4);background:var(--panel,#fff);color:inherit;
+  transition:border-color .12s ease,transform .12s ease,box-shadow .12s ease;
+}
+.ov-card:hover{
+  border-color:var(--accent,#1976d2);transform:translateY(-1px);
+  box-shadow:0 6px 18px #23456b14;
+}
+.ov-card h3{margin:0 0 10px;font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted,#68707a)}
+.ov-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:3px 0}
+.ov-row span{font-size:12.5px;color:var(--muted,#68707a)}
+.ov-row b{font-size:15px;font-weight:750}
+/* Something is waiting: louder, and the reason is on the card so nobody has
+   to open the page to find out whether it matters. */
+.ov-card-act{border-left:3px solid var(--accent,#1976d2)}
+.ov-card-act strong{display:block;font-size:14.5px;margin-bottom:3px}
+.ov-card-act span{font-size:12.5px;color:var(--muted,#68707a)}
+.ov-card-act.is-urgent{border-left-color:#d84357;background:#d8435708}

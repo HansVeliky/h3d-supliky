@@ -1,0 +1,20 @@
+# Data of a running instance. None of it belongs in the history: the
+# database is this machine's, the log holds addresses, and instance.php and
+# the captcha secret are keys.
+/data/
+/lib/captcha-secret.php
+
+# Copies people leave behind while working.
+/backups/
+*.bak
+*.orig
+*.rej
+*~
+
+*.log
+
+# Editor and OS leftovers.
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini

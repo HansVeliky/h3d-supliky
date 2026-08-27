@@ -1,0 +1,2376 @@
+/* Account and admin pages.
+ *
+ * Quiet on purpose: these are back-office screens and the job is to make a
+ * long form easy to scan, not to decorate it. Lighter borders, more air, one
+ * accent, and headings that separate sections without shouting.
+ */
+
+:root{
+  --bg:#f6f8fa; --panel:#fff; --line:#e4e8ee; --line-strong:#d3d9e2;
+  --text:#1a1f26; --muted:#6b7684;
+  --accent:#1f6feb; --good:#1a7f4b; --bad:#c2384a; --warn:#9a6700;
+  --r:14px;
+}
+
+*{box-sizing:border-box}
+/* Same baseline as the studio: hidden means hidden, whatever display a
+   class sets. */
+[hidden]{display:none!important}
+
+:root{--ad-bottom:0px;--page-top:0px;--page-bottom:0px}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font:14px/1.55 Inter,system-ui,-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  /* Room for the host's fixed banner strip, measured by panel.js - without
+     it the footer and the last card end up underneath it. */
+  padding-top:var(--page-top);
+  padding-bottom:calc(var(--ad-bottom) + var(--page-bottom));
+}
+
+a{color:var(--accent)}
+
+.topbar{
+  display:flex;align-items:center;gap:14px;
+  padding:0 22px;height:58px;
+  background:#fff;
+  color:var(--text);
+  border-bottom:1px solid var(--line);
+  position:sticky;
+  top:0;
+  z-index:50;
+}
+.topbar .brand{font-weight:800;display:flex;align-items:center;gap:9px;color:inherit;text-decoration:none}
+.topbar .brand img{width:24px;height:24px;border-radius:6px}
+.topbar nav{display:flex;gap:4px;margin-left:auto;align-items:center;flex-wrap:wrap}
+.topbar nav a{
+  color:var(--muted);
+  text-decoration:none;
+  padding:7px 12px;
+  border-radius:8px;
+  font-size:13px;
+  font-weight:500;
+  transition:background .12s ease,color .12s ease;
+}
+.topbar nav a:hover{background:#f0f3f7;color:var(--text)}
+.topbar nav a.active{background:#eaf2fe;color:var(--accent);font-weight:600}
+.topbar .who{color:var(--muted);font-size:12px;margin-left:8px}
+
+.wrap{max-width:1080px;margin:0 auto;padding:26px 20px 72px}
+.narrow{max-width:440px}
+
+h1{font-size:22px;margin:0 0 5px;letter-spacing:-.2px}
+h2{
+  font-size:12px;
+  margin:0 0 14px;
+  text-transform:uppercase;
+  letter-spacing:.9px;
+  font-weight:700;
+  color:var(--muted);
+}
+.lede{color:var(--muted);margin:0 0 22px}
+
+.card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  padding:20px 22px;
+  margin-bottom:14px;
+  box-shadow:0 1px 2px rgba(20,30,50,.04);
+}
+.card > :last-child{margin-bottom:0}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:760px){.grid2,.grid3{grid-template-columns:1fr}}
+
+label{display:block;font-size:12px;color:var(--muted);margin:14px 0 6px;font-weight:600}
+label:first-child{margin-top:0}
+
+input[type=text],input[type=email],input[type=password],input[type=number],
+input[type=date],input[type=search],input[type=url],select,textarea{
+  width:100%;
+  padding:9px 12px;
+  border:1px solid var(--line-strong);
+  border-radius:9px;
+  background:#fff;
+  color:var(--text);
+  font:inherit;
+  transition:border-color .12s ease,box-shadow .12s ease;
+}
+input:hover,select:hover,textarea:hover{border-color:#c2cad6}
+input:focus,select:focus,textarea:focus{
+  outline:none;
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(31,111,235,.14);
+}
+textarea{min-height:80px;resize:vertical}
+.hint{font-size:12px;color:var(--muted);margin-top:5px}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  padding:8px 14px;
+  border:1px solid var(--line-strong);
+  border-radius:9px;
+  background:#fff;color:var(--text);
+  font:inherit;font-size:13px;font-weight:500;
+  cursor:pointer;text-decoration:none;
+  transition:background .12s ease,border-color .12s ease;
+}
+.btn:hover{background:#f5f7fa;border-color:#c2cad6}
+.btn.primary{background:var(--accent);border-color:transparent;color:#fff;font-weight:600}
+.btn.primary:hover{background:#1a5fd0}
+.btn.danger{color:var(--bad);border-color:#e6c1c7}
+.btn.danger:hover{background:#fdf2f4;border-color:#dba9b1}
+.btn.small{padding:5px 10px;font-size:12px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.spread{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+
+.msg{
+  padding:11px 14px;
+  border-radius:10px;
+  margin-bottom:16px;
+  font-size:13px;
+  line-height:1.5;
+  border-left-width:3px;
+}
+.msg.ok{background:#e6f4ec;border:1px solid #b6dcc6;color:var(--good)}
+.msg.err{background:#fdecee;border:1px solid #e8bcc2;color:var(--bad)}
+.msg.info{background:#eaf2fb;border:1px solid #bcd5ef;color:#14508f}
+.msg.warn{background:#fdf3e0;border:1px solid #e8d2a6;color:var(--warn)}
+
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px}
+th,td{padding:11px 13px;text-align:left;border-bottom:1px solid #edf0f4;vertical-align:middle}
+th{
+  font-size:10.5px;text-transform:uppercase;letter-spacing:.7px;
+  color:#5b6472;font-weight:800;
+  background:linear-gradient(#f6f8fb,#eef1f6);
+  border-bottom:1px solid #dde2e9;
+  position:sticky;top:0;z-index:1;
+}
+tbody tr{transition:background .1s ease}
+tbody tr:nth-child(even){background:#fafbfd}
+tbody tr:hover{background:#eef3fb}
+tbody tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+/* One gutter only: the card's own padding. The strip itself adds nothing,
+   so there is no doubled gap and no bleeding either. */
+.table-scroll{overflow-x:auto;overflow-y:auto;max-height:70vh;border-top:1px solid #e5e9ef;border-bottom:1px solid #e5e9ef}
+.table-scroll table{font-size:13px}
+.table-scroll::-webkit-scrollbar{height:8px;width:8px}
+.table-scroll::-webkit-scrollbar-thumb{background:#cfd6df;border-radius:4px}
+
+code,.mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:12.5px}
+
+.tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700}
+.tag.on{background:#e6f4ec;color:var(--good)}
+.tag.off{background:#eef1f5;color:var(--muted)}
+.tag.warn{background:#fdf3e0;color:var(--warn)}
+.tag.bad{background:#fdecee;color:var(--bad)}
+
+.stat{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;
+}
+.stat span{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:5px}
+.stat b{font-size:22px;font-variant-numeric:tabular-nums}
+
+.balance{
+  display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+  background:linear-gradient(135deg,#0b131e,#16233a);color:#fff;
+  border-radius:var(--r);padding:18px 20px;margin-bottom:16px;
+}
+.balance b{font-size:32px;font-variant-numeric:tabular-nums}
+.balance span{color:#93a3bb;font-size:13px}
+/* Subscription validity, dropped onto its own line under the infinity. */
+.balance-sub{flex-basis:100%;color:#9fd0b0;font-size:12.5px;margin-top:2px}
+
+/* Each fieldset is a section of a long form; a rule above it does more for
+   scanning than a box around it. */
+fieldset{border:0;padding:0;margin:0 0 26px}
+fieldset + fieldset{border-top:1px solid var(--line);padding-top:22px}
+fieldset legend{
+  font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);
+  font-weight:700;padding:0;margin-bottom:12px;
+}
+
+.switch{display:flex;align-items:center;gap:9px;margin:9px 0}
+.switch input{width:auto;margin:0}
+.switch span{font-size:13px;color:var(--text)}
+
+/* PayPal action on a pending order. */
+.paypal-btn{
+  background:#ffc439;
+  border-color:#e0a800;
+  color:#111827;
+  font-weight:700;
+  white-space:nowrap;
+}
+.paypal-btn:hover{background:#f0b52c}
+
+/* Order row: note field beside the action buttons. */
+.order-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.order-actions .note-input{
+  width:190px;
+  padding:6px 9px;
+  font-size:12px;
+  margin:0;
+}
+.inline-form{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.inline-form input{margin:0;max-width:280px}
+
+/* Redemption list inside the codes table. */
+.used-by{margin:0;padding:0;list-style:none;font-size:12px}
+.used-by li{display:flex;gap:8px;align-items:baseline;white-space:nowrap}
+.used-by li + li{margin-top:3px}
+.used-by a{color:var(--accent);text-decoration:none}
+.used-by a:hover{text-decoration:underline}
+
+/* ===================================================================
+   Confirmation dialog
+   These rules also exist in ui.css for the editor. The account and admin
+   pages load panel.css only, so without them the dialog rendered as plain
+   unstyled markup at the bottom of the document - which is why the
+   confirmation appeared to jump somewhere odd.
+   =================================================================== */
+
+.modal-back{
+  position:fixed;
+  inset:0;
+  background:rgba(20,30,45,.45);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:200;
+  animation:h3d-fade .14s ease;
+}
+@keyframes h3d-fade{from{opacity:0}to{opacity:1}}
+
+/* Order story popup (the ⓘ button next to an order's status). */
+.oinfo-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:18px;height:18px;
+  border-radius:50%;
+  border:1px solid var(--accent,#2f6fed);
+  background:transparent;
+  color:var(--accent,#2f6fed);
+  font:italic 700 11px/1 Georgia,serif;
+  cursor:pointer;
+  vertical-align:middle;
+  padding:0;
+}
+.oinfo-btn:hover{background:var(--accent,#2f6fed);color:#fff}
+.oinfo-back{z-index:320}
+.oinfo-modal{max-width:560px;width:100%}
+.oinfo-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.oinfo-head h3{margin:0;font-size:16px}
+.oinfo-kv{margin:0}
+.oinfo-kv th{width:34%}
+.oinfo-kv td{word-break:break-word}
+body.dark .oinfo-btn{border-color:#6e9bff;color:#6e9bff}
+body.dark .oinfo-btn:hover{background:#6e9bff;color:#0b1220}
+
+.modal{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  box-shadow:0 18px 44px rgba(20,40,70,.28);
+  padding:22px;
+  max-width:420px;
+  width:100%;
+}
+.modal h3{margin:0 0 10px;font-size:15px}
+.modal p{margin:0 0 18px;font-size:13.5px;line-height:1.55;color:var(--muted)}
+.modal-actions{display:flex;gap:9px;justify-content:flex-end}
+.modal-actions .btn{margin:0}
+
+/* Configurable links to other services. */
+.site-links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+  align-items:center;
+  max-width:1100px;
+  /* The bottom margin is the gap the operator asked for in the panel, on top
+     of whatever the host's banner takes. Before this, "50px from the bottom"
+     measured to the edge of the screen, so the banner ate it and the footer
+     stayed hidden. */
+  margin:8px auto 0;
+  padding:14px 20px 28px;
+  border-top:1px solid var(--line);
+  font-size:13px;
+}
+.site-links a{color:var(--accent);text-decoration:none}
+.site-links a:hover{text-decoration:underline}
+
+/* The cookie banner brings its own styles (lib/Consent.php): it appears on
+   the studio too, which loads a different stylesheet, and one copy that
+   travels with the markup beats two that drift apart. */
+
+/* ---- Proof-of-work verification on the registration form ---- */
+
+.captcha{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:0 0 16px;
+  padding:11px 14px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#f7f9fc;
+  font-size:13px;
+  color:var(--muted);
+}
+.captcha-spinner{
+  width:15px;height:15px;flex:none;
+  border:2px solid #cbd6e2;
+  border-top-color:var(--accent);
+  border-radius:50%;
+  animation:cap-spin .8s linear infinite;
+}
+@keyframes cap-spin{to{transform:rotate(360deg)}}
+
+.captcha-ok{background:#e6f4ec;border-color:#b6dcc6;color:var(--good)}
+.captcha-ok .captcha-spinner{
+  animation:none;
+  border:0;
+  background:var(--good);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M6.2 11.6 3 8.4l1.1-1.1 2.1 2.1 5.7-5.7L13 4.8z'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M6.2 11.6 3 8.4l1.1-1.1 2.1 2.1 5.7-5.7L13 4.8z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.captcha-fail{background:#fdecee;border-color:#e8bcc2;color:var(--bad)}
+.captcha-fail .captcha-spinner,
+.captcha-skip .captcha-spinner{animation:none;border-color:#cbd6e2}
+
+/* The honeypot must be invisible to people but present for form fillers.
+   display:none is skipped by some bots, so it is moved off-screen instead. */
+.hp-field{
+  position:absolute;
+  left:-9999px;
+  width:1px;height:1px;
+  overflow:hidden;
+}
+
+/* ---- Package cards and the sale banner ---- */
+
+.sale-banner{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:10px;
+  margin:0 0 16px;
+  padding:12px 16px;
+  border-radius:10px;
+  background:linear-gradient(90deg,#1976d2,#4a9ae8);
+  color:#fff;
+  font-size:14px;
+}
+.sale-banner strong{font-size:15px}
+.sale-banner .hint{color:rgba(255,255,255,.85)}
+
+/* A shop card is a column: badges at the top with room of their own, the
+   price in the middle, the button pinned to the bottom so buttons line up
+   across the row however long the names are. */
+.pkg{
+  position:relative;
+  display:flex;flex-direction:column;
+  gap:4px;
+  padding-top:40px;          /* the badge strip lives here */
+}
+.pkg-sale{border-color:#1976d2;box-shadow:0 0 0 1px #1976d2 inset}
+.pkg-badge,
+.pkg-fav-badge{
+  position:absolute;
+  top:12px;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.4px;
+  padding:3px 8px;
+  border-radius:999px;
+  color:#fff;
+  white-space:nowrap;
+  max-width:calc(50% - 16px);
+  overflow:hidden;text-overflow:ellipsis;
+}
+/* One on each side, so a discounted favourite shows both without either
+   landing on the name. */
+.pkg-badge{right:12px;background:#b5303f}
+.pkg-fav-badge{left:12px;background:var(--accent)}
+.pkg-name{font-weight:700;line-height:1.3;word-break:break-word}
+.pkg-credits{font-size:26px;font-weight:800;margin:2px 0;line-height:1.15}
+.pkg-credits span{font-size:13px;font-weight:500;color:var(--muted)}
+.pkg-price{margin:4px 0 2px;font-size:15px}
+.pkg-price s{color:var(--muted);margin-right:7px;font-size:13px}
+.pkg-price strong{font-size:17px}
+.pkg-sale .pkg-price strong{color:#b5303f}
+.pkg .btn{margin-top:auto}
+
+/* Required alongside a discount, so it stays legible rather than hidden. */
+.pkg-lowest{
+  font-size:11.5px;
+  line-height:1.4;
+  color:var(--muted);
+  margin-bottom:10px;
+}
+
+/* ---- Order search and paging ---- */
+
+.order-filter{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center;
+  margin-bottom:14px;
+}
+.order-filter input,
+.order-filter select{margin:0}
+
+.order-summary{
+  display:flex;
+  flex-wrap:wrap;
+  gap:18px;
+  padding:11px 14px;
+  margin-bottom:16px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#f7f9fc;
+  font-size:13px;
+  color:var(--muted);
+}
+.order-summary strong{color:var(--text)}
+.order-summary .pending-note strong{color:var(--warn)}
+
+.pager{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  justify-content:center;
+  margin-top:14px;
+}
+
+/* Order status group tabs: a segmented control with a count on each. */
+.order-groups{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  margin-bottom:16px;
+  padding:5px;
+  background:#f2f5f9;
+  border:1px solid var(--line);
+  border-radius:12px;
+}
+.order-group{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 14px;
+  border-radius:8px;
+  font-size:13px;
+  font-weight:600;
+  color:var(--muted);
+  text-decoration:none;
+  transition:background .12s ease,color .12s ease;
+}
+.order-group:hover{background:#e7ecf3;color:var(--text)}
+.order-group.is-on{background:#fff;color:var(--text);box-shadow:0 1px 3px rgba(20,40,70,.12)}
+.order-count{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:20px;
+  height:20px;
+  padding:0 6px;
+  border-radius:999px;
+  background:#dde3ec;
+  color:var(--muted);
+  font-size:11.5px;
+  font-weight:700;
+  font-variant-numeric:tabular-nums;
+}
+.order-group.is-on .order-count{background:var(--accent);color:#fff}
+
+/* Status pill in the table: one fixed width so a column of them lines up. */
+.order-status{
+  display:inline-block;
+  min-width:108px;
+  padding:4px 10px;
+  border-radius:999px;
+  border:1px solid transparent;
+  font-size:11px;
+  font-weight:700;
+  text-align:center;
+  text-transform:uppercase;
+  letter-spacing:.4px;
+}
+.status-paid{background:#e6f4ec;color:var(--good);border-color:#b6dcc6}
+.status-cancelled{background:#fdecee;color:var(--bad);border-color:#f2c9d0}
+.status-accepted{background:#eef0ff;color:#4a44c4;border-color:#d5d8f6}
+.status-pending{background:#fdf3e0;color:var(--warn);border-color:#f0dcb0}
+
+/* Equal-width action buttons so the column reads as a tidy stack. */
+.order-actions .btn{min-width:132px;text-align:center;justify-content:center}
+
+/* Promotions manager: scheduled discounts with a state badge each. */
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media (max-width:700px){.grid4{grid-template-columns:1fr 1fr}}
+.promo-add{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.promo-table td{vertical-align:middle}
+.promo-table input{margin:0}
+.promo-row.is-ended input{opacity:.6}
+.promo-state{
+  display:inline-block;
+  min-width:92px;
+  text-align:center;
+  padding:3px 9px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.4px;
+}
+.promo-state.is-running{background:#e6f4ec;color:var(--good)}
+.promo-state.is-planned{background:#eef0ff;color:#4a44c4}
+.promo-state.is-ended{background:#eef1f5;color:var(--muted)}
+
+/* Featured package highlight + badge (top-left, opposite the discount one).
+   The extra top padding keeps the badge clear of the first content line. */
+/* The badge sits inside the card - hanging over the edge got it clipped by
+   the scroll containers around the shop grid. Its position and looks are
+   set up with .pkg-badge above, next to the card layout it belongs to. */
+.pkg-fav{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.shop-group{margin:20px 0 10px;font-size:15px}
+.shop-group:first-of-type{margin-top:6px}
+
+/* Package table: drag-and-drop ordering by the handle. */
+.drag-col{width:26px;text-align:center}
+.drag-handle{
+  display:inline-block;
+  cursor:grab;
+  color:var(--muted);
+  font-size:15px;
+  line-height:1;
+  user-select:none;
+}
+.drag-handle:active{cursor:grabbing}
+tr.dragging{opacity:.5;background:#eef3fb}
+
+/* Sub-tabs inside one main tab (e.g. credit vs time packages). */
+.subtabs{display:flex;gap:4px;margin-bottom:16px;border-bottom:1px solid var(--line)}
+.subtab{
+  padding:9px 15px;
+  font-size:13.5px;font-weight:600;
+  color:var(--muted);text-decoration:none;
+  border-bottom:2px solid transparent;
+  margin-bottom:-1px;
+}
+.subtab:hover{color:var(--text)}
+.subtab.is-on{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* Admin list cards: a draggable vertical list, each row edited in a dialog.
+   Used by packages, payment methods and currencies - the same shape, so the
+   same rules rather than three sets that drift apart. */
+.adm-cards{display:flex;flex-direction:column;gap:10px}
+.adm-card{
+  display:flex;align-items:center;gap:14px;
+  padding:12px 14px;
+  border:1px solid var(--line);border-radius:12px;
+  background:#fff;
+}
+.adm-card:hover{border-color:var(--line-strong)}
+.adm-card.is-off{opacity:.6;background:#fafbfc}
+.adm-card.dragging{opacity:.45;background:#eef3fb}
+.adm-card .drag-handle{font-size:16px;flex:none}
+.adm-card-icon{flex:none;display:flex;align-items:center}
+.adm-card-main{flex:1;min-width:0}
+.adm-card-title{font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.adm-card-sub{margin-top:2px;word-break:break-word}
+.adm-card-sub code{font-size:11.5px;word-break:break-all}
+.adm-card-side{white-space:nowrap;font-weight:700;text-align:right}
+.adm-card-side s{color:var(--muted);font-weight:400;margin-right:5px;font-size:12px}
+.adm-card-side .hint{font-weight:400}
+@media (max-width:600px){
+  .adm-card{flex-wrap:wrap}
+  .adm-card-main{flex-basis:100%;order:3}
+}
+
+/* Card heading with an action next to it (e.g. "Přidat", a currency picker),
+   keeping the rule under the title that a bare h2 in a card already draws. */
+.card-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  padding-bottom:11px;margin-bottom:16px;
+  border-bottom:1px solid var(--line);
+}
+.card .card-head h2{margin:0;padding:0;border-bottom:0}
+/* Beats ".admin .card h2" further down, which draws that rule itself. */
+.admin .card .card-head h2{margin:0;padding:0;border-bottom:0}
+
+.edit-modal .modal h3{margin-top:0}
+
+/* Order dialog: the facts, then what can be done, then what already was. */
+.order-modal .ud-kv{margin-bottom:4px}
+.order-modal .reply-picker{margin-bottom:8px}
+.order-hist{margin-top:20px;border-top:1px solid var(--line);padding-top:12px}
+.order-hist-head{
+  font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+  color:var(--muted);margin-bottom:4px;
+}
+.order-hist .audit{margin-top:4px;max-height:220px;overflow:auto}
+.order-hist .audit-when{width:120px}
+
+/* Small button that pairs an icon with its label (e.g. the print action). */
+.icon-btn{display:inline-flex;align-items:center;gap:6px}
+.icon-btn svg{flex:none}
+
+/* Per-account audit timeline. */
+.audit{list-style:none;margin:16px 0 0;padding:0}
+.audit li{display:flex;gap:14px;padding:10px 2px;border-bottom:1px solid var(--line)}
+.audit li:last-child{border-bottom:0}
+.audit-when{flex:none;width:132px;font-size:12px;color:var(--muted);white-space:nowrap}
+.audit-what{font-size:13.5px;font-weight:600}
+.audit-what .hint{display:block;font-size:12px;font-weight:400;margin-top:2px}
+.audit-credit-up  .audit-what{color:var(--good)}
+.audit-credit-down .audit-what{color:var(--warn)}
+.audit-order-paid  .audit-what{color:var(--good)}
+.audit-order-cancel .audit-what{color:var(--bad)}
+.audit-code .audit-what{color:var(--accent)}
+
+/* Floating "unsaved changes" bar for the settings forms. */
+/* The settings screens have no save button of their own any more - this
+   bar is the way to save them, so it has to be big enough to notice and
+   easy to hit. */
+.save-bar{
+  position:fixed;
+  top:18px;left:50%;
+  transform:translateX(-50%);
+  z-index:400;
+  display:flex;align-items:center;gap:20px;
+  background:#1b2536;color:#fff;
+  padding:14px 16px 14px 26px;
+  border-radius:16px;
+  box-shadow:0 16px 44px rgba(10,20,40,.45);
+  font-size:15px;
+  font-weight:600;
+  max-width:calc(100vw - 32px);
+  animation:h3d-fade .14s ease;
+}
+.save-bar .btn{padding:11px 20px;font-size:14px;font-weight:700}
+.save-bar[hidden]{display:none}
+.save-bar .btn{margin:0}
+
+/* ---------------------------------------------------------------------------
+   Administration shell: a proper header and a segmented tab bar instead of a
+   row of plain white buttons. Scoped to .admin so the account and shop pages,
+   which share panel.css, are left exactly as they were.
+   --------------------------------------------------------------------------- */
+.admin-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:18px;
+}
+.admin-head h1{margin:0 0 3px}
+.admin-maintenance-alert{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:-4px 0 18px;padding:13px 15px;border:1px solid #e8bc68;border-radius:12px;background:linear-gradient(100deg,#fff5df,#fffaf0);color:#704a08;box-shadow:0 5px 16px rgba(151,105,21,.08)}.admin-maintenance-alert div{display:grid;gap:3px}.admin-maintenance-alert span{font-size:10px;font-weight:850;letter-spacing:.9px}.admin-maintenance-alert strong{font-size:13px}.admin-maintenance-alert .btn{flex:none;background:#9a6700;color:#fff;border-color:#9a6700}.admin-maintenance-alert .btn:hover{background:#7f5500}
+
+.admin-tabs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:4px;
+  margin-bottom:22px;
+  padding:5px;
+  background:#eef1f6;
+  border:1px solid var(--line);
+  border-radius:12px;
+}
+.admin-tab{
+  padding:8px 15px;
+  border-radius:8px;
+  font-size:13.5px;
+  font-weight:600;
+  color:var(--muted);
+  text-decoration:none;
+  white-space:nowrap;
+  transition:background .12s ease,color .12s ease;
+}
+.admin-tab:hover{background:#e2e7ef;color:var(--text)}
+.admin-tab.is-on{background:var(--accent);color:#fff;box-shadow:0 2px 7px rgba(31,111,235,.32)}
+
+/* Card polish, admin only. */
+.admin .card{border-radius:14px;box-shadow:0 1px 3px rgba(20,40,70,.05)}
+.admin .card h2{
+  margin-top:0;
+  padding-bottom:11px;
+  margin-bottom:16px;
+  border-bottom:1px solid var(--line);
+  font-size:16px;
+}
+
+/* -------------------------------------------------------------------------
+   Support inbox. The list stays an inbox; opening a ticket becomes a real
+   focused workspace rather than expanding a second, duplicate page above it.
+   ------------------------------------------------------------------------- */
+.support-inbox{padding:22px 24px}
+.support-inbox-head{align-items:flex-start}
+.support-unread{display:inline-flex;align-items:center;min-height:28px;padding:5px 10px;border-radius:999px;background:#e8f7ef;color:var(--good);font-size:11px;font-weight:800;letter-spacing:.35px;text-transform:uppercase;white-space:nowrap}
+.support-search{display:flex;gap:8px;max-width:620px;margin:0 0 13px}.support-search input{min-width:0}.support-search .btn{flex:none}
+.support-filters{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 16px}.support-filters a{padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--muted);font-size:12px;font-weight:650;text-decoration:none}.support-filters a:hover{border-color:#b7c7de;color:var(--accent)}.support-filters a.is-on{background:#eaf2fe;border-color:#b8d0f7;color:var(--accent)}
+.support-rows{border:1px solid var(--line);border-radius:12px;overflow:hidden}.support-row{display:grid;grid-template-columns:92px minmax(145px,.7fr) minmax(220px,1.6fr) 132px auto;gap:14px;align-items:center;padding:13px 15px;border-bottom:1px solid var(--line);background:var(--panel)}.support-row:last-child{border-bottom:0}.support-row.is-new{background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 8%,var(--panel) 92%) 0,var(--panel) 45%)}.support-row-user,.support-row-copy{min-width:0;display:grid;gap:2px}.support-row-user strong,.support-row-copy strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}.support-row-user span,.support-row-copy span,.support-row time{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);font-size:11.5px}.support-row time{font-variant-numeric:tabular-nums}.support-row-state{justify-self:start;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.45px;text-transform:uppercase}.support-row-state.is-new{background:#e9f1ff;color:#1763c7}.support-row-state.is-waiting{background:#fff4df;color:#9a6700}.support-row-state.is-answered{background:#f0edff;color:#5846b9}.support-row-state.is-done{background:#e8f6ee;color:var(--good)}.support-row-actions{display:flex;justify-content:flex-end;gap:6px}.support-row-actions form{margin:0}.support-empty{margin:18px 0 3px}.support-workspace{width:min(1180px,calc(100vw - 44px));max-height:calc(100vh - 44px);overflow:hidden;display:grid;grid-template-rows:auto minmax(0,1fr) auto;border:1px solid #2d5f92;border-radius:18px;background:#f7faff;box-shadow:0 28px 80px rgba(8,18,36,.46)}.support-workspace-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;padding:19px 24px;color:#edf7ff;background:linear-gradient(120deg,#10243d,#182b56 58%,#174655)}.support-workspace-head span,.support-person>span{display:block;color:#7fcef8;font-size:10px;font-weight:800;letter-spacing:1.2px}.support-workspace-head h3{margin:5px 0 0;font-size:20px;letter-spacing:-.2px}.support-head-actions{display:flex;align-items:center;gap:12px}.support-state{padding:6px 9px;border:1px solid currentColor;border-radius:7px;font-size:10px;font-weight:800;letter-spacing:.65px}.support-state.is-waiting{color:#ffd071}.support-state.is-answered{color:#9aa8ff}.support-state.is-done{color:#6ee7bd}.support-close{display:grid;place-items:center;width:31px;height:31px;border:1px solid rgba(255,255,255,.25);border-radius:8px;color:#fff;font-size:23px;line-height:1;text-decoration:none}.support-close:hover{background:rgba(255,255,255,.12)}
+.support-workspace-body{min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 248px}.support-thread{min-height:0;overflow:auto;padding:26px;background:radial-gradient(circle at top right,#e9f7ff,transparent 34%),#fbfcfe}.support-bubble{max-width:min(76%,760px);margin:0 0 18px;padding:15px 17px;border-radius:14px;box-shadow:0 4px 14px rgba(30,55,90,.06);white-space:pre-wrap;line-height:1.58}.support-bubble small{display:block;margin-bottom:8px;font-size:10px;font-weight:800;letter-spacing:.8px}.support-bubble.customer{margin-right:auto;border:1px solid #cbdcf6;background:#f0f6ff}.support-bubble.customer small{color:#286ab5}.support-bubble.assistant{margin-right:auto;border:1px solid #cbdcf6;background:#f0f6ff}.support-bubble.assistant small{color:#286ab5}.support-bubble.operator{margin-left:auto;border:1px solid #bddfd4;background:#edfbf5}.support-bubble.operator small{color:#177556}.support-resolution{margin:4px 0 0;color:var(--muted);font-size:12px;text-align:center}.support-context{padding:22px 18px;border-left:1px solid var(--line);background:#fff}.support-person{display:grid;gap:5px;padding-bottom:17px;border-bottom:1px solid var(--line)}.support-person strong{font-size:15px}.support-person a{overflow:hidden;text-overflow:ellipsis;font-size:12px}.support-context dl{margin:16px 0 0;display:grid;gap:14px}.support-context dl div{display:grid;gap:2px}.support-context dt{color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.65px;text-transform:uppercase}.support-context dd{margin:0;overflow-wrap:anywhere;font:12px/1.4 ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.support-composer{border-top:1px solid var(--line);background:#fff;padding:18px 22px}.support-composer form{margin:0}.support-composer label{margin:0 0 6px}.support-composer textarea{min-height:112px;background:#fbfdff}.support-compose-actions span{color:var(--muted);font-size:12px}.support-reopen-ticket{display:flex;align-items:center;justify-content:space-between;gap:16px}.support-reopen-ticket p{margin:0;color:var(--muted);font-size:12px}
+
+@media (max-width:820px){.support-row{grid-template-columns:86px minmax(0,1fr) auto;gap:9px}.support-row-copy{display:none}.support-row time{display:none}.support-workspace{width:min(100vw - 18px,1180px);max-height:calc(100vh - 18px)}.support-modal-back{padding:9px}.support-workspace-body{grid-template-columns:1fr}.support-context{display:none}.support-bubble{max-width:90%}.support-workspace-head{padding:15px}.support-composer{padding:15px}.support-compose-actions{align-items:flex-end;flex-direction:column}.support-close-ticket{text-align:left}.support-reopen-ticket{align-items:flex-start;flex-direction:column}}
+@media (max-width:520px){.support-inbox{padding:18px 15px}.support-search{flex-wrap:wrap}.support-search input{flex-basis:100%}.support-row{grid-template-columns:78px minmax(0,1fr);padding:12px}.support-row-actions{grid-column:1/-1;justify-content:flex-start}.support-workspace-head h3{font-size:17px}.support-state{display:none}}
+
+/* A 1440p office screen has room for a denser, comfortably readable console.
+   The normal 1080p layout remains untouched below this breakpoint. */
+@media (min-width:1300px) and (min-height:760px){
+  .wrap.admin{max-width:1420px;padding:34px 28px 88px}
+  .admin{font-size:15px;line-height:1.58}
+  .admin .card{padding:24px 26px;margin-bottom:18px}
+  .admin .card h2{font-size:14px;margin-bottom:18px}
+  .admin .hint{font-size:13px}
+  .admin table,.admin .table-scroll table{font-size:14px}
+  .admin th{font-size:11px}.admin td,.admin th{padding:12px 14px}
+  .admin .btn{font-size:14px;padding:9px 15px}.admin .btn.small{font-size:12.5px;padding:6px 11px}
+  .admin-tab{font-size:14px;padding:9px 16px}.admin-head h1{font-size:26px}
+}
+
+@media (max-width:600px){
+  .admin-head{flex-direction:column}
+  .admin-maintenance-alert{align-items:flex-start;flex-direction:column}
+}
+
+/* ---- Error pages ---- */
+
+.errorbox{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:38px 34px;
+  text-align:center;
+  box-shadow:0 1px 2px rgba(20,40,70,.05),0 8px 22px rgba(20,40,70,.06);
+}
+.errorcode{
+  font-size:64px;
+  font-weight:800;
+  line-height:1;
+  letter-spacing:-1px;
+  color:var(--accent);
+  opacity:.22;
+  margin-bottom:6px;
+}
+.errorbox h1{margin:0 0 10px;font-size:22px}
+.errorlead{margin:0 0 12px;font-size:15px;color:var(--text)}
+.errorbox .hint{max-width:46ch;margin:0 auto 22px;line-height:1.6}
+.errorlinks{
+  display:flex;
+  gap:9px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+/* ---- Payment methods ---- */
+
+.pay-icon{vertical-align:middle;flex:none}
+
+.pay-methods{display:flex;flex-direction:column;gap:9px;margin:14px 0}
+.pay-method{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:11px 13px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#f7f9fc;
+}
+.pay-body{flex:1;min-width:0}
+.pay-label{font-weight:650;font-size:13.5px}
+.pay-target{font-size:13px;word-break:break-all}
+.pay-method .hint{margin-top:2px}
+
+.pay-btn{display:inline-flex;align-items:center;gap:6px}
+
+/* Buttons at the end of a table row. Laid out as a flex row rather than
+   left inline: a button with an icon in it has a different baseline from a
+   text-only one, which left them sitting at three different heights. */
+.row-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.row-actions form{display:flex;margin:0}
+.row-actions .btn{margin:0}
+
+/* QR payment block: details on the left, the code on the right. */
+.pay-detail{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:2px 12px;
+  margin:6px 0 0;
+  font-size:12.5px;
+}
+.pay-detail dt{color:var(--muted)}
+.pay-detail dd{margin:0;font-weight:600}
+.pay-qr{flex:none;line-height:0}
+.pay-qr svg{border:1px solid var(--line);border-radius:8px}
+
+@media (max-width:520px){
+  .pay-method{flex-wrap:wrap}
+  .pay-qr{margin-top:8px}
+}
+
+/* Currency picker, sitting in the shop's heading row. */
+.currency-picker{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin:0;
+  font-size:13px;
+  color:var(--muted);
+}
+.currency-picker select{width:auto;margin:0}
+
+
+/* ---------- Admin polish ---------- */
+
+.hint{font-size:12px;color:var(--muted);line-height:1.5;margin-top:6px}
+
+/* Stat tiles read as data, not as buttons. */
+.stat{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+  padding:13px 15px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:#fafbfd;
+}
+.stat span{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:600}
+.stat b{font-size:21px;font-weight:700;letter-spacing:-.3px}
+
+.check{
+  display:flex;
+  gap:9px;
+  align-items:flex-start;
+  margin:9px 0;
+  font-size:13px;
+  cursor:pointer;
+}
+.check input{width:auto;margin:2px 0 0}
+
+.tag{
+  display:inline-block;
+  padding:2px 7px;
+  border-radius:999px;
+  font-size:10.5px;
+  font-weight:700;
+  letter-spacing:.3px;
+  text-transform:uppercase;
+}
+.tag.on{background:#e7f4ec;color:var(--good)}
+
+code{
+  background:#f2f4f8;
+  padding:1px 5px;
+  border-radius:5px;
+  font-size:12.5px;
+}
+
+@media (max-width:760px){
+  .topbar{height:auto;flex-wrap:wrap;padding:10px 16px;gap:8px}
+  .topbar nav{margin-left:0;width:100%}
+}
+
+/* ---------- Busy overlay ---------- */
+
+.busy-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:500;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(20,26,36,.55);
+  backdrop-filter:blur(2px);
+}
+.busy-backdrop[hidden]{display:none}
+
+.busy-box{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:18px 24px;
+  border-radius:14px;
+  background:#fff;
+  box-shadow:0 18px 50px rgba(0,0,0,.28);
+  font-size:14px;
+  font-weight:500;
+}
+.busy-spinner{
+  width:20px;height:20px;flex:none;
+  border:2.5px solid #dfe5ee;
+  border-top-color:var(--accent);
+  border-radius:50%;
+  animation:busy-spin .75s linear infinite;
+}
+@keyframes busy-spin{to{transform:rotate(360deg)}}
+
+@media (prefers-reduced-motion:reduce){
+  .busy-spinner{animation-duration:2s}
+}
+
+/* ---------- Order confirmation ---------- */
+
+.order-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:450;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  overflow-y:auto;
+  background:rgba(20,26,36,.55);
+  backdrop-filter:blur(2px);
+}
+.order-backdrop[hidden]{display:none}
+
+.order-dialog{
+  width:100%;
+  max-width:440px;
+  margin:auto;
+  background:#fff;
+  border-radius:16px;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);
+  padding:26px;
+}
+
+.order-dialog-head{display:flex;align-items:center;gap:11px;margin-bottom:10px}
+.order-dialog-head h2{margin:0;font-size:17px;text-transform:none;letter-spacing:0;color:var(--text)}
+.order-tick{
+  width:26px;height:26px;flex:none;
+  border-radius:50%;
+  background:#e7f4ec;
+  color:var(--good);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;
+}
+.order-lede{margin:0 0 18px;font-size:13px;color:var(--muted);line-height:1.55}
+
+/* Same shape as the table in the email, so the two do not look unrelated. */
+.order-summary-table{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:10px;
+  border-collapse:separate;
+  border-spacing:0;
+  overflow:hidden;
+  margin-bottom:20px;
+}
+.order-summary-table td{
+  padding:10px 14px;
+  font-size:13px;
+  border-bottom:1px solid var(--line);
+}
+.order-summary-table tr:nth-child(odd) td{background:#fafbfd}
+.order-summary-table tr:last-child td{border-bottom:0}
+.order-summary-table td:first-child{color:var(--muted);white-space:nowrap;width:1%}
+
+.order-dialog-sub{
+  margin:0 0 10px;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.7px;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+.order-dialog .pay-methods{margin:0 0 14px}
+.order-dialog-actions{display:flex;gap:9px;margin-top:20px}
+.order-dialog-actions .btn{flex:1;justify-content:center}
+.order-dialog-foot{
+  margin:14px 0 0;
+  text-align:center;
+  font-size:11.5px;
+  color:var(--muted);
+}
+
+/* ---------- Users: one card per account instead of a wide table ---------- */
+
+.user-row{
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:15px 17px;
+  margin-bottom:11px;
+  background:#fff;
+}
+.user-row:hover{border-color:var(--line-strong)}
+.user-blocked{background:#fdfafa;border-color:#f0dde0}
+
+.user-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+}
+.user-mail{font-weight:600;font-size:14px;word-break:break-all}
+.user-tags{display:inline-flex;flex-wrap:wrap;gap:6px;margin-left:9px;vertical-align:middle}
+
+.user-balance{text-align:right;white-space:nowrap}
+.user-balance b{display:block;font-size:19px;font-weight:700;letter-spacing:-.3px}
+.user-balance span{font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.user-inf{color:var(--accent)}
+
+.user-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:18px;
+  margin:9px 0 13px;
+  font-size:11.5px;
+  color:var(--muted);
+}
+.user-meta strong{font-weight:600;color:var(--text)}
+
+.user-actions{border-top:1px solid var(--line);padding-top:13px}
+.user-buttons{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.user-buttons form{display:inline-flex;gap:7px;align-items:center;margin:0}
+.role-form select{width:auto;padding:7px 9px;font-size:12.5px}
+
+.tag.super{background:#eef0ff;color:#4a44c4}
+.tag.warn{background:#fdf3e0;color:var(--warn)}
+.tag.bad{background:#fdecee;color:var(--bad)}
+.tag{background:#eef1f5;color:var(--muted)}
+
+/* Credit editor */
+
+.credit-editor{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
+  margin-bottom:11px;
+}
+.credit-mode{display:inline-flex;border:1px solid var(--line-strong);border-radius:9px;overflow:hidden}
+.mode-btn{
+  width:34px;height:34px;
+  border:0;
+  background:#fff;
+  color:var(--muted);
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+  line-height:1;
+}
+.mode-btn + .mode-btn{border-left:1px solid var(--line)}
+.mode-btn:hover{background:#f2f5f9}
+.mode-btn.is-on{background:var(--accent);color:#fff}
+
+.credit-amount{width:92px}
+.credit-editor .note-input{width:180px;flex:1;min-width:140px}
+
+.credit-preview{
+  font-size:12.5px;
+  font-weight:600;
+  min-width:96px;
+  font-variant-numeric:tabular-nums;
+}
+.credit-preview.is-up{color:var(--good)}
+.credit-preview.is-down{color:var(--warn)}
+.credit-preview.is-bad{color:var(--bad);font-weight:500}
+.credit-preview.is-flat{color:var(--muted);font-weight:500}
+
+@media (max-width:700px){
+  .user-head{flex-direction:column}
+  .user-balance{text-align:left}
+  .credit-editor .note-input{width:100%}
+}
+
+/* ---------------------------------------------------------------------------
+   Pop-up dialogs: the credit editor and the per-user management panel.
+
+   Both hang off the shared .modal look. The [hidden] guards matter: the
+   .modal-back / .credit-backdrop rules set display:flex, and a bare class
+   selector outweighs the browser's [hidden]{display:none}, so without these
+   the dialogs would sit open on the page the moment it loaded.
+   --------------------------------------------------------------------------- */
+.modal-back[hidden],
+.credit-backdrop[hidden]{display:none !important}
+
+/* The management dialog reuses .modal-back for the overlay. */
+.modal{position:relative}
+.modal-wide{max-width:540px;max-height:88vh;overflow:auto}
+
+.modal-x{
+  position:absolute;
+  top:12px;right:14px;
+  border:0;background:transparent;
+  font-size:24px;line-height:1;
+  color:var(--muted);cursor:pointer;
+  padding:2px 8px;border-radius:8px;
+}
+.modal-x:hover{background:#f2f5f9;color:var(--text)}
+
+.modal-wide h3{margin:0 24px 8px 0;font-size:16px;word-break:break-all}
+.user-modal-tags{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.user-modal .user-meta{margin-top:0}
+
+.user-modal-section{
+  border-top:1px solid var(--line);
+  margin-top:16px;padding-top:15px;
+}
+.user-modal-section h4{
+  margin:0 0 11px;
+  font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.6px;
+  color:var(--muted);
+}
+.user-modal-balance{font-size:14px;margin-bottom:11px}
+.user-modal-balance b{font-size:20px;font-weight:700;letter-spacing:-.3px}
+.danger-section{border-top-color:#f0dde0}
+.danger-section h4{color:var(--bad)}
+
+/* The credit editor overlay - previously declared in the markup but never
+   styled, so it opened as an unframed block in the page flow. */
+.credit-backdrop{
+  position:fixed;inset:0;
+  background:rgba(20,30,45,.45);
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;z-index:210;
+  animation:h3d-fade .14s ease;
+}
+.credit-dialog{
+  position:relative;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  box-shadow:0 18px 44px rgba(20,40,70,.28);
+  padding:22px;
+  max-width:440px;width:100%;
+  max-height:90vh;overflow:auto;
+}
+.credit-dialog h2{margin:0 0 4px;font-size:16px}
+.credit-dialog-who{margin:0 0 16px;font-size:13px;color:var(--muted);word-break:break-all}
+.credit-fields{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+.credit-fields > div{flex:1;min-width:96px}
+.credit-fields label{
+  display:block;margin-bottom:4px;
+  font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);
+}
+.credit-fields input{width:100%}
+.credit-fields input[readonly]{background:#f6f8fa;color:var(--muted)}
+#creditResult.is-ok{color:var(--good);font-weight:700}
+#creditResult.is-bad{color:var(--bad);font-weight:700}
+.credit-dialog-actions{display:flex;gap:9px;justify-content:flex-end;margin-top:18px}
+.credit-dialog-actions .btn{margin:0}
+
+/* Users, rendered as a table: name / role / credits / action. */
+.user-table td{vertical-align:middle}
+.user-td-name .user-mail{font-weight:600;word-break:break-all}
+.user-td-name .user-tags{display:inline-flex;flex-wrap:wrap;gap:5px;margin-left:8px;vertical-align:middle}
+.user-td-role{color:var(--muted)}
+.user-tr.is-blocked{background:#fdfafa}
+.user-tr.is-blocked .user-mail{color:var(--bad)}
+.user-table .user-inf{color:var(--accent);font-size:18px}
+/* Clock marking a user with an active time-based subscription. */
+.sub-icon{display:inline-flex;vertical-align:middle;margin-left:6px;color:var(--accent)}
+
+/* Toggle switch, used in place of a bare checkbox for a package's Active flag. */
+.toggle{
+  position:relative;
+  width:40px;height:22px;padding:0;
+  border:1px solid var(--line-strong);
+  border-radius:999px;
+  background:#e6eaf0;
+  cursor:pointer;
+  vertical-align:middle;
+  transition:background .15s ease,border-color .15s ease;
+}
+.toggle-knob{
+  position:absolute;top:1px;left:1px;
+  width:18px;height:18px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:0 1px 2px rgba(0,0,0,.25);
+  transition:transform .15s ease;
+}
+.toggle.is-on{background:var(--accent);border-color:var(--accent)}
+.toggle.is-on .toggle-knob{transform:translateX(18px)}
+.toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Live-save marker beside each package row. */
+.save-status{
+  display:inline-block;
+  width:16px;height:16px;flex:none;
+  line-height:16px;text-align:center;
+}
+.save-status.is-saving{
+  border:2px solid #dfe5ee;
+  border-top-color:var(--accent);
+  border-radius:50%;
+  animation:busy-spin .75s linear infinite;
+}
+.save-status.is-saved::after{content:'✓';color:var(--good);font-weight:700;font-size:15px}
+.save-status.is-error::after{content:'✕';color:var(--bad);font-weight:700;font-size:14px}
+
+/* ---------- Account page tabs ---------- */
+.acct-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 18px;padding:5px;background:var(--panel2,#f0f3f7);border:1px solid var(--line,#d8dde4);border-radius:12px;width:max-content;max-width:100%}
+.acct-tab-btn{padding:9px 18px;border:0;border-radius:8px;background:transparent;color:var(--muted,#68707a);font:700 13px Inter,system-ui,sans-serif;cursor:pointer;transition:background .15s,color .15s}
+.acct-tab-btn:hover{color:var(--text,#20242a)}
+.acct-tab-btn.active{background:linear-gradient(135deg,var(--accent,#7b61ff),#9b7bff);color:#fff}
+.acct-tab-pane{display:none}
+.acct-tab-pane.active{display:block}
+/* On a phone the row wraps rather than scrolling sideways: a tab you cannot
+   see is a tab nobody finds. Tighter padding keeps it to two lines. */
+@media (max-width:600px){
+  .acct-tabs{width:100%}
+  .acct-tab-btn{padding:8px 12px;font-size:12.5px}
+}
+
+/* Referral card rows: label, code chip, copy button. */
+.ref-row{display:flex;align-items:center;gap:10px;margin:8px 0;flex-wrap:wrap}
+.ref-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#68707a;min-width:64px}
+.ref-code,.ref-link{background:#f0f3f7;border:1px solid #dde2e9;border-radius:8px;padding:6px 10px;font-size:12.5px;word-break:break-all}
+.ref-code{font-size:15px;font-weight:700;letter-spacing:1.5px}
+
+/* ---------- Account: status strip above the tabs ----------
+   The balance and what an export costs right now are why the page gets
+   opened, so they sit above the tabs and are never hidden behind one. */
+.acct-hero{
+  display:grid;grid-template-columns:minmax(200px,260px) 1fr;gap:16px;
+  margin-bottom:18px;
+}
+.acct-hero-balance{
+  display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;align-content:center;
+  background:linear-gradient(135deg,#0b131e,#16233a);color:#fff;
+  border-radius:var(--r);padding:18px 20px;
+}
+.acct-hero-balance b{font-size:32px;font-variant-numeric:tabular-nums}
+.acct-hero-balance span{color:#93a3bb;font-size:13px}
+.acct-hero-now{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+  padding:16px 20px;display:flex;flex-direction:column;justify-content:center;
+}
+.acct-hero-label{
+  font-size:11px;text-transform:uppercase;letter-spacing:.7px;
+  color:var(--muted);font-weight:700;margin-bottom:6px;
+}
+.acct-hero-now p{margin:0 0 4px}
+.acct-hero-now p:last-child{margin-bottom:0}
+.acct-hero-btn{align-self:flex-start;margin-top:12px}
+@media (max-width:700px){
+  .acct-hero{grid-template-columns:1fr}
+}
+
+/* Package shelf: fills the row instead of leaving a fourth card stranded
+   on a line of its own, which is what a fixed three-column grid did. */
+.pkg-grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(215px,1fr))}
+
+/* Referral card header: title left, reward counter chip right. */
+.ref-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ref-counter{display:inline-flex;align-items:baseline;gap:6px;padding:5px 12px;border-radius:999px;background:#eef2fb;border:1px solid #d7e0f2;color:#3a5db0;font-size:12px;font-weight:600;white-space:nowrap}
+.ref-counter b{font-size:14px;font-weight:800;font-variant-numeric:tabular-nums}
+.ref-counter.full{background:#fdf0ef;border-color:#efc9c5;color:#b23c31}
+
+/* List of invited people inside the referral card. */
+.ref-people{margin-top:12px;border-top:1px solid #e8ecf1;padding-top:10px}
+.ref-people-head{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#68707a;margin-bottom:6px}
+.ref-person{display:flex;align-items:center;gap:10px;padding:4px 0;font-size:13px;flex-wrap:wrap}
+.ref-person .mono{font-weight:600}
+
+/* Refund states. */
+.status-refund{background:#fff0e6;color:#b45a12;border-color:#f0cfae}
+.status-refunded{background:#eef1f4;color:#5b6472;border-color:#d8dde4}
+
+/* ---------- Full-screen user detail dialog ---------- */
+.modal.modal-full{
+  position:fixed;inset:2vh 2vw;width:auto;max-width:none;
+  display:flex;flex-direction:column;overflow:hidden;
+  padding:20px 22px;
+}
+.modal-full h3{margin-right:40px}
+.ud-tabs{display:flex;gap:4px;flex-wrap:wrap;margin:12px 0 0;padding:5px;background:#f0f3f7;border:1px solid #dde2e9;border-radius:11px}
+.ud-tab{padding:8px 14px;border:0;border-radius:8px;background:transparent;color:#5b6472;font:700 12.5px Inter,system-ui,sans-serif;cursor:pointer;transition:background .13s,color .13s}
+.ud-tab:hover{color:#20242a}
+.ud-tab.is-on{background:linear-gradient(135deg,var(--accent,#7b61ff),#9b7bff);color:#fff}
+.ud-body{flex:1 1 auto;overflow:auto;margin-top:14px;padding-right:4px}
+.ud-pane[hidden]{display:none}
+.ud-kv{width:100%;max-width:none;border-collapse:separate;border-spacing:0;border:1px solid #e5e9ef;border-radius:12px;overflow:hidden}
+.ud-kv tr:first-child th:first-child{border-top-left-radius:11px}
+.ud-kv tr:first-child td:last-child{border-top-right-radius:11px}
+.ud-kv tr:last-child th:first-child{border-bottom-left-radius:11px}
+.ud-kv tr:last-child td:last-child{border-bottom-right-radius:11px}
+.ud-kv th{position:static;width:240px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#5b6472;background:#f6f8fb;padding:13px 16px;vertical-align:top;border-bottom:1px solid #e5e9ef}
+.ud-kv td{padding:13px 16px;font-size:13.5px;border-bottom:1px solid #e5e9ef;background:#fff}
+.ud-kv tr:last-child th,.ud-kv tr:last-child td{border-bottom:0}
+@media (max-width:700px){
+  .modal.modal-full{inset:0;border-radius:0}
+  .ud-kv th{width:130px}
+}
+
+/* Conversation archive inside a user's detail. This is deliberately a
+   compact history: the full ticket workspace remains the place for replying
+   and resolving, while this answers "what was discussed with this account?". */
+.user-conversations{display:grid;gap:12px}.user-conversation{overflow:hidden;border:1px solid #dce5ef;border-radius:13px;background:#fff;box-shadow:0 2px 8px rgba(27,52,88,.05)}.user-conversation-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:14px 16px;border-bottom:1px solid #e8eef5;background:linear-gradient(120deg,#f7faff,#eef5ff)}.user-conversation-head>div{display:grid;gap:4px;min-width:0}.user-conversation-head span{color:#617388;font:800 10px/1.2 ui-monospace,"SF Mono",Menlo,Consolas,monospace;letter-spacing:.55px}.user-conversation-head strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px}.user-conversation-state{flex:none;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.4px;text-transform:uppercase}.user-conversation-state.is-waiting{background:#fff3dc;color:#956100}.user-conversation-state.is-answered{background:#eeeaff;color:#5442b8}.user-conversation-state.is-done{background:#e5f6ec;color:#167447}.user-conversation-body{padding:14px 16px}.user-conversation-message{max-width:88%;padding:11px 13px;border-radius:11px;white-space:pre-wrap;line-height:1.5}.user-conversation-message small{display:block;margin-bottom:5px;font-size:10px;font-weight:800;letter-spacing:.65px}.user-conversation-message.customer{border:1px solid #c9dbf6;background:#f2f7ff}.user-conversation-message.customer small{color:#2867af}.user-conversation-message.operator{margin:10px 0 0 auto;border:1px solid #bae1d2;background:#eefbf5}.user-conversation-message.operator small{color:#197657}.user-conversation-wait{margin:10px 0 0;padding:9px 11px;border-left:3px solid #e8b14e;background:#fffbf2;color:#8c641a;font-size:12px}.user-conversation-actions{display:flex;justify-content:flex-end;margin-top:14px;padding-top:12px;border-top:1px solid #e8eef5}.user-conversation-actions .btn{margin:0}
+@media (max-width:620px){.user-conversation-head{padding:12px}.user-conversation-body{padding:12px}.user-conversation-state{font-size:9px}.user-conversation-message{max-width:100%}}
+
+/* Head of the time-plans pane: status left, cancel-all right. */
+.ud-cas-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+
+/* Section headings inside a user-detail pane. */
+.ud-h{margin:18px 0 10px;font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:#68707a;font-weight:800}
+.ud-h:first-child{margin-top:0}
+
+/* Sub-cards inside a user-detail pane (Čas / Kredity / Kódy). */
+/* Cards have no horizontal padding of their own: the heading and hints carry
+   it, and tables run edge to edge with square corners - no side gutter. */
+.ud-card{background:#fff;border:1px solid #e5e9ef;padding:0;margin-bottom:14px;box-shadow:0 1px 2px rgba(20,30,50,.04);overflow:hidden}
+.ud-card .table-scroll{max-height:44vh}
+.ud-card > .ud-h{padding:14px 18px 0}
+.ud-card > p,.ud-card > .hint,.ud-card > .ud-cas-head{padding-left:18px;padding-right:18px}
+.ud-card > p.hint,.ud-card > .hint{padding-bottom:12px;margin-top:10px}
+.ud-card > .ud-cas-head{margin:10px 0 12px}
+.ud-card > .table-scroll + .hint{margin-top:10px}
+/* Revoked rows stay for the record: greyed out, original date kept. */
+tr.is-revoked td{opacity:.5}
+tr.is-revoked .tag{opacity:1}
+
+/* One look for every table in the user detail: full width, equal columns. */
+.ud-table{table-layout:fixed;width:100%}
+.ud-table th,.ud-table td{overflow-wrap:anywhere;vertical-align:middle}
+.ud-table .btn{white-space:nowrap}
+
+/* Click-through to another account's dialog. */
+.ud-userlink{font-weight:600;text-decoration:none}
+.ud-userlink:hover{text-decoration:underline}
+
+/* In-dialog feedback for fetch-driven actions. */
+.ud-toast{
+  position:absolute;top:14px;left:50%;transform:translateX(-50%);
+  max-width:70%;padding:9px 16px;border-radius:10px;z-index:5;
+  background:#e6f4ec;border:1px solid #b6dcc6;color:#1a7f4b;
+  font-size:13px;font-weight:600;box-shadow:0 6px 18px rgba(20,30,50,.12);
+  animation:udToastIn .18s ease;
+}
+.ud-toast.err{background:#fdecee;border-color:#e8bcc2;color:#c2384a}
+@keyframes udToastIn{from{opacity:0;transform:translate(-50%,-6px)}to{opacity:1;transform:translate(-50%,0)}}
+
+/* Tables in the user detail bleed to the card edges: no side margins, no
+   rounded corners - a clean full-width sheet. */
+.ud-card .table-scroll{margin:0}
+.ud-card .table-scroll table{width:100%}
+.ud-kv{border-radius:0;border-left:0;border-right:0}
+.ud-kv tr:first-child th:first-child,.ud-kv tr:first-child td:last-child,
+.ud-kv tr:last-child th:first-child,.ud-kv tr:last-child td:last-child{border-radius:0}
+
+/* Card-hosted tables: the scroll strip spans the card, the sheet itself sits
+   on the 22px gutter - the layout the admin settled on. */
+.card{overflow:hidden}
+
+/* ===================================================================
+   Dark theme for the panel pages (account + administration).
+   Follows the same setting as the studio: profile first, cookie for
+   guests. Remapped variables carry most of it; the hardcoded light
+   surfaces are overridden piece by piece below.
+   =================================================================== */
+body.dark{
+  --bg:#12151d; --panel:#1a1f2b; --line:#2c3546; --line-strong:#3a4457;
+  --text:#e8ecf2; --muted:#9aa6ba;
+  background:var(--bg);color:var(--text);
+}
+body.dark .topbar{background:var(--panel2,#171c28);border-bottom-color:var(--line);color:var(--text)}
+body.dark .topbar nav a{color:var(--muted)}
+body.dark .topbar nav a:hover{background:#222b3c;color:var(--text)}
+body.dark .topbar nav a.active{background:rgba(123,97,255,.18);color:var(--accent,#b3a2ff)}
+
+body.dark .card,body.dark .ud-card,body.dark .stat{background:var(--panel);border-color:var(--line);box-shadow:none}
+body.dark .adm-card{background:#12151d;border-color:var(--line)}
+body.dark .adm-card:hover{border-color:var(--line-strong)}
+body.dark .adm-card.is-off{background:#161a24}
+body.dark .adm-card.dragging{background:#1d2431}
+body.dark .card-head{border-bottom-color:var(--line)}
+body.dark h2,body.dark .lede,body.dark .hint,body.dark label,body.dark fieldset legend{color:var(--muted)}
+
+body.dark input[type=text],body.dark input[type=email],body.dark input[type=password],
+body.dark input[type=number],body.dark input[type=date],body.dark input[type=search],
+body.dark input[type=url],body.dark select,body.dark textarea{
+  background:#12151d;border-color:var(--line-strong);color:var(--text);
+}
+body.dark input:hover,body.dark select:hover,body.dark textarea:hover{border-color:#4a5670}
+body.dark input:focus,body.dark select:focus,body.dark textarea:focus{border-color:var(--accent,#7b61ff);box-shadow:0 0 0 3px rgba(123,97,255,.18)}
+
+body.dark .btn{background:#202839;border-color:var(--line-strong);color:var(--text)}
+body.dark .btn:hover{background:#263043;border-color:#4a5670}
+body.dark .btn.primary{background:var(--accent,#7b61ff);border-color:transparent;color:#fff}
+body.dark .btn.primary:hover{background:#8d76ff}
+body.dark .btn.danger{color:#ff8a97;border-color:#5c3440}
+body.dark .btn.danger:hover{background:#33222a;border-color:#7a4553}
+
+body.dark th{background:#202839;color:#aab4c5;border-bottom-color:var(--line-strong)}
+body.dark th,body.dark td{border-bottom-color:#262e3e}
+body.dark tbody tr:nth-child(even){background:#1d2431}
+body.dark tbody tr:hover{background:#232c3d}
+body.dark .table-scroll{border-top-color:var(--line);border-bottom-color:var(--line)}
+body.dark .table-scroll::-webkit-scrollbar-thumb{background:#3a4457}
+
+body.dark .msg.ok{background:#15291e;border-color:#245c3a;color:#5fd699}
+body.dark .msg.err{background:#2f1a1f;border-color:#6a3340;color:#ff8a97}
+body.dark .msg.info{background:#17222f;border-color:#2c4a6b;color:#7fb3e8}
+body.dark .msg.warn{background:#2c2415;border-color:#5e4c22;color:#f0c064}
+
+body.dark .tag.on{background:#15291e;color:#5fd699}
+body.dark .tag.off{background:#202839;color:var(--muted)}
+body.dark .tag.warn{background:#2c2415;color:#f0c064}
+body.dark .tag.bad{background:#2f1a1f;color:#ff8a97}
+
+body.dark .modal,body.dark .signin-dialog,body.dark .credit-dialog,body.dark .order-dialog{background:var(--panel);border-color:var(--line);color:var(--text)}
+body.dark .modal h3{color:var(--text)}
+body.dark .modal p{color:var(--muted)}
+body.dark .modal-back{background:rgba(4,7,12,.7)}
+
+body.dark .acct-tabs,body.dark .ud-tabs{background:#202839;border-color:var(--line)}
+body.dark .acct-tab-btn,body.dark .ud-tab{color:var(--muted)}
+body.dark .acct-tab-btn:hover,body.dark .ud-tab:hover{color:var(--text)}
+
+body.dark .ud-kv th{background:#202839;color:#aab4c5;border-bottom-color:var(--line)}
+body.dark .ud-kv td{background:var(--panel);border-bottom-color:#262e3e;color:var(--text)}
+body.dark .ud-kv{border-color:var(--line)}
+body.dark .ud-h,body.dark .ref-label,body.dark .ref-people-head{color:var(--muted)}
+body.dark .ref-code,body.dark .ref-link{background:#12151d;border-color:var(--line-strong);color:var(--text)}
+body.dark .ref-counter{background:#1b2536;border-color:#2c3f5e;color:#8fb0e8}
+body.dark .ref-counter.full{background:#2f1a1f;border-color:#6a3340;color:#ff8a97}
+body.dark tr.is-revoked td{opacity:.45}
+body.dark .user-meta,body.dark .user-modal-balance{color:var(--muted)}
+body.dark .user-modal-balance b{color:var(--text)}
+
+body.dark .status-paid{background:#15291e;color:#5fd699;border-color:#245c3a}
+body.dark .status-cancelled{background:#2f1a1f;color:#ff8a97;border-color:#6a3340}
+body.dark .status-accepted{background:#1c2140;color:#a6a0f0;border-color:#3a3f78}
+body.dark .status-pending{background:#2c2415;color:#f0c064;border-color:#5e4c22}
+body.dark .status-refund{background:#2e2013;color:#e8a45f;border-color:#6b4a24}
+body.dark .status-refunded{background:#202839;color:var(--muted);border-color:var(--line-strong)}
+
+body.dark .ud-toast{background:#15291e;border-color:#245c3a;color:#5fd699}
+body.dark .ud-toast.err{background:#2f1a1f;border-color:#6a3340;color:#ff8a97}
+body.dark .order-groups a,body.dark .subtab{color:var(--muted)}
+body.dark .admin-tab{color:var(--muted)}
+
+/* Start-of-validity picker on a time package card. */
+.pkg-start{margin-top:10px}
+.pkg-start label{margin:0 0 4px;font-size:11px}
+.pkg-start select{padding:7px 10px;font-size:12.5px}
+.pkg-start-note{margin-top:10px}
+
+/* Admin/account list cards: the table spans the card fully, matching the
+   user-detail cards - one clean rule, no stacking with legacy margins. */
+.card > .table-scroll{margin-left:-22px;margin-right:-22px}
+.card > .table-scroll:last-child{margin-bottom:-20px;border-bottom:0}
+
+/* Compose box inside the E-maily tab of the user detail. */
+.ud-mail-form{padding:0 18px 16px}
+.ud-mail-form textarea{min-height:110px}
+
+/* A save button sitting between cards looks like it belongs to neither.
+   Given its own strip, with a line saying what it saves, it reads as the
+   end of the form above it. */
+.save-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.save-row .hint{margin:0}
+
+
+/* h3d-palette-switch-fix-css */
+.palette-option.is-selected,
+.palette-card.is-selected,
+.theme-palette.is-selected,
+[data-palette].is-selected,
+[data-theme-palette].is-selected {
+  outline: 2px solid var(--accent, #1679d1);
+  outline-offset: 1px;
+}
+
+/* Open orders above the shop: visible only while an order still needs attention. */
+.open-orders-card{margin-bottom:16px}
+.open-orders-list{display:grid;gap:8px;margin-top:14px}
+.open-order-row{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:12px 14px;
+  border:1px solid var(--line,#d8dde4);
+  border-radius:10px;
+  background:var(--panel2,#f5f7fa);
+}
+.open-order-main{display:flex;align-items:center;gap:14px;min-width:0;flex-wrap:wrap}
+.open-order-main strong{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+.open-order-main span{font-weight:700}
+.open-order-main small{color:var(--muted,#68707a)}
+.open-order-right{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap}
+.open-order-right>strong{white-space:nowrap}
+@media(max-width:650px){
+  .open-order-row{align-items:flex-start;flex-direction:column}
+  .open-order-right{width:100%;justify-content:flex-start}
+}
+
+
+/* Order detail */
+.order-detail-card{overflow:hidden}
+.order-detail-section{margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+.order-detail-section h3{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.order-rules{background:var(--panel2);margin-left:-18px;margin-right:-18px;margin-bottom:-18px;padding:18px}
+.order-detail-action{margin-top:12px}
+
+/* Support admin workspace: compact message cards and editable admin-only title. */
+.support-title-wrap{min-width:0;flex:1}
+.support-admin-title{display:flex;align-items:center;gap:10px;min-width:0;margin-top:5px}
+.support-admin-title h3{margin:0!important;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.support-title-edit{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.08);color:#dff5ff;border-radius:7px;padding:5px 8px;font-size:10px;font-weight:800;white-space:nowrap;cursor:pointer}
+.support-title-edit:hover{background:rgba(255,255,255,.15)}
+.support-title-form{display:flex;align-items:center;gap:7px;margin-top:7px;max-width:760px}
+.support-title-form input[type="text"]{min-width:280px;flex:1;padding:8px 10px;border:1px solid rgba(255,255,255,.3);border-radius:7px;background:rgba(255,255,255,.96);color:#17243a;font-size:13px}
+.support-title-form[hidden]{display:none}
+.support-bubble{margin-bottom:10px!important;padding:10px 13px!important;line-height:1.42!important}
+.support-bubble small{margin-bottom:5px!important}
+.support-bubble.customer,.support-bubble.assistant,.support-bubble.operator{min-height:0;height:auto}
+
+/* H3D admin scrollbar – match the main UI */
+.panel-shell,.panel-content,.panel-main,.admin-main,.table-scroll,.admin-chat-messages{
+  scrollbar-width:thin;
+  scrollbar-color:#cbd3de transparent;
+}
+.panel-shell::-webkit-scrollbar,.panel-content::-webkit-scrollbar,.panel-main::-webkit-scrollbar,.admin-main::-webkit-scrollbar,.table-scroll::-webkit-scrollbar,.admin-chat-messages::-webkit-scrollbar{width:7px;height:7px}
+.panel-shell::-webkit-scrollbar-track,.panel-content::-webkit-scrollbar-track,.panel-main::-webkit-scrollbar-track,.admin-main::-webkit-scrollbar-track,.table-scroll::-webkit-scrollbar-track,.admin-chat-messages::-webkit-scrollbar-track{background:transparent}
+.panel-shell::-webkit-scrollbar-thumb,.panel-content::-webkit-scrollbar-thumb,.panel-main::-webkit-scrollbar-thumb,.admin-main::-webkit-scrollbar-thumb,.table-scroll::-webkit-scrollbar-thumb,.admin-chat-messages::-webkit-scrollbar-thumb{background:#cbd3de;border:2px solid transparent;border-radius:999px;background-clip:padding-box}
+.panel-shell::-webkit-scrollbar-thumb:hover,.panel-content::-webkit-scrollbar-thumb:hover,.panel-main::-webkit-scrollbar-thumb:hover,.admin-main::-webkit-scrollbar-thumb:hover,.table-scroll::-webkit-scrollbar-thumb:hover,.admin-chat-messages::-webkit-scrollbar-thumb:hover{background:#2377d8;background-clip:padding-box}
+body.dark .panel-shell,body.dark .panel-content,body.dark .panel-main,body.dark .admin-main,body.dark .table-scroll,body.dark .admin-chat-messages{scrollbar-color:#5b6677 transparent}
+body.dark .panel-shell::-webkit-scrollbar-thumb,body.dark .panel-content::-webkit-scrollbar-thumb,body.dark .panel-main::-webkit-scrollbar-thumb,body.dark .admin-main::-webkit-scrollbar-thumb,body.dark .table-scroll::-webkit-scrollbar-thumb,body.dark .admin-chat-messages::-webkit-scrollbar-thumb{background:#5b6677;background-clip:padding-box}
+body.dark .panel-shell::-webkit-scrollbar-thumb:hover,body.dark .panel-content::-webkit-scrollbar-thumb:hover,body.dark .panel-main::-webkit-scrollbar-thumb:hover,body.dark .admin-main::-webkit-scrollbar-thumb:hover,body.dark .table-scroll::-webkit-scrollbar-thumb:hover,body.dark .admin-chat-messages::-webkit-scrollbar-thumb:hover{background:#4d8fe5;background-clip:padding-box}
+
+
+/* Unverified-account gate */
+.verify-required-banner{
+  display:flex; gap:14px; align-items:flex-start; margin:0 0 18px; padding:16px 18px;
+  border:1px solid #f0c7c7; border-radius:16px; background:#fff5f5; color:#27364a;
+  box-shadow:0 8px 24px rgba(24,42,68,.06);
+}
+.verify-required-icon{width:30px;height:30px;display:grid;place-items:center;flex:0 0 30px;border-radius:50%;background:#fff0f0;color:#c53d45;font-weight:900}
+.verify-required-banner strong{display:block;font-size:15px;margin:2px 0 4px}
+.verify-required-banner p{margin:0;line-height:1.5}
+.verify-account-card{max-width:720px}
+.verify-mail-actions{display:flex;align-items:center;gap:10px;margin-top:18px}
+.verify-language-box{margin-top:22px;padding-top:18px;border-top:1px solid var(--line,#dfe5ec);display:flex;align-items:center;justify-content:space-between;gap:18px}
+.verify-language-box select{min-width:150px}
+@media (max-width:600px){.verify-required-banner{padding:14px}.verify-language-box{align-items:flex-start;flex-direction:column}.verify-mail-actions form,.verify-mail-actions .btn{width:100%}}
+
+
+/* User actions: one category, visually separated with | and confirmation
+   handled by the shared data-confirm dialog. */
+.user-action-list{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:7px;
+}
+.user-action-list form{
+  display:inline-flex;
+  align-items:center;
+  margin:0;
+}
+.user-action-sep{
+  color:var(--muted);
+  opacity:.65;
+  user-select:none;
+  font-weight:600;
+}
+.user-actions-section h4{
+  color:var(--text);
+}
+.user-actions-section .role-form{
+  gap:7px;
+}
+@media (max-width:640px){
+  .user-action-list{gap:6px}
+  .user-action-sep{display:none}
+}
+
+
+/* v41 — Support ticket workspace
+   Fullscreen admin workspace; only the conversation thread scrolls. */
+.support-modal-back{
+  padding:0!important;
+  place-items:stretch!important;
+  background:rgba(15,22,35,.72)!important;
+}
+.support-workspace{
+  width:100vw!important;
+  max-width:none!important;
+  height:100dvh!important;
+  max-height:none!important;
+  min-height:0!important;
+  border-radius:0!important;
+  border:0!important;
+  box-shadow:none!important;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif!important;
+  grid-template-rows:auto minmax(0,1fr) auto!important;
+}
+.support-workspace-head{
+  flex:none;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif!important;
+}
+.support-workspace-head h3{
+  color:#edf7ff!important;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif!important;
+  font-weight:750!important;
+  line-height:1.2!important;
+  margin:5px 0 0!important;
+}
+.support-admin-title{
+  color:#edf7ff!important;
+}
+.support-admin-title h3{
+  color:#edf7ff!important;
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+.support-workspace-body{
+  min-height:0!important;
+  overflow:hidden!important;
+  grid-template-columns:minmax(0,1fr) 248px!important;
+}
+.support-thread{
+  min-width:0!important;
+  min-height:0!important;
+  height:auto!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  padding:22px 26px!important;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif!important;
+}
+.support-bubble{
+  display:block!important;
+  width:fit-content!important;
+  max-width:min(76%,760px)!important;
+  min-width:0!important;
+  height:auto!important;
+  min-height:0!important;
+  margin-top:0!important;
+  margin-bottom:10px!important;
+  padding:9px 13px!important;
+  line-height:1.45!important;
+  white-space:pre-wrap!important;
+  overflow-wrap:anywhere!important;
+  word-break:break-word!important;
+  box-sizing:border-box!important;
+}
+.support-bubble.customer,
+.support-bubble.assistant{
+  margin-right:auto!important;
+  margin-left:0!important;
+}
+.support-bubble.operator{
+  margin-left:auto!important;
+  margin-right:0!important;
+}
+.support-bubble small{
+  margin-bottom:5px!important;
+  line-height:1.2!important;
+}
+.support-context{
+  min-width:0!important;
+  min-height:0!important;
+  overflow:auto!important;
+}
+.support-composer{
+  min-height:0!important;
+  flex:none!important;
+}
+@media (max-width:820px){
+  .support-workspace{
+    width:100vw!important;
+    height:100dvh!important;
+  }
+  .support-thread{
+    padding:16px 14px!important;
+  }
+  .support-bubble{
+    max-width:90%!important;
+  }
+}
+
+/* Keep the admin ticket title readable regardless of generic modal heading rules. */
+body .support-workspace .support-admin-title h3{
+  color:#edf7ff!important;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif!important;
+  font-size:20px!important;
+}
+
+
+/* v47 — compact admin support messages + danger hover for ticket close. */
+body .support-workspace .support-bubble{
+  display:block!important;
+  flex:0 0 auto!important;
+  align-self:flex-start!important;
+  width:max-content!important;
+  max-width:min(76%,760px)!important;
+  height:max-content!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin-top:0!important;
+  margin-bottom:10px!important;
+  padding:9px 13px!important;
+  box-sizing:border-box!important;
+  line-height:1.45!important;
+  overflow:visible!important;
+}
+body .support-workspace .support-bubble.operator{
+  align-self:flex-end!important;
+}
+body .support-workspace .support-bubble > div{
+  display:block!important;
+  height:auto!important;
+  min-height:0!important;
+}
+body .support-workspace .support-bubble small{
+  height:auto!important;
+  min-height:0!important;
+  display:block!important;
+  margin-bottom:5px!important;
+}
+body .support-workspace .support-close:hover,
+body .support-workspace .support-close:focus-visible{
+  background:var(--bad,#d83b4d)!important;
+  border-color:var(--bad,#d83b4d)!important;
+  color:#fff!important;
+  box-shadow:0 0 0 2px rgba(216,59,77,.18)!important;
+}
+
+
+/* v48 — support inbox action button: readable primary + clear hover. */
+.support-row-actions .btn.primary,
+.support-row-actions form .btn.primary{
+  color:#fff!important;
+  background:#2377d8!important;
+  border-color:#2377d8!important;
+  font-weight:800!important;
+  text-shadow:none!important;
+  box-shadow:0 2px 7px rgba(35,119,216,.18)!important;
+  transition:background .15s ease,border-color .15s ease,box-shadow .15s ease,transform .15s ease!important;
+}
+.support-row-actions .btn.primary:hover,
+.support-row-actions form .btn.primary:hover{
+  color:#fff!important;
+  background:#1769c1!important;
+  border-color:#1769c1!important;
+  box-shadow:0 5px 14px rgba(35,119,216,.30)!important;
+  transform:translateY(-1px)!important;
+}
+.support-row-actions .btn.primary:focus-visible,
+.support-row-actions form .btn.primary:focus-visible{
+  color:#fff!important;
+  background:#1769c1!important;
+  border-color:#1769c1!important;
+  outline:2px solid rgba(35,119,216,.35)!important;
+  outline-offset:2px!important;
+}
+.support-row-actions .btn.primary:active,
+.support-row-actions form .btn.primary:active{
+  transform:translateY(0)!important;
+  box-shadow:0 2px 6px rgba(35,119,216,.22)!important;
+}
+
+
+/* v49 — H3D Pomocník rating overview */
+.support-feedback-summary{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin:18px 0 20px;
+}
+.support-feedback-stat{
+  min-width:0;
+  padding:15px 16px 13px;
+  border:1px solid var(--line,#d7deea);
+  border-radius:12px;
+  background:#fbfcff;
+}
+.support-feedback-stat-top{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+}
+.support-feedback-emoji{
+  font-size:24px;
+  line-height:1;
+}
+.support-feedback-stat-top strong{
+  flex:1;
+  font-size:13px;
+}
+.support-feedback-stat-top b{
+  font-size:18px;
+  white-space:nowrap;
+}
+.support-feedback-stat-bar{
+  height:7px;
+  margin:12px 0 7px;
+  overflow:hidden;
+  border-radius:999px;
+  background:#e8edf5;
+}
+.support-feedback-stat-bar span{
+  display:block;
+  height:100%;
+  border-radius:inherit;
+  background:#287bd1;
+}
+.support-feedback-stat.is-good .support-feedback-stat-bar span{background:#219a62}
+.support-feedback-stat.is-partial .support-feedback-stat-bar span{background:#d99a22}
+.support-feedback-stat.is-bad .support-feedback-stat-bar span{background:#d34a58}
+.support-feedback-stat small{
+  color:var(--muted,#68758a);
+  font-size:11px;
+}
+.support-feedback-total{
+  grid-column:1/-1;
+  color:var(--muted,#68758a);
+  font-size:12px;
+  padding:0 2px;
+}
+.support-feedback-total strong{color:var(--text,#172033)}
+@media (max-width:760px){
+  .support-feedback-summary{grid-template-columns:1fr}
+  .support-feedback-total{grid-column:auto}
+}
+
+/* v55 — admin support transcript: chat-like bubbles, never row-height bubbles. */
+body .support-workspace .support-thread > article.support-bubble{
+  display:block!important;
+  flex:0 0 auto!important;
+  align-self:flex-start!important;
+  inline-size:max-content!important;
+  width:max-content!important;
+  max-inline-size:min(76%,760px)!important;
+  max-width:min(76%,760px)!important;
+  min-inline-size:0!important;
+  min-width:0!important;
+  block-size:auto!important;
+  height:auto!important;
+  min-block-size:0!important;
+  min-height:0!important;
+  max-block-size:none!important;
+  max-height:none!important;
+  aspect-ratio:auto!important;
+  padding:12px 15px!important;
+  margin:0 0 12px!important;
+  border-radius:16px!important;
+  box-sizing:border-box!important;
+  line-height:1.55!important;
+  white-space:pre-wrap!important;
+  overflow:visible!important;
+  contain:layout!important;
+}
+body .support-workspace .support-thread > article.support-bubble.customer{
+  margin-left:0!important;
+  margin-right:auto!important;
+  background:#e7f0ff!important;
+  border:1px solid #b8d0f2!important;
+}
+body .support-workspace .support-thread > article.support-bubble.operator{
+  align-self:flex-end!important;
+  margin-left:auto!important;
+  margin-right:0!important;
+  background:#edfbf5!important;
+  border:1px solid #bddfd4!important;
+}
+body .support-workspace .support-thread > article.support-bubble.assistant{
+  margin-left:0!important;
+  margin-right:auto!important;
+  background:#fff!important;
+  border:1px solid #d4dbe5!important;
+}
+body .support-workspace .support-thread > article.support-bubble > div{
+  display:block!important;
+  width:auto!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+}
+body .support-workspace .support-thread > article.support-bubble small{
+  display:block!important;
+  width:auto!important;
+  height:auto!important;
+  min-height:0!important;
+  margin:0 0 6px!important;
+  font-size:10px!important;
+  line-height:1.2!important;
+}
+
+/* v59 — definitive admin transcript layout
+   The thread is an explicit vertical flex column. Every bubble is an
+   auto-sized flex item; it can never inherit the available row height. */
+body .support-workspace .support-thread{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  justify-content:flex-start!important;
+  gap:0!important;
+  min-width:0!important;
+  min-height:0!important;
+  height:auto!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+}
+body .support-workspace .support-thread > article.support-bubble{
+  display:block!important;
+  flex:0 0 auto!important;
+  flex-grow:0!important;
+  flex-shrink:0!important;
+  flex-basis:auto!important;
+  align-self:flex-start!important;
+  width:fit-content!important;
+  inline-size:fit-content!important;
+  max-width:min(76%,760px)!important;
+  max-inline-size:min(76%,760px)!important;
+  min-width:0!important;
+  min-inline-size:0!important;
+  height:auto!important;
+  block-size:auto!important;
+  min-height:0!important;
+  min-block-size:0!important;
+  max-height:none!important;
+  max-block-size:none!important;
+  aspect-ratio:auto!important;
+  grid-row:auto!important;
+  grid-column:auto!important;
+  margin:0 0 12px 0!important;
+  padding:12px 15px!important;
+  box-sizing:border-box!important;
+  overflow:visible!important;
+  white-space:pre-wrap!important;
+  overflow-wrap:anywhere!important;
+  word-break:break-word!important;
+}
+body .support-workspace .support-thread > article.support-bubble.customer{
+  align-self:flex-start!important;
+  margin-left:0!important;
+  margin-right:auto!important;
+}
+body .support-workspace .support-thread > article.support-bubble.operator{
+  align-self:flex-end!important;
+  margin-left:auto!important;
+  margin-right:0!important;
+}
+body .support-workspace .support-thread > article.support-bubble.assistant{
+  align-self:flex-start!important;
+  margin-left:0!important;
+  margin-right:auto!important;
+}
+body .support-workspace .support-thread > article.support-bubble > div{
+  display:block!important;
+  width:auto!important;
+  max-width:none!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  padding:0!important;
+  margin:0!important;
+  overflow:visible!important;
+  white-space:pre-wrap!important;
+  overflow-wrap:anywhere!important;
+  word-break:break-word!important;
+}
+body .support-workspace .support-thread > article.support-bubble small{
+  display:block!important;
+  width:auto!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:0 0 6px!important;
+  padding:0!important;
+  line-height:1.2!important;
+}
+
+
+/* v62 — support messages are DIVs, never stretched by generic article/grid rules. */
+.support-workspace .support-thread > .support-bubble{
+  display:block!important;
+  position:relative!important;
+  flex:0 0 auto!important;
+  flex-grow:0!important;
+  flex-shrink:0!important;
+  align-self:flex-start!important;
+  width:fit-content!important;
+  max-width:min(760px,76%)!important;
+  min-width:0!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  block-size:auto!important;
+  min-block-size:0!important;
+  max-block-size:none!important;
+  box-sizing:border-box!important;
+  margin:0 0 12px!important;
+  padding:12px 15px!important;
+  overflow:visible!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+  word-break:break-word!important;
+}
+.support-workspace .support-thread > .support-bubble.customer{
+  align-self:flex-start!important;
+  margin-left:0!important;
+  margin-right:auto!important;
+}
+.support-workspace .support-thread > .support-bubble.operator{
+  align-self:flex-end!important;
+  margin-left:auto!important;
+  margin-right:0!important;
+}
+.support-workspace .support-thread > .support-bubble.assistant{
+  align-self:flex-start!important;
+  margin-left:0!important;
+  margin-right:auto!important;
+}
+.support-workspace .support-thread > .support-bubble > div{
+  display:block!important;
+  width:auto!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:visible!important;
+  white-space:pre-wrap!important;
+  overflow-wrap:anywhere!important;
+  word-break:break-word!important;
+}
+.support-workspace .support-thread > .support-bubble > small{
+  display:block!important;
+  width:auto!important;
+  height:auto!important;
+  min-height:0!important;
+  margin:0 0 6px!important;
+  padding:0!important;
+  line-height:1.2!important;
+}
+
+.support-workspace .support-thread{
+  align-items:stretch!important;
+}
+.support-workspace .support-thread > .support-bubble{
+  justify-self:start!important;
+  place-self:start auto!important;
+}
+.support-workspace .support-thread > .support-bubble.operator{
+  justify-self:end!important;
+  place-self:start end!important;
+}
+
+/* ================================================================
+   SUPPORT ADMIN — final geometry
+   Desktop: half the viewport. Small screens: full viewport.
+   The backdrop must center the workspace; it must never stretch it.
+   ================================================================ */
+.support-modal-back{
+  position:fixed!important;
+  inset:0!important;
+  z-index:180!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:18px!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+  background:rgba(15,22,35,.72)!important;
+}
+@media (max-width:1100px){
+  .support-modal-back .support-workspace{
+    width:100vw!important;
+    min-width:0!important;
+    max-width:none!important;
+    height:100dvh!important;
+    max-height:none!important;
+    border-radius:0!important;
+    border:0!important;
+  }
+  .support-modal-back{
+    padding:0!important;
+  }
+}
+
+
+
+/* ================================================================
+   SUPPORT ADMIN — final layout
+   Desktop: 50vw. Small screens: 100vw.
+   Only the message thread scrolls.
+   ================================================================ */
+.support-modal-back{
+  position:fixed!important;
+  inset:0!important;
+  z-index:180!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:18px!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+}
+
+/* Bottom controls in the admin reply area. */
+.support-compose-actions{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:16px!important;
+  margin-top:10px!important;
+}
+
+@media (max-width:1100px){
+  .support-modal-back{
+    padding:0!important;
+  }
+  .support-modal-back .support-workspace{
+    width:100vw!important;
+    max-width:none!important;
+    min-width:0!important;
+    height:100dvh!important;
+    max-height:none!important;
+    border-radius:0!important;
+    border:0!important;
+  }
+}
+
+@media (max-width:640px){
+  .support-compose-actions{
+    align-items:flex-start!important;
+    flex-direction:column!important;
+  }
+  .support-compose-buttons{
+    width:100%!important;
+    justify-content:flex-end!important;
+    flex-wrap:wrap!important;
+  }
+}
+
+/* ================================================================
+   SUPPORT — canonical layout overrides
+   One authoritative definition for modal geometry and composer controls.
+   ================================================================ */
+.support-modal-back{
+  position:fixed!important;
+  inset:0!important;
+  z-index:180!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:18px!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+}
+
+.support-modal-back .support-workspace{
+  width:50vw!important;
+  max-width:1180px!important;
+  min-width:0!important;
+  height:calc(100dvh - 36px)!important;
+  max-height:800px !important;
+  min-height:0!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+  border-radius:18px!important;
+  overflow:hidden!important;
+}
+
+.support-modal-back .support-workspace-body{
+  min-height:0!important;
+  height:auto!important;
+  overflow:hidden!important;
+}
+
+.support-modal-back .support-thread{
+  min-width:0!important;
+  min-height:0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+}
+
+.support-compose-actions{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:16px!important;
+  margin-top:10px!important;
+}
+
+.support-compose-buttons{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:10px!important;
+  flex:0 0 auto!important;
+}
+
+.support-compose-buttons form.support-close-ticket{
+  margin:0!important;
+  padding:0!important;
+}
+
+.support-compose-buttons .btn{
+  margin:0!important;
+  white-space:nowrap!important;
+}
+
+.support-close-ticket{
+  text-align:left!important;
+}
+
+/* H3D assistant feedback card */
+.support-feedback-admin,
+.support-feedback-card,
+section.support-feedback-admin{
+  max-width:100%!important;
+  margin:0 auto 24px!important;
+  box-sizing:border-box!important;
+}
+
+@media (max-width:1100px){
+  .support-modal-back{
+    padding:0!important;
+  }
+  .support-modal-back .support-workspace{
+    width:100vw!important;
+    max-width:none!important;
+    min-width:0!important;
+    height:100dvh!important;
+    max-height:none!important;
+    border-radius:0!important;
+    border:0!important;
+  }
+}
+
+@media (max-width:640px){
+  .support-compose-actions{
+    align-items:flex-start!important;
+    flex-direction:column!important;
+  }
+  .support-compose-buttons{
+    width:100%!important;
+    justify-content:flex-end!important;
+    flex-wrap:wrap!important;
+  }
+}
+
+/* SUPPORT MOBILE — thread itself fills the available workspace */
+@media (max-width:1100px){
+  .support-modal-back .support-workspace,
+  .support-modal-back .support-workspace-body,
+  .support-modal-back main.support-thread{
+    width:100%!important;
+    max-width:none!important;
+    min-width:0!important;
+    box-sizing:border-box!important;
+  }
+
+  .support-modal-back main.support-thread{
+    margin:0!important;
+    padding-left:18px!important;
+    padding-right:18px!important;
+  }
+}
+
+@media (max-width:640px){
+  .support-modal-back main.support-thread{
+    width:100%!important;
+    padding-left:12px!important;
+    padding-right:12px!important;
+  }
+}
+
+/* SUPPORT ADMIN — compact customer context on small screens.
+   The context panel must stay visible; it moves above the message thread. */
+@media (max-width:820px){
+  .support-modal-back .support-workspace-body{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    grid-template-rows:auto minmax(0,1fr)!important;
+    min-height:0!important;
+  }
+
+  .support-modal-back .support-context{
+    display:grid!important;
+    grid-template-columns:minmax(150px,1.25fr) repeat(3,minmax(80px,1fr))!important;
+    gap:12px!important;
+    order:-1!important;
+    padding:10px 14px!important;
+    border-left:0!important;
+    border-bottom:1px solid var(--line)!important;
+    min-width:0!important;
+    box-sizing:border-box!important;
+    background:#fff!important;
+  }
+
+  .support-modal-back .support-person{
+    min-width:0!important;
+    padding:0!important;
+    border:0!important;
+    gap:2px!important;
+  }
+
+  .support-modal-back .support-person strong{
+    font-size:13px!important;
+    line-height:1.2!important;
+  }
+
+  .support-modal-back .support-person a{
+    font-size:11px!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+
+  .support-modal-back .support-context dl{
+    display:contents!important;
+    margin:0!important;
+  }
+
+  .support-modal-back .support-context dl div{
+    min-width:0!important;
+    gap:1px!important;
+    align-content:center!important;
+  }
+
+  .support-modal-back .support-context dt{
+    font-size:9px!important;
+  }
+
+  .support-modal-back .support-context dd{
+    font-size:10px!important;
+    line-height:1.25!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+}
+
+@media (max-width:520px){
+  .support-modal-back .support-context{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    gap:8px 12px!important;
+    padding:9px 12px!important;
+  }
+
+  .support-modal-back .support-person{
+    grid-column:1 / -1!important;
+    display:grid!important;
+    grid-template-columns:auto minmax(0,1fr)!important;
+    align-items:center!important;
+    column-gap:8px!important;
+  }
+
+  .support-modal-back .support-person > span{
+    grid-row:1 / span 2!important;
+  }
+
+  .support-modal-back .support-person strong,
+  .support-modal-back .support-person a{
+    min-width:0!important;
+  }
+}

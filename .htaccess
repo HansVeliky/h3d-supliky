@@ -1,0 +1,50 @@
+Options -Indexes
+
+# Share links use a clean path such as /d_beta/AbCd... . Only the random key
+# is placed in the URL; the actual project JSON remains in SQLite.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^([A-Za-z0-9_-]{16})/?$ index.php?share=$1 [QSA,L]
+</IfModule>
+
+
+# Never serve the protected server-side sources or the raw bundle.
+<FilesMatch "\.(core\.js|sqlite|sqlite-wal|sqlite-shm)$">
+  Require all denied
+</FilesMatch>
+
+# The database and the test scripts must never be reachable.
+<FilesMatch "^(test_.*\.php|mailtest.*\.php|reset\.php|gen_icons\.py)$">
+  Require all denied
+</FilesMatch>
+
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Apache does not know these types out of the box; without them Chrome
+# rejects the manifest and some browsers refuse the SVG favicon.
+AddType application/manifest+json .webmanifest
+AddType image/svg+xml            .svg
+AddType image/x-icon             .ico
+
+# Icons are content-addressed by name and effectively never change.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  <FilesMatch "\.(ico|png|svg|webmanifest)$">
+    ExpiresDefault "access plus 30 days"
+  </FilesMatch>
+</IfModule>
+
+# Friendly error pages. The leading slash is relative to the document root,
+# so adjust the prefix if the app lives in a subfolder (for example
+# /organizer/error.php).
+ErrorDocument 400 /error.php
+ErrorDocument 403 /error.php
+ErrorDocument 404 /error.php
+ErrorDocument 405 /error.php
+ErrorDocument 413 /error.php
+ErrorDocument 429 /error.php
+ErrorDocument 500 /error.php
+ErrorDocument 503 /error.php

@@ -1,0 +1,3662 @@
+:root{--bg:#12151d;--panel:#1a1f2b;--panel2:#232a39;--line:#333c50;--text:#eef2f7;--muted:#9aa6ba;--accent:#6ea8ff;--good:var(--good,#62d69a);--bad:#ff6b7a;--danger:var(--bad)}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -18%,#28374f,#12151d 62%);color:var(--text);font:14px Inter,system-ui,sans-serif}
+header{height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-bottom:1px solid var(--line);background:#161b27e8;backdrop-filter:blur(14px)}
+.brand{font-weight:800;letter-spacing:.4px}.brand span{color:var(--accent)}
+.brand-title{display:inline-flex;align-items:center;gap:8px;margin:0;line-height:1}
+.brand-logo{display:block;width:26px;height:26px;flex:0 0 26px;filter:drop-shadow(0 2px 6px rgba(123,97,255,.3))}
+.brand-mark,.brand-dash,.brand-sub{display:inline-flex;align-items:center;line-height:1}
+.toolbar{display:flex;gap:8px;align-items:center}.btn{background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:9px 13px;border-radius:10px;cursor:pointer}.btn.primary{background:var(--accent);color:var(--accentText,#06101f);border-color:transparent;font-weight:750}.btn:hover{filter:brightness(1.12)}
+.construction-section{margin-top:10px;padding-top:12px;border-top:1px solid var(--line)}
+.unit-label{font-variant-numeric:tabular-nums}
+.unit-picker{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-right:4px}
+.unit-picker select{width:auto;min-width:62px;padding:7px 9px;background:#0c1017;border:1px solid var(--line);color:var(--text);border-radius:8px}
+.danger-btn{border-color:#713842}.danger-btn:disabled{opacity:.4;cursor:not-allowed}
+.random-panel{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.random-panel .full{grid-column:1/-1}
+.random-note{font-size:11px;color:var(--muted);line-height:1.45;margin-top:8px}
+.random-seed{font-variant-numeric:tabular-nums;color:var(--accent)}
+main{display:grid;grid-template-columns:300px 1fr 290px;min-height:calc(100vh - 64px)}
+aside{background:#10141c;border-right:1px solid var(--line);padding:18px;overflow:auto}.right{border-left:1px solid var(--line);border-right:0}
+h3{margin:0 0 14px;font-size:13px;text-transform:uppercase;letter-spacing:1px;color:#aeb9c9}
+.section{padding-bottom:18px;margin-bottom:18px;border-bottom:1px solid var(--line)}label{display:block;color:var(--muted);font-size:12px;margin:10px 0 5px}
+input,select{width:100%;background:#0c1017;border:1px solid var(--line);color:var(--text);padding:9px;border-radius:9px;outline:none}input:focus,select:focus{border-color:var(--accent)}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{appearance:none;-webkit-appearance:none;margin:0}
+input[type=number]{-moz-appearance:textfield}
+.stepper{display:grid;grid-template-columns:36px 1fr 36px;gap:5px;align-items:center}
+.stepper button{height:38px;border:1px solid var(--line);background:linear-gradient(180deg,#1c2432,#121823);color:var(--text);border-radius:9px;font-size:20px;font-weight:700;cursor:pointer;line-height:1}
+.stepper button:hover{border-color:var(--accent);background:#1c2a3e}
+.stepper button:active{transform:translateY(1px)}
+.range-wrap{margin-top:7px}
+.range-value{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;color:var(--muted);font-size:11px}
+.range-value b{color:var(--text);font-size:12px}
+/*
+ * Sliders.
+ *
+ * No accent-color: with it the browser paints its OWN filled track under
+ * the custom one, and the two never line up - that is the doubled,
+ * two-coloured ghost along the rail. appearance:none turns the native
+ * widget off completely, and everything visible below is ours.
+ */
+input[type=range]{
+  -webkit-appearance:none;appearance:none;
+  width:100%;height:28px;padding:0;border:0;background:transparent;cursor:pointer;
+}
+input[type=range]:focus{outline:none}
+input[type=range]::-webkit-slider-runnable-track{height:6px;background:linear-gradient(90deg,var(--accent) var(--range-progress,50%),var(--track) var(--range-progress,50%));border-radius:999px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;margin-top:-6px;border-radius:50%;background:var(--accent);border:3px solid var(--panel);box-shadow:0 1px 4px rgba(0,0,0,.35);transition:transform .12s ease}
+input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.08)}
+input[type=range]:active::-webkit-slider-thumb{transform:scale(1.14)}
+input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 3px rgba(110,168,255,.35)}
+/* Firefox fills the track itself, so it gets a plain track plus ::-moz-range-progress
+   and must NOT also get the gradient - that was the same ghost, the other way round. */
+input[type=range]::-moz-range-track{height:6px;background:var(--track);border-radius:999px}
+input[type=range]::-moz-range-progress{height:6px;background:var(--accent);border-radius:999px}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--accent);border:3px solid var(--panel);box-shadow:0 1px 4px rgba(0,0,0,.35)}
+.center{padding:24px;display:flex;flex-direction:column;min-width:0}.canvasWrap{flex:1;min-height:500px;background:linear-gradient(145deg,#1b2230,#141a26);border:1px solid var(--line);border-radius:18px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+/* The faint background grid is drawn inside the SVG (aligned to the real
+   cell size); the wrap keeps just its gradient. */
+.bg-grid line{stroke:rgba(154,166,186,.09);stroke-width:1}
+body.light .bg-grid line{stroke:rgba(70,90,120,.10)}
+svg{width:100%;height:100%;min-height:600px;touch-action:none}.cell{fill:#1d2534;stroke:#3a4457;stroke-width:1}.box{fill:#426fae;fill-opacity:.82;stroke:#8ec0ff;stroke-width:2;cursor:grab}.box.sel{fill:#5d8fd0;stroke:#fff;stroke-width:3}.box.oversize{fill:#b8382f;stroke:#ff8a7a;stroke-dasharray:6 4}.handle{fill:#fff;cursor:nwse-resize}
+.box-size-label{fill:#c8d3e4;font-size:10px;font-weight:500;pointer-events:none;text-anchor:middle}
+.cell-hover{fill:transparent;stroke:var(--good,#62d69a);stroke-width:2;stroke-dasharray:5 4;pointer-events:none}
+.cell-action{pointer-events:none;text-anchor:middle;dominant-baseline:middle;font-weight:800}
+.cell-add{fill:var(--good,#62d69a);font-size:30px;pointer-events:all;cursor:pointer;opacity:.38}
+.cell-add:hover{opacity:1}
+.cell-add-hover{opacity:1;filter:drop-shadow(0 0 5px rgba(98,214,154,.55))}
+/* ================================================================
+   BOX ACTION POSITION TUNING
+   ================================================================
+   ZÁKLADNÍ POZICI IKONY URČUJE JAVASCRIPT PODLE SKUTEČNÉ GEOMETRIE SVG.
+   Tohle CSS slouží JEN JAKO JEMNÉ DOLADĚNÍ POZICE.
+
+   Díky tomu se tlačítka při ZOOMU ani při změně počtu buněk
+   neposouvají mimo hranu boxu.
+
+   Směr:
+     X kladné = doprava | X záporné = doleva
+     Y kladné = dolů    | Y záporné = nahoru
+
+   REŽIMY:
+     - STĚNY / PŘÍČKY = edge-wall-action, edge-shrink-icon
+     - FREE MODE      = cellmod-add
+     - OBA REŽIMY     = box-remove-icon
+
+   Poznámka:
+   Hodnoty jsou záměrně malé. Nepoužívej zde posun o velikost celé
+   buňky (např. 150px). Poloha celé buňky se počítá v JS podle L.stepX/L.stepY.
+   ================================================================ */
+:root{
+  /* ---------------------------------------------------------------
+     SPOLEČNÉ JEMNÉ POSUNUTÍ
+     --------------------------------------------------------------- */
+  --box-ctrl-nudge-x:0px;
+  --box-ctrl-nudge-y:0px;
+
+  /* ---------------------------------------------------------------
+     STĚNY / PŘÍČKY MODE — + pro rozšíření
+     Každou stranu můžeš doladit zvlášť.
+     --------------------------------------------------------------- */
+  --box-ctrl-grow-n:0px;
+  --box-ctrl-grow-e:0px;
+  --box-ctrl-grow-s:0px;
+  --box-ctrl-grow-w:0px;
+
+  /* ---------------------------------------------------------------
+     STĚNY / PŘÍČKY MODE — - pro zmenšení
+     --------------------------------------------------------------- */
+  --box-ctrl-shrink-n:0px;
+  --box-ctrl-shrink-e:0px;
+  --box-ctrl-shrink-s:0px;
+  --box-ctrl-shrink-w:0px;
+
+  /* ---------------------------------------------------------------
+     FREE MODE — + pro rozšíření
+     --------------------------------------------------------------- */
+  /* FREE MODE — horní + posun dolů */
+  --box-ctrl-free-add-n:10px;
+  --box-ctrl-free-add-e:0px;
+  /* FREE MODE — spodní + posun nahoru */
+  --box-ctrl-free-add-s:-10px;
+  --box-ctrl-free-add-w:0px;
+
+  /* ---------------------------------------------------------------
+     OBA REŽIMY — centrální - pro odstranění boxu 1×1
+     --------------------------------------------------------------- */
+  --box-ctrl-remove-nudge-x:0px;
+  --box-ctrl-remove-nudge-y:0px;
+}
+
+/* ================================================================
+   STĚNY / PŘÍČKY MODE — + pro rozšíření
+   n = nahoře | e = vpravo | s = dole | w = vlevo
+
+   Výchozí hodnota je 0px, protože skutečné umístění na hraně
+   vyrábí JS z aktuálního L.stepX / L.stepY.
+   ================================================================ */
+.edge-wall-action[data-dir="n"]{--box-ctrl-dir-x:0px;--box-ctrl-dir-y:var(--box-ctrl-grow-n)}
+.edge-wall-action[data-dir="e"]{--box-ctrl-dir-x:var(--box-ctrl-grow-e);--box-ctrl-dir-y:0px}
+.edge-wall-action[data-dir="s"]{--box-ctrl-dir-x:0px;--box-ctrl-dir-y:var(--box-ctrl-grow-s)}
+.edge-wall-action[data-dir="w"]{--box-ctrl-dir-x:var(--box-ctrl-grow-w);--box-ctrl-dir-y:0px}
+
+/* ================================================================
+   STĚNY / PŘÍČKY MODE — - pro zmenšení
+   ================================================================ */
+.edge-shrink-icon[data-dir="n"]{--box-ctrl-dir-x:0px;--box-ctrl-dir-y:var(--box-ctrl-shrink-n)}
+.edge-shrink-icon[data-dir="e"]{--box-ctrl-dir-x:var(--box-ctrl-shrink-e);--box-ctrl-dir-y:0px}
+.edge-shrink-icon[data-dir="s"]{--box-ctrl-dir-x:0px;--box-ctrl-dir-y:var(--box-ctrl-shrink-s)}
+.edge-shrink-icon[data-dir="w"]{--box-ctrl-dir-x:var(--box-ctrl-shrink-w);--box-ctrl-dir-y:0px}
+
+/* ================================================================
+   FREE MODE — + pro rozšíření
+   ================================================================ */
+.cellmod-add[data-dir="n"]{--box-ctrl-dir-x:0px;--box-ctrl-dir-y:var(--box-ctrl-free-add-n)}
+.cellmod-add[data-dir="e"]{--box-ctrl-dir-x:var(--box-ctrl-free-add-e);--box-ctrl-dir-y:0px}
+.cellmod-add[data-dir="s"]{--box-ctrl-dir-x:0px;--box-ctrl-dir-y:var(--box-ctrl-free-add-s)}
+.cellmod-add[data-dir="w"]{--box-ctrl-dir-x:var(--box-ctrl-free-add-w);--box-ctrl-dir-y:0px}
+
+/* ================================================================
+   OBA REŽIMY — centrální - pro odstranění boxu 1×1
+   ================================================================ */
+.box-remove-icon{
+  transform:translate(
+    calc(var(--box-ctrl-nudge-x) + var(--box-ctrl-remove-nudge-x)),
+    calc(var(--box-ctrl-nudge-y) + var(--box-ctrl-remove-nudge-y))
+  );
+}
+
+/* ================================================================
+   APLIKACE DOLADĚNÍ
+   Základní souřadnice už byly vytvořeny v JS na správné hraně.
+   CSS pouze přidává malé uživatelské doladění.
+   ================================================================ */
+.edge-wall-action{
+  transform:translate(
+    calc(var(--box-ctrl-nudge-x) + var(--box-ctrl-dir-x,0px)),
+    calc(var(--box-ctrl-nudge-y) + var(--box-ctrl-dir-y,0px))
+  );
+}
+.edge-shrink-icon{
+  transform:translate(
+    calc(var(--box-ctrl-nudge-x) + var(--box-ctrl-dir-x,0px)),
+    calc(var(--box-ctrl-nudge-y) + var(--box-ctrl-dir-y,0px))
+  );
+}
+.cellmod-add{
+  transform:translate(
+    calc(var(--box-ctrl-nudge-x) + var(--box-ctrl-dir-x,0px)),
+    calc(var(--box-ctrl-nudge-y) + var(--box-ctrl-dir-y,0px))
+  );
+}
+
+/* One-click grow / shrink strips attach directly to the relevant box wall.
+   Their SVG fill is a wall-colour → action-colour gradient; CSS only supplies
+   the interaction and keeps the invisible hit target genuinely invisible. */
+.grow-btn{cursor:pointer}
+.edge-strip{stroke-width:1.2;filter:drop-shadow(0 1px 3px rgba(0,0,0,.35));transition:filter .12s ease,opacity .12s ease}
+.grow-btn:hover .edge-strip{filter:brightness(1.15) drop-shadow(0 2px 4px rgba(0,0,0,.42));opacity:1}
+.grow-arrow{fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+/* Oversized invisible hit area so the small arrow is easy to tap. */
+.grow-btn .grow-hit{fill:transparent;stroke:none;filter:none;transition:none}
+.grow-btn:hover .grow-hit{transform:none}
+/* Resize actions sit directly on the selected box wall. The hit area is
+   deliberately larger than the visible dot, but the adjacent cell remains
+   untouched so its normal green add-box + is still clickable. */
+.edge-wall-action{cursor:pointer}
+.edge-wall-dot{
+  fill:var(--accent,#7b61ff);stroke:#fff;stroke-width:1.5;
+  filter:drop-shadow(0 1px 3px rgba(0,0,0,.28));
+  transform-box:fill-box;transform-origin:center;
+  transition:transform .12s ease,fill .12s ease,filter .12s ease
+}
+.edge-wall-action:hover .edge-wall-dot{
+  fill:#9b7bff;transform:scale(1.16);
+  filter:drop-shadow(0 2px 4px rgba(75,55,180,.38))
+}
+.edge-wall-shrink .edge-wall-dot{fill:var(--bad,#d84357)}
+.edge-wall-shrink:hover .edge-wall-dot{fill:#ef5a6e}
+.edge-wall-sign{fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;pointer-events:none}
+.edge-shrink-icon{cursor:pointer}
+.edge-shrink-dot{fill:var(--bad,#d84357);stroke:#fff;stroke-width:1.5;filter:drop-shadow(0 1px 2px rgba(0,0,0,.32));transform-box:fill-box;transform-origin:center;transition:transform .12s ease,fill .12s ease}
+.edge-shrink-icon:hover .edge-shrink-dot{fill:#ef5a6e;transform:scale(1.16)}
+.edge-shrink-sign{fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;pointer-events:none}
+/* Hovering a cell's - paints the block that would go, so there is no
+   guessing which one the button belongs to. */
+.cell-rm-mark{fill:var(--bad,#d84357);opacity:0;pointer-events:none;transition:opacity .12s ease}
+.cellmod-btn:hover .cell-rm-mark{opacity:.32}
+.cellmod-btn{cursor:pointer}
+.cellmod-btn .grow-hit{fill:transparent;stroke:none;filter:none;transition:none}
+.cellmod-dot{fill:var(--accent,#7b61ff);stroke:#fff;stroke-width:1.5;filter:drop-shadow(0 1px 2px rgba(0,0,0,.28));transform-box:fill-box;transform-origin:center;transition:transform .12s ease,fill .12s ease}
+.cellmod-btn:hover .cellmod-dot{fill:#9b7bff;transform:scale(1.18)}
+.cellmod-sign{fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;pointer-events:none}
+.cellmod-remove .cellmod-dot{fill:var(--bad,#d84357)}
+.cellmod-remove:hover .cellmod-dot{fill:#ef5a6e}
+/* A quiet note under a parameter: why something is unavailable right now. */
+.field-note{
+  margin:4px 0 0;font-size:11px;line-height:1.35;color:var(--muted,#93a3bb);
+}
+body.light .field-note{color:#5a6b82}
+
+/* ---- Dividers inside a box ----
+   The wall itself is drawn at its real thickness, in the colour of the box
+   outline, so a divided box reads the way it will print. The handles that
+   put one in are the same pills as everywhere else in the drawing: dashed
+   line where a divider could go, solid where one is. */
+/* The fill is set per box in script (the box's own outline colour); this is
+   only what an oversize box, which keeps its red warning fill, falls back to. */
+.box-divider{fill:#7a1f18;fill-opacity:.9;pointer-events:none}
+/* The box's wall, drawn at the thickness it will be printed at. Clipped to
+   the box in script, so only the inner half of the stroke shows. */
+.box-wall{pointer-events:none}
+.wall-btn{cursor:pointer}
+.wall-hit{stroke:5;fill:none}
+.wall-line{stroke:#9ec5ff;stroke-width:3;stroke-dasharray:5 4;stroke-linecap:round;pointer-events:none}
+/* A divider that is already there needs no line drawn over it: the wall IS
+   the line, and the pale one on top of it read as a second, brighter wall. */
+.wall-btn.on .wall-line{display:none}
+.wall-dot{
+  fill:green;stroke:#fff;stroke-width:2;
+  filter:drop-shadow(0 1px 3px rgba(0,0,0,.35));
+  transform-box:fill-box;transform-origin:center;
+  transition:transform .12s ease,fill .12s ease,opacity .12s ease;
+}
+.wall-btn.on .wall-dot{fill:var(--bad,#d84357)}
+.wall-btn:hover .wall-dot{transform:scale(1.18)}
+.wall-sign{fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;pointer-events:none}
+/* A divider that is already there carries no permanent button: a red pill on
+   the line looked exactly like the "remove this cell" pill sitting a
+   centimetre away in the middle of the cell. The wall itself is the target -
+   the minus appears when the pointer is on it. */
+.wall-btn.on .wall-dot,
+.wall-btn.on .wall-sign{opacity:0.6}
+.wall-btn.on:hover .wall-dot,
+.wall-btn.on:hover .wall-sign{opacity:1}
+
+/* The resize feedback is the box itself stretching (FLIP transform set from
+   script); nothing extra to style here. */
+
+.ghost-add{fill:rgba(140,150,170,.10);stroke:rgba(140,150,170,.42);stroke-width:1;stroke-dasharray:4 3;cursor:pointer}
+.ghost-add:hover{fill:rgba(123,97,255,.20);stroke:rgba(123,97,255,.75);stroke-dasharray:none}
+.ghost-rm:hover{fill:rgba(255,107,122,.20);stroke:rgba(255,107,122,.78)}
+.ghost-plus{fill:none;stroke:#9aa6b8;stroke-width:2;stroke-linecap:round;pointer-events:none}
+body.light .ghost-add{fill:rgba(90,100,120,.07);stroke:rgba(90,100,120,.32)}
+body.light .ghost-plus{stroke:#8a94a6}
+body.light .resize-corner{fill:#fff;stroke:#1976d2}
+svg text{user-select:none;-webkit-user-select:none}
+svg rect,svg path,svg text{-webkit-user-select:none;user-select:none}
+.box-delete{fill:#ff6b7a;font-size:28px;pointer-events:all;cursor:pointer}
+
+.stat{display:flex;justify-content:space-between;margin:8px 0;color:var(--muted)}.stat b{color:var(--text)}.badge{display:inline-block;padding:4px 8px;border-radius:20px;background:#1c2635;color:#a8c8ff}.ok{color:var(--good)}.bad{color:var(--bad)}
+.tip{font-size:12px;color:var(--muted);line-height:1.5}.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+/* Responsive workspace */
+html,body{width:100%;height:100%;overflow:hidden;user-select:none;-webkit-user-select:none}
+body{min-width:0}
+main{height:calc(100vh - 64px);min-height:0}
+aside{min-width:0}
+.center{min-width:0;min-height:0}
+.canvasWrap{min-height:0;height:100%;width:100%}
+svg{min-height:0;height:100%;width:100%;display:block}
+
+@media (max-width:1200px){
+  main{grid-template-columns:minmax(250px,280px) minmax(0,1fr) minmax(220px,250px)}
+  .center{padding:16px}
+  aside{padding:14px}
+}
+
+@media (max-width:620px){
+  html,body{overflow:auto}
+  header{position:sticky;top:0;z-index:20}
+  main{
+    /* No fixed minimum: the rail wraps to two or three rows depending on
+       the phone, so anything measured from the viewport height pushed the
+       tool strip off the bottom. It simply takes what is left. */
+    height:auto;
+    min-height:0;
+    grid-template-columns:1fr;
+  }
+  aside,.right{
+    border:0;
+    border-bottom:1px solid var(--line);
+    max-height:none;
+    overflow:visible;
+  }
+  .center{
+    /* Fills the row instead of measuring itself in vh. A fixed 65vh left a
+       dead band under the tool strip on a phone - grey, gridless, and
+       exactly the sort of thing that makes the drawing look cut off. */
+    min-height:55vh;
+    height:auto;
+    padding:12px;
+    order:-1;
+  }
+  .canvasWrap{height:100%;min-height:0}
+  svg{height:100%;min-height:0}
+  .toolbar{gap:6px}
+  .brand{font-size:13px}
+}
+
+@media (max-width:600px){
+  header{height:auto;min-height:56px;padding:10px 12px;align-items:center}
+  .toolbar .btn{padding:8px 10px;font-size:11px}
+  .center{height:auto;min-height:360px}
+  .row{grid-template-columns:1fr 1fr}
+  .random-panel{grid-template-columns:1fr}
+  .random-panel .full{grid-column:auto}
+}
+
+/*
+ * Narrow window: the tool strip still floats over the bottom of the drawing
+ * (it is small and the drawing is centred), so it gets a backdrop and the
+ * canvas keeps room for it underneath. The strip above is a panel of its
+ * own at every width and needs nothing here.
+ */
+@media (max-width:900px){
+  .ct-bubble{left:8px;top:8px;padding:5px 9px}
+  /*
+   * The strip wraps as whole groups, centred.
+   *
+   * Without flex-wrap on the strip itself the two halves could not move to
+   * a second line, so the right-hand half wrapped inside itself and the
+   * select/hand pair was left stranded on the far left with the fullscreen
+   * button floating on a line of its own. Wrapping here keeps every row a
+   * tidy centred row of complete pills.
+   */
+  /* Written as ".center .canvas-tools" on purpose: the desktop rule that
+     pushes the strip to the right edge lives further down this file, so a
+     plain ".canvas-tools" here loses to it and the first wrapped line ended
+     up hanging off to the right. */
+  .center .canvas-tools{left:0;right:0;bottom:0;padding:10px;gap:6px;
+    flex-wrap:wrap;justify-content:center;align-items:center;
+    background:linear-gradient(0deg,rgba(18,21,29,.92),rgba(18,21,29,0))}
+  .canvas-tools .ct-left,.canvas-tools .ct-right{pointer-events:auto}
+  .canvas-tools .ct-right{flex-wrap:wrap;justify-content:center;gap:6px}
+  /* "Na střed" and "celý návrh" both re-frame the view, so on a phone one
+     of them is enough. */
+  .ct-zoom-val{min-width:34px}
+  #viewCenter{display:none}
+  body.light .canvas-tools{background:linear-gradient(0deg,rgba(243,245,248,.94),rgba(243,245,248,0))}
+}
+/* Light theme - explicit overrides for the original dark UI */
+body.light{
+  --text:#000;
+  background:#f3f5f8;
+  color:var(--text);
+}
+body.light header{
+  background:#ffffff;
+  border-bottom-color:#d5d9df;
+}
+body.light .brand span{color:#1976d2}
+body.light .btn{
+  background:#ffffff;
+  border-color:#cbd1d8;
+  color:#20242a;
+}
+body.light .btn:hover{background:#eef3f8}
+body.light .btn.primary{
+  background:#1976d2;
+  color:#fff;
+  border-color:#1976d2;
+}
+body.light .unit-picker{color:#68707a}
+body.light .unit-picker select,
+body.light input,
+body.light select{
+  background:#ffffff;
+  border-color:#bfc6ce;
+  color:#20242a;
+}
+body.light input:focus,
+body.light select:focus{border-color:#1976d2}
+body.light .stepper button{
+  background:#ffffff;
+  border-color:#cbd1d8;
+  color:#20242a;
+}
+body.light .stepper button:hover{
+  background:#eaf2fb;
+  border-color:#1976d2;
+}
+body.light main{background:#f3f5f8}
+body.light aside{
+  background:#ffffff;
+  border-color:#d5d9df;
+}
+body.light .right{border-left-color:#d5d9df}
+body.light h3{color:#4c5662}
+body.light label{color:#68707a}
+body.light .section,
+body.light .construction-section{border-color:#d5d9df}
+body.light .random-note,
+body.light .tip,
+body.light .stat{color:#68707a}
+body.light .stat b{color:#20242a}
+body.light .range-value b{color:#20242a}
+body.light input[type=range]::-webkit-slider-runnable-track{
+  background:linear-gradient(90deg,#1976d2 var(--range-progress,50%),#d5d9df var(--range-progress,50%));
+}
+body.light input[type=range]::-moz-range-track{background:#d5d9df}
+body.light input[type=range]::-moz-range-progress{background:#1976d2}
+body.light input[type=range]::-webkit-slider-thumb{background:#1976d2;border-color:#fff}
+body.light input[type=range]::-moz-range-thumb{background:#1976d2;border-color:#fff}
+body.light input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 3px rgba(25,118,210,.28)}
+body.light .canvasWrap{
+  background:linear-gradient(145deg,#f8fafc,#e7ebf0);
+  border-color:#cfd5dc;
+}
+body.light .cell{fill:#edf0f4;stroke:#c8ced6}
+body.light .box{fill:#5f8fc2;stroke:#2f679d}
+body.light .box.oversize{fill:#c0392b;stroke:#e8837a}
+body.light .box.sel{fill:#6b9bd0;stroke:#174f83}
+body.light .box-size-label{fill:#edf5ff}
+body.light .badge{color:#24588d}
+body.light .theme-toggle{
+  background:#e7ebef;
+  border-color:#c4cbd3;
+}
+body.light .theme-knob{background:#1976d2}
+
+body.light .danger-btn{border-color:#c83f50}
+body.light .random-seed{color:#1976d2}
+.theme-control{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:11px;font-weight:650}
+.theme-label{min-width:30px}
+.theme-toggle{position:relative;width:58px;height:30px;padding:2px;border:1px solid var(--line);border-radius:999px;background:var(--panel2);cursor:pointer;box-shadow:inset 0 1px 2px rgba(0,0,0,.18)}
+.theme-knob{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:var(--accent);transition:transform .2s ease;box-shadow:0 2px 6px rgba(0,0,0,.3);z-index:2}
+.theme-icon{position:absolute;top:50%;transform:translateY(-50%);font-size:13px;line-height:1;z-index:1;pointer-events:none}
+.theme-moon{left:8px;color:#fff}.theme-sun{right:8px;color:#7a8594}
+body.light .theme-knob{transform:translateX(28px)}
+body.light .theme-moon{color:#89919c}.body.light .theme-sun{color:#fff}
+/* Inputs inside popovers: filled, borderless fields. A bordered input inside
+   the bordered card read as a box in a box; a soft background chip does not.
+   The border comes back (as an accent ring) only while editing. */
+.flyout input[type=text],
+.flyout input[type=number],
+.flyout select{
+  background:rgba(140,150,170,.12);
+  border:1px solid transparent;
+  border-radius:9px;
+  color:var(--text);
+}
+.flyout input[type=text]:hover,
+.flyout input[type=number]:hover,
+.flyout select:hover{background:rgba(140,150,170,.18)}
+.flyout input[type=text]:focus,
+.flyout input[type=number]:focus,
+.flyout select:focus{
+  background:rgba(123,97,255,.10);
+  border-color:var(--accentv);
+  outline:none;
+}
+body.light .flyout input[type=text],
+body.light .flyout input[type=number],
+body.light .flyout select{background:#edf0f5;color:#20242a}
+body.light .flyout input[type=text]:hover,
+body.light .flyout input[type=number]:hover,
+body.light .flyout select:hover{background:#e5e9f0}
+body.light .flyout input[type=text]:focus,
+body.light .flyout input[type=number]:focus,
+body.light .flyout select:focus{background:#fff;border-color:var(--accent,#7b61ff)}
+
+/* Credits popover rows: label left, value right. */
+.cred-rows{display:flex;flex-direction:column;gap:2px;margin-bottom:10px}
+.cred-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;border-bottom:1px solid var(--line);font-size:12.5px}
+.cred-row:last-child{border-bottom:0}
+.cred-row span{color:var(--muted)}
+.cred-row b{color:var(--text);font-variant-numeric:tabular-nums}
+.cred-row[hidden]{display:none}
+[data-panel="credits"] .btn.full{margin-top:8px}
+body.light .cred-row{border-bottom-color:#e2e6ec}
+body.light .cred-row b{color:#20242a}
+body.light .cred-row span{color:#68707a}
+
+/* Preferences flyout (units / language / theme moved off the top bar). */
+[data-panel="prefs"] .panel-body>label{display:block;color:var(--muted);font-size:12px;font-weight:650;margin:0 0 7px}
+[data-panel="prefs"] .unit-picker{margin:0;display:block}
+[data-panel="prefs"] .unit-picker select{width:100%;min-width:0}
+[data-panel="prefs"] .lang-switch{margin:0;width:100%}
+[data-panel="prefs"] .lang-btn{flex:1}
+.pref-theme{display:flex;align-items:center;gap:12px}
+.pref-theme .theme-label{color:var(--muted);font-size:12px;font-weight:650;min-width:0}
+
+/* First-run onboarding card. */
+.onboard-backdrop{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(8,11,18,.62);backdrop-filter:blur(6px)}
+.onboard-backdrop[hidden]{display:none}
+.onboard-card{width:100%;max-width:400px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px 26px 26px;box-shadow:0 24px 60px rgba(0,0,0,.5);text-align:center;animation:onboardIn .28s cubic-bezier(.2,.7,.3,1)}
+@keyframes onboardIn{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+.onboard-logo{display:block;margin:0 auto 12px;border-radius:12px}
+.onboard-card h2{margin:0 0 6px;font-size:20px;color:var(--text)}
+.onboard-lede{margin:0 0 20px;font-size:13px;line-height:1.5;color:var(--muted)}
+.onboard-group{text-align:left;margin-bottom:16px}
+.onboard-label{display:block;font-size:12px;font-weight:650;color:var(--muted);margin-bottom:7px}
+.onboard-lang{width:100%}
+.onboard-lang .lang-btn{flex:1}
+.onboard-seg{display:flex;gap:6px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:4px}
+.onboard-opt{flex:1;padding:9px 6px;border:0;border-radius:7px;background:transparent;color:var(--muted);font-size:13px;font-weight:650;cursor:pointer;transition:background .15s,color .15s}
+.onboard-opt:hover{color:var(--text)}
+.onboard-opt.active{background:var(--accent);color:#fff}
+.onboard-start{margin-top:6px}
+body.light .onboard-backdrop{background:rgba(226,232,240,.66)}
+body.light .onboard-card{background:#fff;border-color:#dbe2ea;box-shadow:0 24px 60px rgba(40,60,90,.22)}
+body.light .onboard-card h2{color:#20242a}
+body.light .onboard-lede,body.light .onboard-label{color:#68707a}
+body.light .onboard-opt{color:#68707a}
+body.light .onboard-seg{background:#f0f3f7;border-color:#d8dde4}
+body.light .onboard-opt.active{background:#1976d2;color:#fff}
+body.light .onboard-opt:hover{color:#20242a}
+
+.box-delete-text{fill:#fff;font-size:10px;font-weight:800;letter-spacing:.7px;text-anchor:middle;dominant-baseline:middle;pointer-events:none;user-select:none}
+.box-delete-text{
+  fill:#fff;font-size:9.5px;font-weight:800;letter-spacing:.5px;
+  pointer-events:none;user-select:none;-webkit-user-select:none;
+}
+.selected-inner-outline{
+  fill:none;
+  stroke:rgba(255,255,255,.28);
+  stroke-width:1;
+  pointer-events:none;
+}
+.selected-cell-outline{fill:rgba(255,255,255,.035);stroke:rgba(255,255,255,.34);stroke-width:1;pointer-events:none}
+
+/*
+ * Telling the selected box from the rest.
+ *
+ * The selected one is lifted off the board rather than the rest being
+ * greyed out: a white ring, a brighter fill (set inline, next to the
+ * positional colour) and a shadow underneath it, which is what makes it
+ * read as picked up. The others keep their own colours - those colours are
+ * how you tell one box from another, and fading them to grey took that
+ * away just when you were comparing them.
+ */
+.box.sel{
+  stroke:#fff;
+  stroke-width:3.5;
+  /* Raised, nothing more. The white halo that used to sit outside the ring
+     read as a second wall around the box now that the box draws its real
+     one - and a wall is a wall. */
+  filter:drop-shadow(0 4px 9px rgba(0,0,0,.5));
+}
+.box.unsel{
+  stroke-opacity:.8;
+  transition:fill-opacity .12s ease,stroke-opacity .12s ease;
+}
+body.light .box.sel{
+  stroke:#0f2f57;
+  filter:drop-shadow(0 4px 9px rgba(20,40,70,.35)) drop-shadow(0 0 4px rgba(255,255,255,.9));
+}
+.box-delete-text{
+  fill:#fff;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.45px;
+  pointer-events:none;
+  user-select:none;
+  -webkit-user-select:none;
+}
+body.light .selected-inner-outline{stroke:rgba(25,118,210,.28)}
+body.light .selected-cell-outline{fill:rgba(255,255,255,.13);stroke:rgba(20,82,140,.34)}
+
+/* ============================================================
+   Studio shell: left nav rail, workspace column, bottom status
+   bar and the canvas tool strip. Mockup-driven redesign.
+   ============================================================ */
+:root{--header-h:0px;--status-h:58px;--nav-w:186px;--nav-w-collapsed:66px;--accentv:var(--accent,#7b61ff);--accentv2:#9b7bff}
+
+/* There is no header bar any more - the brand sits at the top of the rail,
+   so the studio owns the full viewport height. */
+/* The free-hosting banner is injected as a fixed strip at the bottom of the
+   page and would sit on top of the studio. --ad-bottom is measured at
+   runtime (studio.js sets it) and simply shortens the workspace by that
+   much, so nothing of ours ends up underneath it. */
+:root{--ad-bottom:0px;--page-top:0px;--page-bottom:0px}
+/*
+ * The page is a column: workspace, footer, and below them the space the
+ * operator asked for plus whatever the host's banner takes.
+ *
+ * It used to be arithmetic - the workspace was "viewport minus the
+ * reserves" and the footer simply followed it. That only worked while the
+ * reserve happened to be taller than the footer: at 50 px the footer was
+ * 94 px tall, so 44 px of it slid under the banner and the setting looked
+ * broken. Now the footer takes the room it needs and the reserve is real
+ * space underneath it.
+ */
+body{
+  display:flex;flex-direction:column;
+  padding-top:var(--page-top);
+  padding-bottom:calc(var(--ad-bottom) + var(--page-bottom));
+  font-family: Verdana;
+}
+.workspace{flex:1 1 auto;height:auto;min-height:0;min-width:0;display:flex;flex-direction:column}
+.site-foot{flex:0 0 auto}
+.studio-body{flex:1 1 auto;display:flex;min-height:0;min-width:0}
+.studio-body>main{flex:1 1 auto;height:auto;min-height:0;min-width:0;display:grid;grid-template-columns:300px minmax(0,1fr) 290px}
+
+/* Left navigation rail */
+.studio-nav{
+  flex:0 0 auto;width:var(--nav-w);
+  background:var(--panel2,#171c28);border-right:1px solid var(--line);
+  display:flex;flex-direction:column;gap:3px;
+  padding:14px 10px;overflow:auto;
+  transition:width .18s ease;
+}
+.studio-nav .nav-items{display:flex;flex-direction:column;gap:3px}
+.nav-sep{height:1px;background:var(--line);margin:12px 8px}
+.nav-item,.nav-collapse{
+  display:flex;align-items:center;gap:12px;width:100%;
+  padding:10px 12px;border-radius:11px;border:0;background:transparent;
+  color:var(--muted);cursor:pointer;text-align:left;
+  font:650 13.5px Inter,system-ui,sans-serif;letter-spacing:.1px;
+  transition:background .14s ease,color .14s ease;
+}
+.nav-item:hover,.nav-collapse:hover{background:var(--panel2,#141b27);color:var(--text)}
+.nav-item.active{background:linear-gradient(90deg,rgba(123,97,255,.28),rgba(123,97,255,.10));color:var(--text,#e6ecff)}
+.nav-item.active .nav-ico{color:var(--accent,#b3a2ff)}
+/* Account icon doubles as a save indicator. */
+.nav-item .nav-ico{transition:color .2s ease}
+.nav-item.save-ok .nav-ico{color:var(--good)}
+.nav-item.save-err .nav-ico{color:var(--bad)}
+.nav-item.save-wait .nav-ico{color:var(--muted)}
+.nav-ico{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;flex:0 0 22px;color:inherit}
+.nav-ico svg{width:22px;height:22px;display:block}
+.nav-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-collapse{margin-top:auto;font-weight:600}
+.nav-collapse .nav-ico svg{transition:transform .18s ease}
+
+.studio-nav.collapsed{width:var(--nav-w-collapsed)}
+.studio-nav.collapsed .nav-label{display:none}
+.studio-nav.collapsed .nav-item,
+.studio-nav.collapsed .nav-collapse{justify-content:center;padding:10px}
+.studio-nav.collapsed .nav-collapse .nav-ico svg{transform:rotate(180deg)}
+
+/* Bottom status bar */
+.statusbar{
+  flex:0 0 auto;height:var(--status-h);
+  display:flex;align-items:center;gap:30px;
+  padding:0 22px;background:var(--panel2,#171c28);border-top:1px solid var(--line);
+  overflow-x:auto;overflow-y:hidden;
+}
+.statusbar .sb-item{display:flex;align-items:center;gap:11px;white-space:nowrap}
+.sb-ico{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:9px;background:var(--panel,#151d2a);color:var(--accent,#9db6ff);flex:0 0 32px}
+.sb-ico svg{width:18px;height:18px}
+.sb-text{display:flex;flex-direction:column;line-height:1.2}
+.sb-label{font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)}
+.sb-text b{font-size:13px;color:var(--text);font-weight:700;font-variant-numeric:tabular-nums}
+.sb-saved{margin-left:auto}
+.sb-check{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:rgba(98,214,154,.16);color:var(--good);flex:0 0 26px}
+.sb-check svg{width:15px;height:15px}
+
+/* The drawing area fills its whole column, no rounded corners or frame. */
+.center{padding:0}
+.canvasWrap{border-radius:0;border:0}
+
+/* Canvas tool strip - floats over the bottom of the drawing, but the drawing
+   keeps a band clear for it, so the strip never sits on top of a box. */
+.center{position:relative}
+.canvas-tools{display:flex;justify-content:flex-end;align-items:center;gap:12px;position:absolute;left:16px;right:16px;bottom:16px;z-index:15;pointer-events:none}
+.canvas-tools .ct-right{pointer-events:auto}
+/* No padding here on purpose: padding would shrink the <svg> inside, and the
+   band left over showed the wrapper's plain background - a grey strip with no
+   grid on it. The room for the strip is reserved inside the drawing (PB in
+   layout()) instead. */
+/*
+ * Drawer size, tucked into the corner of the drawing.
+ *
+ * This used to be a band across the top with the selection tools next to
+ * it. The band ate a stripe of working area on every screen and the tools
+ * sat far away from the box they acted on, so neither looked like it
+ * belonged. The whole column is canvas now; this reads as a note on it.
+ */
+.ct-bubble{
+  position:absolute;left:14px;top:12px;z-index:14;
+  display:flex;flex-direction:column;gap:2px;line-height:1.1;
+  padding:7px 11px;border-radius:12px;
+  background:rgba(21,27,39,.82);border:1px solid var(--line);
+  backdrop-filter:blur(4px);
+  pointer-events:none;        /* it only reports, so it never blocks a drag */
+}
+.ct-bubble[hidden]{display:none}
+.ct-bubble .badge{white-space:nowrap;background:transparent;border:0;padding:0;}
+body.light .ct-bubble{background:rgba(255,255,255,.86);border-color:#d9dee6}
+
+/*
+ * The selected box speaks for itself: a bubble parked against the box,
+ * with its size and the two things you do to it. Script places it (see
+ * placeSelBubble) and flips the tail when there is no room above.
+ */
+.sel-bubble{
+  position:absolute;z-index:16;
+  display:flex;align-items:center;gap:8px;
+  padding:6px 8px;border-radius:12px;
+  background:linear-gradient(135deg,rgba(35,43,62,.97),rgba(21,27,39,.94));border:1px solid rgba(123,97,255,.52);
+  box-shadow:0 8px 26px rgba(0,0,0,.38),0 0 0 1px rgba(123,97,255,.12) inset;
+  backdrop-filter:blur(4px);
+  white-space:nowrap;
+}
+.sel-bubble[hidden]{display:none}
+body.light .sel-bubble{background:linear-gradient(135deg,#fff,#f5f3ff);border-color:rgba(108,82,220,.4);box-shadow:0 8px 26px rgba(20,40,70,.16),0 0 0 1px rgba(123,97,255,.09) inset}
+.sel-tools-info{padding:5px 8px;border-radius:8px;background:rgba(110,168,255,.13);color:#b9d6ff;font-size:11px;font-weight:800;font-variant-numeric:tabular-nums}
+body.light .sel-tools-info{background:rgba(110,168,255,.13);color:#1762b5}
+.sel-tool{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;flex:none;padding:0;border:1px solid transparent;border-radius:9px;background:transparent;color:var(--muted);cursor:pointer;transition:background .14s ease,color .14s ease,border-color .14s ease,transform .12s ease}
+.sel-tool svg{width:16px;height:16px;display:block}
+.sel-tool:hover{background:rgba(123,97,255,.12);color:var(--text)}
+.sel-tool.danger:hover{background:var(--bad);color:#fff;border-color:var(--bad)}
+body.light .sel-tool:hover{background:rgba(123,97,255,.10);color:var(--text)}
+body.light .sel-tool.danger:hover{background:var(--bad);color:#fff;border-color:var(--bad)}
+/* The tail points at the box, above or below depending on where it fits. */
+.sel-bubble::after{
+  content:"";position:absolute;left:var(--tail,50%);width:10px;height:10px;
+  margin-left:-5px;transform:rotate(45deg);
+  background:inherit;border:1px solid var(--line);
+}
+.sel-bubble.below::after{top:-6px;border-right:0;border-bottom:0}
+.sel-bubble:not(.below)::after{bottom:-6px;border-left:0;border-top:0}
+.sel-bubble.detached::after{display:none}
+body.light .sel-bubble::after{border-color:#d5d9df}
+/* While a box is being dragged the bubble follows it, but faintly and out
+   of the way - it must never end up under the pointer mid-drag. */
+.sel-bubble.is-dragging{opacity:.45;pointer-events:none}
+.ct-chip{display:flex;flex-direction:column;gap:2px;line-height:1.1}
+.ct-chip-label{font-size:8.5px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);}
+.ct-right{display:flex;align-items:center;gap:10px}
+
+/*
+ * One height for the whole strip.
+ *
+ * Every group is a pill of the same 42px, whether it holds one button or
+ * three: a lone button, the mode pair and the zoom stepper used to be three
+ * different sizes sitting next to each other, which is what made the row
+ * look thrown together. The buttons inside stay 34px and the pill's own
+ * padding does the rest.
+ */
+.ct-modes,.ct-zoom,.ct-hist,.canvas-tools .ct-btn{
+  height:42px;
+  box-sizing:border-box;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#1b2130;
+}
+.ct-modes,.ct-zoom,.ct-hist{display:flex;align-items:center;gap:2px;padding:3px}
+.ct-hist[hidden]{display:none}
+.ct-hist .ct-btn:disabled{opacity:.35;cursor:default}
+.ct-hist .ct-btn:disabled:hover{background:transparent;color:var(--muted)}
+.canvas-tools .ct-btn{width:42px}
+
+.ct-btn{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;flex:none;border-radius:9px;background:transparent;border:1px solid transparent;color:var(--muted);cursor:pointer;transition:background .14s ease,color .14s ease,border-color .14s ease}
+.ct-btn svg{width:16px;height:16px}
+.wall-mode-btn,.free-mode-btn{position:relative;overflow:visible}
+.wall-mode-btn.guest-lock,.free-mode-btn.guest-lock{color:var(--muted)}
+.wall-mode-btn.guest-lock>svg:first-child,.free-mode-btn.guest-lock>svg:first-child{opacity:.42}
+.wall-mode-btn .ct-lock,.free-mode-btn .ct-lock{position:absolute;right:1px;bottom:1px;width:14px;height:14px;border-radius:50%;background:var(--bad);color:#fff;display:inline-flex;align-items:center;justify-content:center;pointer-events:none;}
+.wall-mode-btn .ct-lock svg,.free-mode-btn .ct-lock svg{width:8px;height:8px;display:block}
+.wall-mode-btn.guest-lock:hover .ct-lock,.free-mode-btn.guest-lock:hover .ct-lock{transform:scale(1.05)}
+.wall-mode-btn:not(.guest-lock) .ct-lock,.free-mode-btn:not(.guest-lock) .ct-lock{display:none}
+.wall-mode-btn.active:disabled,.free-mode-btn.active:disabled{cursor:default;color:#cbbcff}
+.wall-mode-btn{order:1}.ct-wall-grid{order:2;display:inline-flex;align-items:center;gap:2px;margin-left:2px;padding-left:4px;border-left:1px solid var(--line)}.free-mode-btn{order:3}
+.ct-wall-grid[hidden]{display:none}
+.ct-grid-btn{width:32px;height:28px;padding:0;border-radius:7px;font:800 9px/1 Inter,system-ui,sans-serif;letter-spacing:-.2px}
+.ct-grid-btn.active{background:rgba(123,97,255,.22);border-color:var(--accent,#7b61ff);color:#f1efff;box-shadow:0 0 0 1px rgba(123,97,255,.18) inset}
+body.light .ct-grid-btn.active{color:#4d36ad}
+
+.ct-btn:hover{background:#182130;color:var(--text)}
+/* Inside a pill the buttons keep no frame of their own - the pill is the frame. */
+.ct-modes .ct-btn,.ct-zoom .ct-btn,.ct-hist .ct-btn{width:34px;height:34px;border:0;background:transparent;border-radius:9px}
+.ct-modes .ct-btn.active{background:rgba(123,97,255,.20);color:#cbbcff}
+.ct-zoom-val{min-width:44px;text-align:center;font-size:11px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums}
+.ct-fs{border:1px solid var(--line);background:#1b2130}
+/* Quick "clear layout" by the canvas - red on hover so it reads as destructive. */
+.ct-danger{border:1px solid var(--line);background:#1b2130}
+.ct-danger:hover{background:rgba(216,67,87,.18);color:#ff8fa0;border-color:rgba(216,67,87,.45)}
+body.light .ct-danger{background:#ffffff;border-color:#d5d9df;color:#5a6472}
+body.light .ct-danger:hover{background:#fdecee;color:#c22b3f;border-color:#efb3bc}
+
+/* Purple accent for the primary actions, matching the mockup */
+.export-trigger{background:linear-gradient(135deg,var(--accentv),var(--accentv2));color:#fff;border-color:transparent}
+.export-trigger:hover{filter:brightness(1.06)}
+.export-trigger.is-busy::after{border-color:rgba(255,255,255,.45);border-top-color:#fff}
+#randomBtn{background:linear-gradient(135deg,var(--accentv),var(--accentv2));color:#fff;border-color:transparent;font-weight:750;height: 50px;margin-top: 15px;font-size: 16px;}
+#randomBtn:hover{filter:brightness(1.06)}
+
+/* Zoom transform applied to the canvas */
+.canvasWrap{touch-action:none;cursor:grab}
+.canvasWrap.panning{cursor:grabbing}
+#svg{transform-origin:center center}
+
+/* Canvas tool toggles */
+#svg.hide-grid .cell{display:none}
+#svg.hide-labels .box-size-label{display:none}
+
+/* Nav "jump to section" highlight */
+@keyframes navflash{0%{box-shadow:0 0 0 0 rgba(123,97,255,.5)}100%{box-shadow:0 0 0 8px rgba(123,97,255,0)}}
+.panel.nav-flash{border-radius:12px;animation:navflash .9s ease-out}
+
+/* ============================================================
+   Icon-only rail + on-demand settings flyouts (V3). The side
+   panels are moved into floating popovers by JS, so the canvas
+   takes the whole width and the rail is just icons.
+   ============================================================ */
+.studio-body{position:relative}
+
+.studio-nav{width:68px;padding:12px 9px;scrollbar-width:none}
+.studio-nav::-webkit-scrollbar{display:none}
+.studio-nav .nav-label{display:none}
+/* Same left padding collapsed and expanded, so icons stay put when the rail
+   widens - only the labels appear, nothing shifts. 13.5px on both sides of a
+   23px icon inside the 50px item = mathematically centred when collapsed. */
+.studio-nav .nav-item{justify-content:flex-start;padding:10px 13.5px;position:relative}
+.studio-nav .nav-item .nav-ico{width:23px;height:23px;flex:0 0 23px}
+
+/* Brand at the top of the rail: collapsed shows only the logo, expanded adds
+   the name with the subtitle underneath. */
+/* 12px sides centre the 26px logo in the collapsed rail; the same padding in
+   the expanded state keeps the logo from moving when the text appears. */
+.nav-brand{display:flex;align-items:center;gap:10px;padding:2px 12px 8px;text-decoration:none;color:inherit}
+body.nav-expanded .nav-brand .brand-text{animation:navLabelIn .16s ease .14s both}
+.nav-brand .brand-logo{display:block;border-radius:8px;flex:0 0 auto}
+.nav-brand .brand-mark{font-weight:800;font-size:15px;letter-spacing:.2px;line-height:1.1;color:var(--text)}
+.nav-brand .brand-sub{font-size:9.5px;font-weight:500;color:var(--muted);letter-spacing:.2px;line-height:1.1}
+
+/* Canvas fills the row; the emptied panel columns are gone. */
+.studio-body>main{grid-template-columns:minmax(0,1fr)}
+.studio-body>main>aside{display:none!important}
+
+/* Floating popover layer, pinned just right of the rail */
+.flyout-layer{position:absolute;top:0;bottom:0;left:68px;right:auto;width:0;overflow:visible;pointer-events:none;z-index:60;transition:left .18s ease}
+/* Keep the popovers just past the rail when it widens into label mode. */
+.studio-body:has(.studio-nav.expanded) .flyout-layer{left:260px}
+.flyout{
+  position:absolute;left:14px;top:14px;
+  /* A third wider than it was: with the value boxes lined up on the right,
+     300px left the sliders cramped. The max-width still gives way on a
+     narrow window, and on a phone the sheet takes the full width anyway. */
+  width:400px;max-width:min(430px,calc(100vw - 110px));
+  max-height:calc(100% - 28px);overflow:auto;
+  background:var(--panel);border:1px solid var(--line);border-radius:16px;
+  box-shadow:0 26px 64px -22px rgba(0,0,0,.75),0 6px 18px rgba(0,0,0,.4);
+  padding:8px 15px 15px;pointer-events:auto;
+  animation:flyin .16s ease;
+  /*
+   * The popover's own scrollbar, in the studio's colours.
+   *
+   * "scrollbar-width:thin" alone left the operating system to paint it,
+   * so a bright grey-and-white bar ran down the side of a dark panel. Both
+   * syntaxes are here on purpose: Firefox reads scrollbar-color, the
+   * WebKit and Blink browsers read the pseudo-elements.
+   */
+  scrollbar-width:thin;
+  scrollbar-color:#3a4457 transparent;
+}
+.flyout::-webkit-scrollbar{width:10px;height:10px}
+.flyout::-webkit-scrollbar-track{background:transparent}
+.flyout::-webkit-scrollbar-thumb{
+  background:#3a4457;border-radius:6px;
+  /* The border is the gap: a thumb painted edge to edge looks like a bar
+     stuck to the panel rather than something that slides in a groove. */
+  border:3px solid transparent;background-clip:content-box;
+}
+.flyout::-webkit-scrollbar-thumb:hover{background:#4c5870;background-clip:content-box}
+body.light .flyout{scrollbar-color:#c3cad4 transparent}
+body.light .flyout::-webkit-scrollbar-thumb{background:#c3cad4;background-clip:content-box}
+body.light .flyout::-webkit-scrollbar-thumb:hover{background:#a9b2bf;background-clip:content-box}
+@keyframes flyin{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
+.flyout[hidden]{display:none}
+.flyout .panel{border:0!important;padding:0!important;margin:0!important;background:transparent!important}
+/* Flyout rhythm: room between fields and a rule before each sub-section, so
+   the settings read as groups instead of one monotonous column. */
+.flyout .field{margin-bottom:18px}
+.flyout .field:last-child{margin-bottom:6px}
+.flyout .construction-section{margin-top:24px;padding-top:18px;border-top:1px solid var(--line)}
+.flyout .construction-section h3{
+  font-size:11.5px;
+  letter-spacing:.9px;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin:0 0 14px;
+}
+.flyout .construction-section .field.slim{margin-bottom:16px}
+/* The editor mode is the first decision in Size & construction. It needs its
+   own full-width card instead of being squeezed into the two-column layout
+   used by numeric fields below. */
+.flyout .wall-mode-control{
+  margin:0 0 22px;padding:13px;border:1px solid var(--line);border-radius:13px;
+  background:linear-gradient(135deg,rgba(123,97,255,.11),rgba(42,99,176,.05));
+  box-shadow:0 7px 20px rgba(4,10,23,.10);
+}
+.wall-mode-control>label,.wall-grid-field>label{
+  display:block;margin:0 0 8px;color:var(--muted);font-size:10.5px;
+  font-weight:800;letter-spacing:.7px;text-transform:uppercase;
+}
+.wall-mode-choice,.wall-grid-choice{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.wall-mode-choice button,.wall-grid-choice button{min-height:42px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);color:var(--muted);font:750 11px/1.15 inherit;cursor:pointer;transition:background .14s ease,border-color .14s ease,color .14s ease,transform .14s ease}
+.wall-mode-choice button{min-height:50px;font-size:12px;font-weight:800;letter-spacing:.15px}
+.wall-mode-choice button:hover:not(:disabled),.wall-grid-choice button:hover:not(:disabled){background: var(--muted);color:#000000;}
+.wall-mode-choice button.active,.wall-grid-choice button.active{background:rgba(123,97,255,.18);border-color:var(--good);color:#d9d0ff;box-shadow:0 0 0 1px rgba(123,97,255,.14) inset}
+.wall-mode-choice button:disabled,.wall-grid-choice button:disabled{opacity:.45;cursor:not-allowed}
+.wall-mode-choice button.active:disabled{opacity:1;cursor:default}
+.wall-grid-field{margin-top:13px;padding-top:12px;border-top:1px solid rgba(123,97,255,.22)}
+.wall-grid-field[hidden]{display:none}
+.wall-grid-field.is-locked{opacity:.72}
+.wall-grid-state{display:block;margin-top:8px;color:var(--muted);font-size:11px;line-height:1.35}
+body.light .wall-mode-choice button{
+  background:#dfe2e7;
+  color:#121923;
+  text-transform:uppercase;
+  font-weight:800;
+  font-size:12px;
+  letter-spacing:.15px;
+  border-color:#d7dce3;
+}
+body.light .wall-mode-choice button:hover:not(:disabled){
+  background:#e7e9ed;
+  color:#121923;
+  border-color:#cbd1d9;
+}
+body.light .wall-mode-choice button.active{
+  color:#fff;
+  font-weight:800;
+  text-transform:uppercase;
+  font-size:12px;
+  letter-spacing:.15px;
+  background:#225a96;
+  border-color:#225a96;
+  box-shadow:0 2px 4px rgba(34,90,150,.16);
+}
+body.light .wall-mode-choice button.active:hover:not(:disabled){
+  background:#225a96;
+  border-color:#225a96;
+  color:#fff;
+}
+body.light .wall-grid-choice button{background:#f8f9fc}
+body.light .wall-grid-choice button.active{color:#4d36ad}
+body.light .flyout .wall-mode-control{background:linear-gradient(135deg,rgba(106,83,225,.09),rgba(38,111,200,.04));box-shadow:0 7px 20px rgba(31,55,88,.08)}
+/* The popover's close cross is absolutely positioned in the same corner the
+   fold button lives in, so the head keeps that corner free and the fold sits
+   to the left of it instead of underneath. */
+.flyout .panel-head{cursor:default;padding-right:44px}
+.flyout .panel-head .chev{display:none}
+.flyout-close{position:absolute;top:12px;right:12px;width:32px;height:32px;padding:0;border:0;border-radius:8px;background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:3;transition:background .15s ease,color .15s ease,transform .15s ease}.flyout-close:hover{background:var(--bad);color:#fff}.flyout-close:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.flyout-close svg{width:16px;height:16px;display:block}
+
+/* Full-screen help panel (the Návod popover) + its live limits box. */
+.flyout-backdrop{position:fixed;inset:0;background:rgba(8,11,18,.22);z-index:55}
+.flyout-backdrop[hidden]{display:none}
+.flyout.flyout-full{position:fixed;left:50%;top:50%;bottom:auto;transform:translate(-50%,-50%);width:min(720px,94vw);max-width:none;height:min(84vh,900px);max-height:84vh;border-radius:18px;z-index:80;padding:24px 28px 20px;animation:none}
+.help-limits{margin:4px 0 8px;border:1px solid var(--line);border-radius:12px;padding:11px 13px;background:rgba(123,97,255,.07)}
+.hl-title{font-size:10.5px;text-transform:uppercase;letter-spacing:.7px;color:var(--accentv);font-weight:800;margin-bottom:6px}
+.hl-row{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;padding:3px 0}
+.hl-row span{color:var(--muted)}
+.hl-row b{color:var(--text);text-align:right}
+body.light .help-limits{background:rgba(123,97,255,.05)}
+@media (min-width:760px){
+  .flyout.flyout-full .help{column-count:2;column-gap:30px}
+  .flyout.flyout-full .help>h4{break-inside:avoid}
+  /* The account block is one thought - it must not be sawn in half by the
+     column break. */
+  .flyout.flyout-full .help-pro{break-inside:avoid}
+  .flyout.flyout-full .help-lead,.flyout.flyout-full .help-limits{column-span:all}
+}
+
+body.light .flyout{background:#ffffff;border-color:#d5d9df;box-shadow:0 24px 60px -22px rgba(15,30,60,.28),0 6px 16px rgba(15,30,60,.12)}
+body.light .nav-brand .brand-mark{color:#20242a}
+
+/* Phones: rail is a tidy icon row (no visible scrollbar), popovers slide up
+   from the bottom as sheets. */
+@media (max-width:620px){
+  .studio-nav{justify-content:flex-start;scrollbar-width:none}
+  .studio-nav::-webkit-scrollbar{display:none}
+  .studio-nav .nav-item{padding:9px}
+  .flyout-layer{position:fixed;inset:auto 0 0 0;left:0;width:100%;height:0;z-index:70}
+  .flyout{
+    position:fixed;left:0;right:0;bottom:0;top:auto;
+    width:100%;max-width:none;max-height:72vh;
+    border-radius:18px 18px 0 0;
+    animation:flyup .2s ease;
+  }
+  .flyout-close{top:14px;right:14px}
+  /* The locked-feature card is a sheet like every other popover here. Its
+     desktop width of 280px is set further down this file, so this needs the
+     extra class to win - as a bare .flyout-locked it lost and the card sat
+     as a narrow box in the corner of the screen. */
+  .flyout.flyout-locked{width:100%;max-width:none}
+}
+@keyframes flyup{from{transform:translateY(100%)}to{transform:none}}
+
+/* Dimensions no longer carry +/- steppers - just the number field and slider. */
+.stepper{grid-template-columns:1fr}
+.stepper button{display:none}
+
+/* Centre the range thumb on its 6px track (the border was pushing it off). */
+input[type=range]{height:22px}
+input[type=range]::-webkit-slider-thumb{width:18px;height:18px;margin-top:-6px;border-width:2px;box-sizing:border-box}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-width:2px;box-sizing:border-box}
+
+/* Red warning badge on the rail icon whose panel holds the Fix button, so an
+   invalid layout is visible even with every popover closed. */
+.nav-item{position:relative}
+.nav-item.has-error::after{
+  content:'!';
+  position:absolute;top:5px;right:7px;
+  width:15px;height:15px;border-radius:50%;
+  background:var(--bad);color:#2a0409;
+  font-size:11px;font-weight:900;line-height:15px;text-align:center;
+  box-shadow:0 0 0 2px var(--panel2,#171c28);
+}
+.studio-nav.collapsed .nav-item.has-error::after,
+.studio-nav .nav-item.has-error::after{top:5px;right:7px}
+body.light .nav-item.has-error::after{box-shadow:0 0 0 2px #fff}
+
+/* ---- Double-mode rail: icon-only, or widened with category labels ---- */
+.nav-item{text-decoration:none}
+.studio-nav.expanded{width:260px}
+/* Labels slide in only after the rail has widened, so nothing squeezes or
+   jumps mid-transition. Icons never move - same padding both states. */
+.studio-nav.expanded .nav-label{display:block;animation:none}
+@keyframes navLabelIn{from{opacity:0;transform:translateX(-5px)}to{opacity:1;transform:none}}
+.studio-nav.expanded .nav-item{justify-content:flex-start;padding:10px 13.5px;gap:12px}
+/* Single-line labels sit on the icon's vertical centre. */
+.nav-label{line-height:23px}
+.nav-toggle{display:flex;align-items:center;justify-content:flex-start;gap:12px;width:100%;margin-top:auto;padding:10px 13.5px;border:0;background:transparent;color:var(--muted);cursor:pointer;border-radius:11px;font:600 13px Inter,system-ui,sans-serif}
+.nav-toggle:hover{background:var(--panel2,#141b27);color:var(--text)}
+.nav-toggle .nav-ico{width:23px;height:23px;flex:0 0 23px;display:inline-flex}
+.nav-toggle .nav-ico svg{width:22px;height:22px;transition:transform .18s ease}
+.studio-nav.expanded .nav-toggle{justify-content:flex-start;padding:10px 13.5px}
+.studio-nav.expanded .nav-toggle .nav-label{animation:navLabelIn .16s ease .14s both}
+.studio-nav.expanded .nav-toggle .nav-ico svg{transform:rotate(180deg)}
+.nav-toggle .nav-label{display:none}
+.studio-nav.expanded .nav-toggle .nav-label{display:block}
+body.light .nav-toggle{color:#5b6472}
+body.light .nav-toggle:hover{background:#eef2f7;color:#20242a}
+
+/* Export options rendered inside their popover */
+.flyout .export-option{width:100%;margin-bottom:4px}
+.flyout .export-menu-note{margin-top:4px}
+
+@media (max-width:620px){
+  .studio-nav.expanded{width:auto}
+  .studio-nav.expanded .nav-label{display:none}
+  .studio-nav.expanded .nav-item{justify-content:center;padding:9px}
+  .nav-toggle{display:none}
+}
+
+/* Locked rail icons: the icon dims and a red padlock sits on top of it. */
+.nav-item.guest-lock .nav-ico{opacity:.45}
+.nav-item.guest-lock:hover .nav-ico{opacity:.6}
+.nav-lock{position:absolute;bottom:5px;right:5px;width:15px;height:15px;border-radius:50%;background:var(--bad);color:#fff;display:inline-flex;align-items:center;justify-content:center;pointer-events:none;box-shadow:0 0 0 2px var(--panel2,#171c28)}
+.nav-lock svg{width:9px;height:9px;display:block}
+.studio-nav.expanded .nav-lock{bottom:auto;top:50%;transform:translateY(-50%);right:12px}
+body.light .nav-lock{box-shadow:0 0 0 2px #fff}
+
+/*
+ * One shape for every parameter, whichever panel it lives in.
+ *
+ * Name and its "i" on the left, the value in a box on the right, the slider
+ * across the width below them, the two ends of the scale under that. It used
+ * to be two different layouts - the drawer sizes had the number on its own
+ * line and a middle row repeating min/value/max, the construction ones put
+ * the number to the LEFT of the slider - so nothing lined up down the panel.
+ *
+ * The rows are placed explicitly, and the wrappers are display:contents, so
+ * the same grid holds fields whose markup nests differently.
+ */
+.field{display:grid;grid-template-columns:minmax(0,1fr) 92px;align-items:center;gap:4px 10px}
+.field>label{grid-column:1;grid-row:1;margin:0;display:flex;align-items:center;gap:4px;min-width:0}
+.field .stepper{grid-column:2;grid-row:1;margin:0}
+.field input[type=text]{padding:7px 8px;text-align:center}
+.field .range-wrap{display:contents}
+.field .range-wrap input[type=range]{grid-column:1/-1;grid-row:2}
+.field .slim-row{display:contents}
+.field .slim-row input[type=text]{grid-column:2;grid-row:1}
+.field .slim-row input[type=range]{grid-column:1/-1;grid-row:2}
+/* The ends of the scale: worth keeping, they say what the slider spans
+   without having to drag it. The value between them is the number box. */
+.field .range-value,
+.field .range-ends{
+  grid-column:1/-1;grid-row:3;
+  display:flex;justify-content:space-between;align-items:center;
+  margin:0;color:var(--muted);font-size:10.5px;
+}
+.field .range-value b{display:none}
+.field .hint{grid-column:1/-1;grid-row:4;margin:2px 0 0}
+/* A hairline between parameters, the same dashed rule that separates
+   Construction from the sizes above it - one kind of divider in the panel,
+   not two. Without it the ends of one scale and the name of the next ran
+   together into a column of small grey text. */
+.field+.field{border-top:1px dashed var(--line);padding-top:10px;margin-top:10px}
+body.light .field+.field{border-top-color:#dde2e9}
+/* The name of a parameter carries a little more weight than its numbers. */
+.field>label{font-weight:650;color:var(--text)}
+body.light .field>label{color:#20242a}
+.field.slim{margin-top:12px}
+input[type=range]{height:26px}
+.radius-preview{display:inline-flex;color:var(--accentv)}
+.radius-preview svg{display:block}
+
+/* Credits in the rail: gold coin with the balance right under it (collapsed)
+   or beside it (expanded), so the number is always readable. */
+.nav-credits{flex-direction:column;align-items:center;gap:3px;padding:8px 4px}
+.nav-credits .nav-ico{color:#e9b949}
+/* The diamond is for unlimited exports only; a per-export account gets the
+   credit mark and its balance. Exactly one of the two is ever shown, so a
+   plan that starts or expires while the page is open just flips a class. */
+.nav-credits .cred-mark{
+  display:none;font-size:12px;font-weight:800;letter-spacing:.5px;line-height:1;
+}
+.nav-credits:not(.is-unlimited) .cred-gem{display:none}
+.nav-credits:not(.is-unlimited) .cred-mark{display:inline-block}
+/* Unlimited needs no number - the diamond is the whole message. */
+.nav-credits.is-unlimited .nav-label{display:flex!important}
+.nav-credits.has-free .cred-gem{display:none}.nav-credits.has-free .cred-mark{display:inline-block;color:#4cdbb0;font-size:10px}
+.studio-nav.expanded .nav-credits.is-unlimited .nav-label{justify-content:flex-start;font-size:12px}.studio-nav.expanded .nav-credits.has-free .nav-label{justify-content:flex-start;font-size:12px}
+.nav-signout{color:var(--bad)!important}.nav-signout:hover{background:rgba(255,107,122,.12)!important}.nav-admin .nav-ico{color:#72d7ff}
+.studio-nav:not(.expanded) .nav-credits.is-unlimited .nav-label,.studio-nav:not(.expanded) .nav-credits.has-free .nav-label{display:none!important}
+.studio-nav.expanded .nav-credits .nav-label{white-space:nowrap;overflow:visible;max-width:none}
+.admin-message-count{margin-left:5px;color:var(--muted);font:inherit;font-weight:700;white-space:nowrap}
+
+/* A visitor's remaining free exports: blue while there are some, red at
+   zero. The unit stays visible at both rail widths - the number alone did
+   not say what it was counting. */
+/* The count keeps its own colour even while the popover is open, where the
+   rail otherwise paints the active item purple - "none left" has to stay
+   red whether or not you happen to be looking at the panel. */
+.nav-guest-quota .nav-ico,
+.nav-guest-quota.active .nav-ico{color:var(--accent)}
+.nav-guest-quota.is-empty .nav-ico,
+.nav-guest-quota.is-empty.active .nav-ico{color:var(--bad)}
+.nav-guest-quota .cred-mark{display:inline-block;font-size:13px;font-weight:800;line-height:1}
+.nav-guest-unit{text-transform:uppercase;letter-spacing:.4px}
+body.light .nav-guest-quota .nav-ico,
+body.light .nav-guest-quota.active .nav-ico{color:#1f6feb}
+body.light .nav-guest-quota.is-empty .nav-ico,
+body.light .nav-guest-quota.is-empty.active .nav-ico{color:#c2384a}
+.nav-credits .nav-label{display:flex!important;align-items:baseline;justify-content:center;font-size:12px;color:var(--text)}
+.nav-credits .nav-label b{font-weight:800}
+/* The infinity glyph renders tiny at text size - bump it so it reads clearly. */
+.nav-credits .nav-label b.is-inf{font-size:19px;line-height:1}
+body.light .nav-credits .nav-label{color:#20242a}
+.nav-cred-unit{opacity:.65;font-weight:600;font-size:9.5px}
+.studio-nav:not(.expanded) .nav-credits .nav-cred-unit{display:none}
+.studio-nav.expanded .nav-credits{flex-direction:row;align-items:center;gap:12px;padding:10px 13px}
+.studio-nav.expanded .nav-credits .nav-label{font-size:13px}
+.studio-nav.expanded .nav-credits .nav-cred-unit{margin-left:2px}
+.nav-credits.changed .nav-ico{animation:navflash .7s ease-out}
+/* Guests use the former credit position for a quota counter. It is numeric,
+   so it cannot be mistaken for the diamond reserved for unlimited accounts. */
+.nav-guest-quota .nav-ico{display:flex;align-items:center;justify-content:center}
+/* Inherit, so the blue/red state set on .nav-ico above actually reaches the
+   number - a colour of its own here quietly won every time. */
+.nav-guest-quota .cred-mark{font-size:18px;letter-spacing:0;color:inherit}
+.nav-guest-quota .nav-label{font-size:11px}
+/* The unit stays visible on the narrow rail: "3" alone said nothing. */
+.studio-nav:not(.expanded) .nav-guest-quota .nav-label{display:block!important;font-size:9px;line-height:1;margin-top:1px}
+/* The credits item hides its unit on the collapsed rail (the coin says what
+   it is). A visitor's counter is a bare number, so its unit has to stay -
+   and this has to come after that rule to win. */
+.studio-nav:not(.expanded) .nav-guest-quota .nav-guest-unit{display:inline}
+.studio-nav.expanded .nav-guest-quota .nav-label{font-size:13px}
+
+/* Large monitors (above full HD): everything scaled for 1080p reads tiny on
+   a 1440p/4K panel, so the shell steps its sizes up a notch. The in-canvas
+   drawing scales itself in script from the same breakpoint idea. */
+@media (min-width:1800px){
+  .studio-nav{width:84px;padding:14px 11px}
+  .studio-nav .nav-item{padding:12px 16px}
+  .studio-nav .nav-item .nav-ico{width:28px;height:28px;flex:0 0 28px}
+  .nav-ico svg{width:28px;height:28px}
+  .studio-nav.expanded{width:260px}
+  .nav-label{font-size:15px;line-height:28px}
+  .nav-brand .brand-logo{width:32px;height:32px}
+  .nav-brand .brand-mark{font-size:17px}
+  .nav-brand .brand-sub{font-size:11px}
+  .flyout{width:465px;max-width:min(500px,calc(100vw - 130px))}
+  .flyout-layer{left:84px}
+  .studio-body:has(.studio-nav.expanded) .flyout-layer{left:260px}
+  .panel-head h3{font-size:15.5px}
+  .panel-body{font-size:14px}
+  .ct-chip-label{font-size:12px}
+  .ct-bubble .badge{font-size:14px}
+  .ct-zoom-val{min-width:56px;font-size:14px}
+  .ct-btn{width:44px;height:44px}
+  .ct-btn svg{width:22px;height:22px}
+  .nav-credits .nav-label{font-size:14px}
+  .nav-credits .nav-label b.is-inf{font-size:23px}
+}
+
+/* Sign-in is the one call to action for a visitor, so give it the accent. */
+.nav-signin{color:var(--accentv)}
+.nav-signin .nav-ico{color:var(--accentv)}
+
+/* Phone rail: one tidy horizontal row - logo first, then the tool icons in
+   their groups with slim separators, account icons at the end. */
+@media (max-width:620px){
+  /* The strip floats semi-transparent over the drawing on small screens -
+     all of its groups the same way, or one of them stands out as a mistake. */
+  .ct-modes,.ct-zoom,.ct-hist,.canvas-tools .ct-btn{opacity:.62;background:rgba(27,33,48,.55);backdrop-filter:blur(3px)}
+  .ct-modes:hover,.ct-zoom:hover,.ct-hist:hover,.canvas-tools .ct-btn:hover{opacity:1}
+  body.light .ct-modes,body.light .ct-zoom,body.light .ct-hist,body.light .canvas-tools .ct-btn{background:rgba(255,255,255,.6)}
+  .nav-brand{padding:0 6px;flex:0 0 auto;align-self:center}
+  .nav-brand .brand-logo{width:26px;height:26px}
+  .nav-brand .brand-text{display:none!important}
+  .nav-toggle{display:none}
+}
+
+/* Locked / JSON options inside the Export popover */
+.export-option.locked{text-decoration:none;color:var(--text)}
+.export-option.locked .fmt{opacity:.6}
+.export-option .opt-lock{margin-left:auto;color:var(--bad);align-self:center;display:inline-flex}
+.flyout .flyout-quota{display:flex;justify-content:center;margin:0 0 10px}
+
+/* Locked-feature info card */
+.flyout-locked{width:280px}
+.flyout-locked .lock-info{text-align:center;padding:16px 8px 8px}
+.lock-info-ic{display:inline-flex;width:52px;height:52px;align-items:center;justify-content:center;border-radius:50%;background:rgba(255,107,122,.14);color:var(--bad);margin-bottom:10px}
+.lock-info-t{font-size:15px;font-weight:750;color:var(--text)}
+.lock-info-sub{font-size:10.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--bad);margin:3px 0 10px}
+.lock-info p{font-size:12.5px;line-height:1.55;color:var(--muted);margin:0 0 14px}
+.flyout-locked .btn.primary{background:var(--accentv);color:#fff;border-color:transparent;font-weight:700}
+.flyout-locked .btn.primary:hover{filter:brightness(1.06)}
+/* Light theme kept the dark theme's pale gray copy - unreadable on white. */
+body.light .lock-info p{color:#4c5662}
+body.light .lock-info-t{color:#20242a}
+
+/* Inspector: specific reason when the layout is invalid. */
+.inspector-error{margin-top:10px;padding:9px 11px;border-radius:10px;font-size:12px;line-height:1.45;background:rgba(255,107,122,.12);border:1px solid rgba(255,107,122,.4);color:var(--bad)}
+.inspector-error[hidden]{display:none}
+body.light .inspector-error{color:#c0392b}
+
+/* In-app help (the Návod popover) */
+/* What an account adds, as its own block rather than a paragraph lost in
+   the middle: for a visitor this is the reason to make one. */
+.help-pro{
+  margin:16px 0 4px;padding:12px 14px 10px;
+  border:1px solid rgba(123,97,255,.35);border-radius:12px;
+  background:rgba(123,97,255,.07);
+}
+.help-pro h4{margin:0 0 6px;color:var(--accentv)}
+.help-pro ul{margin:0;padding-left:17px}
+.help-pro li{margin:0 0 5px}
+body.light .help-pro{background:rgba(123,97,255,.06);border-color:rgba(123,97,255,.3)}
+
+.help{font-size:12.5px;line-height:1.55;color:var(--muted)}
+.help-lead{color:var(--text);margin:0 0 12px}
+.help h4{margin:15px 0 4px;font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;color:#aeb9c9}
+.help p{margin:0 0 8px}
+body.light .help{color:#4c5662}
+body.light .help h4{color:#3a424e}
+body.light .help p{color:#4c5662}
+body.light .help-lead{color:#20242a}
+body.light .help-limits{background:rgba(123,97,255,.06);border-color:#dfe3ea}
+body.light .hl-row b{color:#20242a}
+body.light .hl-row span{color:#5b6472}
+
+/* ---- Light theme for the new shell ---- */
+body.light .studio-nav{background:#ffffff;border-right-color:#d5d9df}
+body.light .nav-item,body.light .nav-collapse{color:#5b6472}
+body.light .nav-item:hover,body.light .nav-collapse:hover{background:#eef2f7;color:#20242a}
+body.light .nav-item.active{background:linear-gradient(90deg,rgba(123,97,255,.18),rgba(123,97,255,.06));color:#3a2f7a}
+body.light .nav-item.active .nav-ico{color:var(--accent,#7b61ff)}
+body.light .nav-sep{background:#e2e6ec}
+body.light .statusbar{background:#ffffff;border-top-color:#d5d9df}
+body.light .sb-ico{background:#eaf0fb;color:#3f6fd6}
+/* The history pill belongs in this list too: left out, it kept the dark
+   theme's near-black background on a white page, so the arrows read as a
+   black block among white pills. */
+body.light .ct-modes,body.light .ct-zoom,body.light .ct-hist,body.light .ct-fs{background:#ffffff;border-color:#d5d9df}
+body.light .ct-btn{color:#68707a}
+body.light .ct-btn:hover{background:#eef2f7;color:#20242a}
+body.light .ct-modes .ct-btn.active{background:rgba(123,97,255,.15);color:#5a45c0}
+body.light .ct-zoom-val,body.light .sb-text b{color:#20242a}
+
+/* ============================================================
+   Mobile: the left rail moves to the top as a horizontal strip,
+   the three panel columns stack, the canvas leads.
+   ============================================================ */
+@media (max-width:620px){
+  /* One screen, like the desktop. A content-sized workspace fed the canvas
+     back into its own measurement - the <svg> carries the viewBox ratio, so
+     a taller drawing made a taller column made a taller drawing - and the
+     tool strip ended up below the fold. */
+  /* Nothing to override here any more: the body column above gives the
+     workspace whatever is left after the footer and the reserves, on a
+     phone exactly as on a desktop. */
+  .studio-body{flex-direction:column;min-height:0}
+  .studio-nav{
+    width:auto;flex-direction:row;flex-wrap:wrap;justify-content:center;
+    gap:4px;overflow:visible;
+    border-right:0;border-bottom:1px solid var(--line);
+    padding:8px 10px;
+    position:sticky;top:0;z-index:15;
+  }
+  /* Flatten the groups so every icon becomes a direct child and they all wrap
+     onto as many rows as needed - no hidden horizontal scroll. App-style tab
+     bar: icon with a tiny label underneath so it is not just a row of glyphs. */
+  .studio-nav .nav-items{display:contents}
+  .studio-nav .nav-sep{display:none}
+  .studio-nav .nav-item{width:auto;flex:0 0 auto;flex-direction:column;justify-content:center;align-items:center;gap:3px;padding:6px 7px;min-width:52px}
+  .studio-nav .nav-item .nav-ico{width:21px;height:21px;flex:0 0 21px}
+  .studio-nav .nav-label{display:block;font-size:8px;font-weight:700;line-height:1;letter-spacing:.2px;max-width:58px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;animation:none!important}
+  .studio-nav .nav-lock{bottom:auto;top:3px;right:5px}
+  .nav-credits{flex-direction:column;gap:3px;padding:6px 7px}
+  .nav-credits .nav-label{font-size:10px}
+  .studio-body>main{grid-template-columns:1fr}
+  .statusbar{gap:20px;padding:0 14px}
+  .sb-saved{margin-left:0}
+  /* The strip stays floating on a phone too. Dropping it into the flow
+     under the drawing pushed it off the bottom of the screen as soon as the
+     canvas filled the column; the drawing already keeps a band clear for it
+     (PB in layout()), so over the canvas is where it belongs. */
+  .canvas-tools{justify-items:center;gap:10px}
+  .ct-modes{grid-column:1}
+  .ct-right{grid-column:1;justify-self:center}
+}
+/* Generator shape options: two plain tick boxes rather than a dropdown that
+   truncates its own labels. */
+/* Full width of the generator's two-column grid: the shapes are a choice
+   about the whole layout, not a field sitting beside another field. */
+/* Two switches side by side. Lit means the generator may use that shape;
+   both dark means rectangles, which is obvious enough without a sentence. */
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  padding:10px 6px;
+  border:1px solid var(--line);border-radius:11px;
+  background:#141a26;color:var(--muted);
+  font:600 12px Inter,system-ui,sans-serif;
+  cursor:pointer;
+  transition:background .13s ease,border-color .13s ease,color .13s ease;
+}
+/* Pinned, because the page-wide svg rule (the canvas is one) would otherwise
+   stretch this little icon to the width of its button. */
+  background:rgba(123,97,255,.18);
+  border-color:rgba(123,97,255,.75);
+  color:#cbbcff;
+}
+
+/* On a 1080p screen the browser leaves roughly 900px of viewport, and the
+   rail's twelve items plus brand and separators did not fit - so it grew a
+   scrollbar. Below that height everything tightens up just enough to show
+   the whole menu at once; a genuinely short window still scrolls. */
+@media (max-height: 1000px){
+  .studio-nav{padding:8px 9px;gap:1px}
+  .studio-nav .nav-items{gap:1px}
+  .studio-nav .nav-item{padding:7px 13.5px}
+  .nav-sep{margin:6px 8px}
+  .nav-brand{padding:2px 12px 6px}
+}
+@media (max-height: 820px){
+  .studio-nav{padding:6px 9px;gap:0}
+  .studio-nav .nav-items{gap:0}
+  .studio-nav .nav-item{padding:5px 13.5px}
+  .studio-nav .nav-item .nav-ico{width:21px;height:21px;flex:0 0 21px}
+  .nav-sep{margin:4px 8px}
+  .nav-brand{padding:0 12px 4px}
+  .brand-logo{width:22px;height:22px;flex:0 0 22px}
+}
+
+/* Credits sit in a column (icon above the number), which centred the icon
+   while every other rail icon starts at the same left padding - a one pixel
+   offset, but on a 23px icon the eye catches it. Same start, and the number
+   is centred over the icon's own width instead. */
+.studio-nav .nav-credits{align-items:flex-start;padding:8px 13.5px}
+.studio-nav .nav-credits .nav-label{width:23px;justify-content:center}
+
+/* The collapse button lives at the bottom of the rail. Pinned there it stays
+   reachable even when the rail has to scroll on a short window. */
+.studio-nav .nav-toggle{position:sticky;bottom:0;background:var(--panel2,#171c28);z-index:2}
+body.light .studio-nav .nav-toggle{background:#fff}
+
+/* Tool group on the left of the canvas strip: pointer, hand, 3D. */
+.ct-left{display:flex;align-items:center;gap:8px;pointer-events:auto}
+.ct-modes{display:flex;align-items:center;gap:2px;padding:4px;border:1px solid var(--line);border-radius:12px;background:#1b2130}
+body.light .ct-modes{background:#fff;border-color:#d5d9df}
+.ct-modes .ct-btn.active{background:rgba(123,97,255,.20);color:#cbbcff}
+body.light .ct-modes .ct-btn.active{background:#ece7ff;color:#5b3fd6}
+.canvasWrap.tool-pan{cursor:grab}
+.canvasWrap.tool-pan.panning{cursor:grabbing}
+/* With the hand out you are moving the drawing, not editing it: the handles
+   for growing and shrinking the grid sit exactly where you want to grab and
+   would be clicked by accident, so they step aside. */
+.canvasWrap.tool-pan .ghost-add,
+.canvasWrap.tool-pan .ghost-rm,
+.canvasWrap.tool-pan .ghost-plus,
+.canvasWrap.tool-pan .cell-action{display:none}
+
+
+/* Rail: same air on both sides of the icons. The 68px collapsed rail has
+   9px of its own padding, so 13.5px inside a 50px item centres a 23px icon;
+   expanded, the label needs a little room on the right too. */
+.studio-nav.expanded .nav-item,.studio-nav.expanded .nav-toggle{padding-right:16px}
+.studio-nav.expanded{padding-right:12px}
+
+/* Busy overlay, shared with the panel pages: sign-in and registration go
+   through the server, and without this the page looks like nothing happened.
+   Clicking it dismisses it (panel.js), so a slow host cannot trap anyone. */
+.busy-backdrop{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;background:rgba(10,14,22,.6);backdrop-filter:blur(2px);cursor:pointer}
+.busy-backdrop[hidden]{display:none}
+.busy-box{display:flex;align-items:center;gap:14px;padding:18px 24px;border-radius:14px;background:#fff;color:#1a1f26;box-shadow:0 18px 50px rgba(0,0,0,.35);font-size:14px;font-weight:500;max-width:min(90vw,420px);text-align:left}
+.busy-spinner{width:20px;height:20px;flex:none;border:2.5px solid #dfe5ee;border-top-color:#2f6fed;border-radius:50%;animation:busy-spin .75s linear infinite}
+@keyframes busy-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.busy-spinner{animation-duration:2s}}
+
+/* Signed-in customers are allowed to reach the studio during maintenance
+   only so this non-dismissible protection notice can explain why editing is
+   unavailable. Operators are excluded server-side and keep their panel. */
+.maintenance-backdrop{position:fixed;inset:0;z-index:1200;display:grid;place-items:center;padding:24px;background:rgba(8,14,25,.76);backdrop-filter:blur(8px);animation:h3d-fade .18s ease}
+.maintenance-dialog{width:min(540px,100%);padding:30px;border:1px solid rgba(255,191,77,.52);border-radius:20px;background:linear-gradient(145deg,#17243a,#101827);color:#f4f8ff;box-shadow:0 28px 80px rgba(0,0,0,.5)}
+.maintenance-kicker{display:block;margin:0 0 10px;color:#ffc461;font-size:11px;font-weight:850;letter-spacing:1.05px}.maintenance-dialog h2{margin:0 0 13px;font-size:23px;letter-spacing:-.35px}.maintenance-dialog p{margin:0;color:#d4dfef;font-size:14px;line-height:1.62}.maintenance-dialog .maintenance-note{margin-top:12px;padding-top:12px;border-top:1px solid rgba(173,196,226,.18);color:#9eb1ca;font-size:12px}.maintenance-exit{display:inline-flex;margin-top:22px;background:#d95d6c!important;border-color:#d95d6c!important;color:#fff!important}
+@media (max-width:620px){.maintenance-backdrop{align-items:end;padding:0}.maintenance-dialog{width:100%;border-radius:20px 20px 0 0;padding:25px 20px calc(25px + env(safe-area-inset-bottom,0px))}.maintenance-dialog h2{font-size:20px}}
+
+.message-admin-panel{max-width:1200px}
+.flyout:has(.message-admin-panel){width:min(1200px,calc(100vw - 42px));max-width:calc(100vw - 42px)}
+.message-admin-panel textarea{width:100%;min-height:210px;resize:vertical}
+.nav-messages{position:relative}.message-badge{position:absolute;top:4px;right:5px;min-width:16px;height:16px;padding:0 4px;border-radius:9px;background:var(--bad);color:#fff;font-size:10px;font-weight:800;line-height:16px;text-align:center}
+.my-messages{margin-top:22px;padding-top:16px;border-top:1px solid var(--line)}.message-tabs{display:flex;gap:6px;margin:18px 0 12px;padding:4px;border:1px solid var(--line);border-radius:11px;background:var(--panel2)}
+.message-tab{appearance:none;border:0;background:transparent;color:var(--muted);padding:8px 13px;border-radius:8px;font:700 12px/1.2 inherit;cursor:pointer}
+.message-tab:hover{background:color-mix(in srgb,var(--accent,#1769d1) 8%,var(--panel2) 92%);color:var(--text)}
+.message-tab.is-on{background:var(--accent,#1769d1);color:#fff;box-shadow:0 2px 7px rgba(23,105,209,.16)}
+.message-tab-pane{min-width:0}
+.message-active-summary{display:grid;gap:3px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:var(--panel2)}
+.message-active-summary span{font-size:9px;letter-spacing:.9px;font-weight:800;color:var(--accent,#1769d1)}
+.message-active-summary strong{font-size:13px;color:var(--text)}
+.message-active-summary small{font-size:11px;color:var(--muted)}
+.message-thread{padding:14px 0;border-bottom:1px solid var(--line)}.message-subject{margin:0 0 10px;font-size:14px;line-height:1.35}.message-bubble{max-width:82%;padding:12px 14px;border-radius:14px;margin:7px 0;white-space:pre-wrap;line-height:1.5}.message-bubble b{display:block;margin-bottom:5px;font-size:10px;letter-spacing:.75px;text-transform:uppercase}.message-bubble small{display:block;margin-top:7px;color:var(--muted);font-size:11px}.message-bubble.mine{background:rgba(47,111,237,.12);margin-left:auto}.message-bubble.staff{background:rgba(113,83,188,.14);margin-right:auto}.message-wait{margin:8px 0 0}
+.message-console-note{margin:0 0 18px;padding:14px 16px;border:1px solid rgba(71,221,183,.35);border-radius:12px;background:linear-gradient(135deg,rgba(71,221,183,.12),rgba(47,111,237,.08));display:grid;gap:4px}.message-console-note span{font-size:10px;letter-spacing:1.2px;color:#47ddb7;font-weight:800}.message-console-note.is-closed{border-color:rgba(138,161,184,.38);background:rgba(123,143,164,.1)}.message-console-note.is-closed span{color:var(--muted)}.message-resolved{margin:10px 0 0;color:#47ddb7;font-size:12px;font-weight:700}.message-thread.is-closed{opacity:.72}
+.close-chat-form{margin:10px 0 0;text-align:right}.close-chat-form .btn{font-size:11px}
+.close-chat-form{display:flex;justify-content:flex-end;margin:18px 0 0;padding-top:14px;border-top:1px solid rgba(83,123,167,.22)}.close-chat-form .close-chat-button{padding:11px 16px!important;border:1px solid #159d78!important;background:linear-gradient(135deg,#129b76,#197bb4)!important;color:#fff!important;font-weight:800;letter-spacing:.01em;box-shadow:0 8px 20px rgba(19,135,109,.24)}.close-chat-form .close-chat-button:hover,.close-chat-form .close-chat-button:focus-visible{border-color:#0d7659!important;background:linear-gradient(135deg,#0f7d5f,#155f96)!important;color:#fff!important;transform:translateY(-1px);box-shadow:0 11px 26px rgba(19,112,140,.3)}
+.flyout.flyout-full:has(.message-admin-panel){width:min(1200px,94vw);height:min(88vh,980px);max-height:88vh}
+.support-meta{margin:7px 0 0;color:#b7c9d8;font:600 11px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace}
+
+/* The rail widens first and labels then fade/slide in. Keeping each label in
+   layout at zero width avoids the reflow jump caused by display:none. */
+.studio-nav{transition:width .28s cubic-bezier(.22,.8,.24,1),padding .28s cubic-bezier(.22,.8,.24,1)}
+.studio-nav .nav-label{display:block!important;max-width:0;opacity:0;overflow:hidden;white-space:nowrap;transform:translateX(-7px);transition:max-width .28s cubic-bezier(.22,.8,.24,1),opacity .16s ease .09s,transform .28s cubic-bezier(.22,.8,.24,1)}
+.studio-nav.expanded .nav-label{max-width:210px;opacity:1;transform:none}
+.studio-nav .nav-sep{transition:margin .28s cubic-bezier(.22,.8,.24,1)}
+@media (max-width:620px){.studio-nav .nav-label{display:none!important;max-width:none;opacity:1;transform:none}}
+
+/* Expanded navigation is one typographic system: credits, messages and
+   ordinary links all share the same baseline instead of looking like a
+   collection of unrelated headings. */
+.studio-nav.expanded .nav-item{min-height:43px;align-items:center}
+.studio-nav.expanded .nav-item .nav-label{display:flex!important;align-items:center;min-height:23px;font-size:13px!important;font-weight:650;line-height:23px;letter-spacing:0;white-space:nowrap}
+.studio-nav.expanded .nav-credits .nav-label{gap:0;justify-content:flex-start}
+.studio-nav.expanded .nav-credits .nav-cred-unit{font-size:11px;line-height:23px}
+.studio-nav.expanded .nav-toggle .nav-label{font-size:13px!important;font-weight:650;line-height:23px}
+
+/* The rail has one fixed row rhythm in both states. Labels reveal inside the
+   newly available space instead of changing item height or reflowing the
+   credit row halfway through the width animation. */
+.studio-nav{transition:width .32s cubic-bezier(.2,.82,.24,1),padding .32s cubic-bezier(.2,.82,.24,1)}
+.studio-nav.expanded{width:280px}
+.studio-body:has(.studio-nav.expanded) .flyout-layer{left:280px}
+.studio-nav .nav-item,.studio-nav .nav-toggle{min-height:46px}
+.studio-nav .nav-label{max-width:0;opacity:0;transform:translateX(-6px);transition:max-width .28s cubic-bezier(.2,.82,.24,1),opacity .14s ease .1s,transform .28s cubic-bezier(.2,.82,.24,1)}
+.studio-nav.expanded .nav-label{max-width:224px;opacity:1;transform:none}
+.studio-nav.expanded .nav-item,.studio-nav.expanded .nav-toggle{min-height:46px;padding-top:10px;padding-bottom:10px;align-items:center}
+.studio-nav.expanded .nav-item .nav-label,.studio-nav.expanded .nav-toggle .nav-label{font:650 13px/23px Inter,system-ui,sans-serif!important;letter-spacing:0!important;min-height:23px}
+
+/* Visitor allowance: compact n / n in the icon rail, EXP plus a full label
+   once the rail opens. The two counters share the same live data attributes. */
+.nav-guest-quota .nav-guest-count{display:inline-flex;align-items:baseline;gap:2px;font-size:14px;font-weight:800;line-height:1;letter-spacing:-.2px}.nav-guest-quota .nav-guest-count i,.nav-guest-detail i{font-style:normal;font-weight:600;opacity:.58}.nav-guest-quota .nav-guest-exp{display:none;font-size:10px;letter-spacing:.75px;font-weight:850;line-height:1}.studio-nav:not(.expanded) .nav-guest-quota{flex-direction:row;justify-content:center;gap:0;padding:10px 5px}.studio-nav:not(.expanded) .nav-guest-quota .nav-label{display:none!important}.studio-nav.expanded .nav-guest-quota{flex-direction:row;justify-content:flex-start;gap:12px;padding-left:13.5px;padding-right:13.5px}.studio-nav.expanded .nav-guest-quota .nav-guest-count{display:none}.studio-nav.expanded .nav-guest-quota .nav-guest-exp{display:block}.studio-nav.expanded .nav-guest-quota .nav-label{display:flex!important;align-items:baseline;gap:8px;justify-content:flex-start}.nav-guest-detail{display:inline-flex;gap:3px;color:var(--muted);font-size:13px;font-weight:650}.studio-nav.expanded .nav-guest-quota .nav-ico{width:23px;justify-content:center}
+
+@media (min-width:1800px){.studio-nav.expanded{width:280px}.studio-body:has(.studio-nav.expanded) .flyout-layer{left:280px}}
+
+/* Signed-in export allowance: a rail never changes its row geometry while
+   opening. Only the content of its fixed 23px mark swaps between x/y, the
+   credit balance and the unlimited diamond. */
+@media (min-width:621px){
+  .studio-nav:not(.expanded){width:64px;padding-left:5px;padding-right:5px}
+  .studio-body:has(.studio-nav:not(.expanded)) .flyout-layer{left:58px}
+  .studio-nav .nav-item,.studio-nav .nav-toggle{box-sizing:border-box;min-height:46px}
+  .studio-nav .nav-item{padding:10px 12.5px}
+  .studio-nav .nav-credits{flex-direction:row;align-items:center;justify-content:flex-start;gap:0;padding:10px 12.5px}
+  .studio-nav:not(.expanded) .nav-credits{justify-content:center}
+  .studio-nav .nav-credits .nav-ico{position:relative;width:23px;height:23px;flex:0 0 23px}
+  .studio-nav .nav-credits .nav-label{width:auto}
+  .nav-free-rail,.nav-credit-rail{display:none;align-items:center;justify-content:center;color:inherit;font-variant-numeric:tabular-nums}
+  .nav-free-rail{gap:1px;font-size:13px;font-weight:850;letter-spacing:-.35px;line-height:1}
+  .nav-free-rail i{font-style:normal;font-weight:650;opacity:.58}
+  .nav-credit-rail{flex-direction:column;gap:1px;font-size:11px;font-weight:850;line-height:.9;letter-spacing:-.15px}
+  .nav-credit-rail i{font-style:normal;font-size:8px;font-weight:800;letter-spacing:.35px;line-height:1}
+  .studio-nav:not(.expanded) .nav-credits .cred-mark{display:none!important}
+  .studio-nav:not(.expanded) .nav-credits.has-free .nav-free-rail{display:inline-flex}
+  .studio-nav:not(.expanded) .nav-credits:not(.has-free):not(.is-unlimited) .nav-credit-rail{display:inline-flex}
+  .studio-nav:not(.expanded) .nav-credits.is-unlimited .cred-gem{display:block}
+  .studio-nav:not(.expanded) .nav-credits .nav-label{display:none!important}
+  .nav-unlimited-label,.nav-free-label,.nav-credit-label{display:none}
+  .studio-nav.expanded .nav-credits{flex-direction:row;align-items:center;justify-content:flex-start;gap:12px;padding:10px 13.5px}
+  .studio-nav.expanded .nav-credits .nav-free-rail,.studio-nav.expanded .nav-credits .nav-credit-rail{display:none}
+  .studio-nav.expanded .nav-credits .cred-mark{display:none!important}
+  .studio-nav.expanded .nav-credits.has-free .cred-mark{display:inline-block!important;color:#4cdbb0;font-size:10px;letter-spacing:.75px}
+  .studio-nav.expanded .nav-credits.is-unlimited .cred-gem{display:block}
+  .studio-nav.expanded .nav-credits.is-unlimited .nav-unlimited-label{display:block}
+  .studio-nav.expanded .nav-credits.has-free .nav-free-label{display:inline-flex;align-items:baseline;gap:8px}
+  .studio-nav.expanded .nav-credits:not(.has-free):not(.is-unlimited) .nav-credit-label{display:inline-flex;align-items:baseline}
+  .nav-free-detail{display:inline-flex;align-items:baseline;gap:3px;color:var(--muted);font-size:13px;font-weight:650}
+  .nav-free-detail i{font-style:normal;opacity:.58}
+}
+
+/* Opening only changes horizontal space: row height, padding and separator
+   rhythm stay fixed, so the rail cannot fall and jump back during the label
+   animation. */
+@media (min-width:621px){
+  .studio-nav{padding:12px 5px!important;overflow-x:hidden;transition:width .22s cubic-bezier(.2,.76,.28,1)!important}
+  .studio-nav.expanded{padding:12px 5px!important}
+  .studio-nav .nav-items{gap:3px}
+  .studio-nav .nav-item,.studio-nav .nav-toggle{box-sizing:border-box;flex:0 0 46px;height:46px;min-height:46px;padding:10px 12.5px!important;align-items:center}
+  .studio-nav .nav-credits{padding:10px 12.5px!important}
+  .studio-nav .nav-sep{margin:10px 8px;transition:none}
+  .studio-nav .nav-toggle{position:static;bottom:auto;background:transparent}
+  .studio-nav .nav-label{transition:max-width .2s ease,opacity .1s ease .08s,transform .2s ease}
+  .studio-nav .nav-credits .nav-ico{overflow:visible}
+  .nav-free-rail,.nav-credit-rail{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);white-space:nowrap}
+}
+.support-console{position:relative;overflow:hidden;padding:1px;border:1px solid rgba(68,208,255,.42);border-radius:16px;background:linear-gradient(135deg,rgba(68,208,255,.36),rgba(124,92,255,.22),rgba(71,221,183,.24));box-shadow:0 18px 42px rgba(16,27,52,.14)}.support-console:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0,transparent 31px,rgba(96,216,255,.045) 32px);pointer-events:none}.support-console>*{position:relative}.support-console-head{display:flex;justify-content:space-between;gap:14px;align-items:start;padding:18px 20px;background:rgba(10,18,34,.92);color:#e9f7ff}.support-console-head span,.support-message small{display:block;font-size:10px;letter-spacing:1.25px;font-weight:800;color:#66d9ff}.support-console-head h3{margin:6px 0 0;font-size:19px}.support-state{padding:6px 9px;border:1px solid currentColor;border-radius:7px;font-size:10px;letter-spacing:.8px;color:#ffc461}.support-state.is-new{color:#ff7d9a}.support-state.is-done{color:#55e1b8}.support-state.is-live{color:#67d8ff}.support-message{margin:14px 18px;padding:14px 16px;border-radius:10px;line-height:1.5;white-space:pre-wrap}.support-message strong{display:block;margin:6px 0}.support-message.customer{margin-left:66px;background:rgba(61,116,255,.11);border:1px solid rgba(79,148,255,.23)}.support-message.operator{margin-right:66px;background:rgba(71,221,183,.10);border:1px solid rgba(71,221,183,.24)}.support-reply{margin:18px;padding:16px;border-top:1px solid rgba(89,200,255,.2)}.support-reply textarea{width:100%;min-height:150px;resize:vertical;background:rgba(10,18,34,.8);color:var(--text)}.support-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+
+/* Final rail contract: opening may animate its width only. Earlier visual
+   variants changed padding, row height and the automatic spacer at different
+   times, which made all icons fall and then jump back. */
+@media (min-width:621px){
+  .studio-nav,.studio-nav.expanded{width:58px;box-sizing:border-box;padding:12px 5px!important;overflow:hidden!important;transition:width .24s cubic-bezier(.2,.76,.28,1)!important}
+  .studio-nav.expanded{width:260px}
+  .studio-body:has(.studio-nav.expanded) .flyout-layer{left:260px}
+  .studio-nav .nav-items{display:flex!important;flex:0 0 auto;flex-direction:column;gap:3px;min-height:0}
+  .studio-nav .nav-brand{box-sizing:border-box;display:flex;flex:0 0 40px;height:40px;margin:0;padding:2px 12px!important;overflow:hidden;align-items:center}
+  .studio-nav .nav-brand .brand-text{display:grid;gap:2px;min-width:0}
+  /* A fixed-width collapsed rail must never leak a clipped brand label. */
+  .studio-nav:not(.expanded) .nav-brand{justify-content:center;padding-left:0!important;padding-right:0!important}
+  .studio-nav:not(.expanded) .nav-brand .brand-text{display:none!important}
+  .studio-nav.expanded .nav-brand .brand-text{display:grid!important}
+  .studio-nav .nav-item,.studio-nav .nav-toggle{box-sizing:border-box;display:flex;flex:0 0 46px!important;width:100%;height:46px!important;min-height:46px!important;margin:0!important;padding:10px 12.5px!important;overflow:hidden;align-items:center}
+  .studio-nav .nav-toggle{margin-top:auto!important}
+  .studio-nav .nav-sep{flex:0 0 1px;margin:10px 8px!important;transition:none!important}
+  .studio-nav .nav-label{display:block!important;flex:0 0 0;width:0;max-width:0;margin:0;opacity:0;overflow:hidden;white-space:nowrap;transform:translateX(-5px);transition:opacity .1s ease,transform .2s ease!important}
+  .studio-nav.expanded .nav-label{flex:0 1 auto;width:auto;max-width:210px;opacity:1;transform:none}
+  /* Use the exact same left anchor in both rail states. Centering the 23px
+     mark in the 47px collapsed row produced a half-pixel shift when the
+     expanded row switched to the common icon padding. */
+  .studio-nav .nav-credits{justify-content:flex-start}
+  .studio-nav:not(.expanded) .nav-credits{justify-content:flex-start!important}
+  .studio-nav.expanded .nav-credits{justify-content:flex-start}
+  /* The export mark is a fixed 23px stage. Its variants (diamond, FREE,
+     x/y and credits) may change, but none is allowed to take part in the
+     rail-width animation or to move the row's flex geometry. */
+  .studio-nav .nav-credits .nav-ico{position:relative!important;display:block!important;width:23px!important;height:23px!important;flex:0 0 23px!important;margin:0!important;transform:none!important;transition:none!important;animation:none!important}
+  .studio-nav .nav-credits .cred-gem{position:absolute!important;inset:0!important;display:none!important;width:23px!important;height:23px!important;margin:0!important;transform:none!important;transition:none!important;animation:none!important}
+.studio-nav .nav-credits.is-unlimited .cred-gem{display:block!important}
+  .studio-nav .nav-credits.changed .nav-ico{animation:none!important}
+}
+@media (min-width:621px) and (max-height:760px){
+  .studio-nav,.studio-nav.expanded{padding-top:8px!important;padding-bottom:8px!important}
+  .studio-nav .nav-brand{flex-basis:36px;height:36px}
+  .studio-nav .nav-item,.studio-nav .nav-toggle{flex-basis:42px!important;height:42px!important;min-height:42px!important;padding-top:8px!important;padding-bottom:8px!important}
+  .studio-nav .nav-sep{margin-top:8px!important;margin-bottom:8px!important}
+}
+
+/* ================================================================
+   LOW-VERTICAL-SPACE SAFETY
+   If the available height is too small (including browser zoom), the rail
+   becomes a compact horizontal icon strip. Expanding it opens a two-column
+   menu instead of pushing the last controls below the viewport.
+   The class is applied by JS from the rail's real clientHeight/scrollHeight,
+   so the rule reacts to the actual studio height rather than only the window
+   height.
+   ================================================================ */
+@media (min-width:621px){
+  .studio-nav.compact-nav{
+    width:100%!important;
+    height:58px!important;
+    min-height:58px!important;
+    max-height:58px!important;
+    flex:0 0 58px!important;
+    box-sizing:border-box!important;
+    padding:6px 10px!important;
+    overflow-x:auto!important;
+    overflow-y:visible!important;
+    scrollbar-width:none;
+    flex-direction:row!important;
+    align-items:center!important;
+    gap:6px!important;
+    border-right:0!important;
+    border-bottom:1px solid var(--line)!important;
+    z-index:65;
+  }
+  .studio-body.compact-nav-body{flex-direction:column!important}
+  .studio-body.compact-nav-body>main{min-height:0!important;flex:1 1 auto!important}
+  .studio-nav.compact-nav::-webkit-scrollbar{display:none}
+  .studio-nav.compact-nav .nav-items{flex-shrink:0!important}
+  .studio-nav.compact-nav .nav-toggle{flex-shrink:0!important}
+
+  .studio-nav.compact-nav .nav-brand{
+    flex:0 0 40px!important;width:40px!important;height:40px!important;
+    padding:2px 5px!important;justify-content:center!important;
+  }
+  .studio-nav.compact-nav .nav-brand .brand-text{display:none!important}
+  .studio-nav.compact-nav .nav-sep{
+    flex:0 0 1px!important;width:1px!important;height:30px!important;
+    margin:0 2px!important;
+  }
+  .studio-nav.compact-nav .nav-items{
+    flex:0 1 auto!important;
+    flex-direction:row!important;
+    align-items:center!important;
+    gap:3px!important;
+    min-width:0!important;
+  }
+  .studio-nav.compact-nav .nav-item{
+    flex:0 0 42px!important;width:42px!important;height:42px!important;
+    min-height:42px!important;padding:8px!important;
+    justify-content:center!important;gap:0!important;
+    overflow:visible!important;
+  }
+  .studio-nav.compact-nav .nav-label{display:none!important}
+  .studio-nav.compact-nav .nav-ico{margin:0!important}
+  .studio-nav.compact-nav .nav-toggle{
+    margin:0 0 0 auto!important;
+    flex:0 0 42px!important;width:42px!important;height:42px!important;
+    min-height:42px!important;padding:8px!important;
+    justify-content:center!important;
+  }
+  .studio-nav.compact-nav .nav-toggle .nav-label{display:none!important}
+
+  /* Expanded compact menu: the rail drops down as a two-column panel. */
+  .studio-nav.compact-nav.expanded{
+    height:auto!important;max-height:min(70vh,520px)!important;
+    min-height:58px!important;
+    align-items:stretch!important;
+    flex-wrap:wrap!important;
+    padding:8px 10px 10px!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+  }
+  .studio-nav.compact-nav.expanded .nav-brand{flex:0 0 40px!important}
+  .studio-nav.compact-nav.expanded .nav-sep{flex-basis:100%!important;width:auto!important;height:1px!important;margin:3px 8px!important}
+  .studio-nav.compact-nav.expanded .nav-items{
+    flex:1 1 calc(100% - 50px)!important;
+    display:grid!important;
+    grid-template-columns:minmax(180px,1fr) minmax(180px,1fr)!important;
+    gap:4px 8px!important;
+    align-content:start!important;
+    min-width:0!important;
+  }
+  .studio-nav.compact-nav.expanded .nav-item{
+    width:100%!important;height:40px!important;min-height:40px!important;
+    padding:8px 10px!important;justify-content:flex-start!important;
+    gap:10px!important;
+  }
+  .studio-nav.compact-nav.expanded .nav-label{
+    display:block!important;flex:1 1 auto!important;width:auto!important;max-width:none!important;
+    opacity:1!important;transform:none!important;white-space:nowrap!important;
+  }
+  .studio-nav.compact-nav.expanded .nav-toggle{
+    order:-1!important;align-self:flex-start!important;margin:0 0 0 auto!important;
+  }
+  .studio-nav.compact-nav.expanded .nav-toggle .nav-label{display:none!important}
+
+  /* In compact mode the expanded rail is a real two-column menu, not a
+     partially collapsed horizontal strip. Keep the header/toggle visible. */
+  .studio-nav.compact-nav.expanded{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) 42px!important;
+    grid-template-rows:auto auto 1fr!important;
+    align-items:start!important;
+    flex-direction:initial!important;
+    flex-wrap:initial!important;
+    overflow-y:auto!important;
+  }
+  .studio-nav.compact-nav.expanded .nav-brand{
+    grid-column:1;
+    grid-row:1;
+    width:40px!important;
+  }
+  .studio-nav.compact-nav.expanded .nav-toggle{
+    grid-column:2;
+    grid-row:1;
+    margin:0!important;
+    justify-self:end!important;
+  }
+  .studio-nav.compact-nav.expanded .nav-sep{
+    grid-column:1 / -1;
+    width:auto!important;
+  }
+  .studio-nav.compact-nav.expanded .nav-items{
+    grid-column:1 / -1;
+    width:100%!important;
+    flex:none!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    gap:4px 8px!important;
+    align-content:start!important;
+  }
+  .studio-nav.compact-nav .nav-credits .nav-label{display:none!important}
+  .studio-nav.compact-nav.expanded .nav-credits .nav-label{display:block!important}
+
+  /* Keep flyouts attached below the horizontal rail. */
+  .studio-body.compact-nav-body .flyout-layer{
+    position:absolute!important;left:0!important;top:58px!important;bottom:0!important;width:100%!important;
+  }
+  .studio-body.compact-nav-body:has(.studio-nav.expanded) .flyout-layer{left:0!important}
+}
+
+/* ================================================================
+   FIRST-VISIT STUDIO TOUR
+   The target gets a strong halo while the rest of the page is dimmed.
+   The tour never changes the layout or geometry of the controls.
+   ================================================================ */
+.studio-tour[hidden]{display:none!important}
+.studio-tour{position:fixed;inset:0;z-index:12000;pointer-events:none}
+.studio-tour-shade{position:fixed;inset:0;background:transparent;backdrop-filter:none;pointer-events:auto}
+.studio-tour-spotlight{position:fixed;z-index:1;pointer-events:none;border:3px solid var(--accent);border-radius:10px;box-shadow:0 0 0 9999px rgba(9,14,25,.58),0 0 0 2px rgba(255,255,255,.14);box-sizing:border-box;background:transparent}
+.studio-tour-target{z-index:12006!important;visibility:visible!important;opacity:1!important;filter:none!important}
+.studio-tour-card{position:fixed;z-index:12004;box-sizing:border-box;max-width:360px;padding:18px 18px 15px;border:1px solid rgba(124,92,255,.32);border-radius:16px;background:var(--panel);color:var(--text);box-shadow:0 18px 55px rgba(0,0,0,.28);pointer-events:auto}
+.studio-tour-card:before{content:"";position:absolute;left:50%;top:-7px;width:13px;height:13px;background:var(--panel);border-left:1px solid rgba(124,92,255,.32);border-top:1px solid rgba(124,92,255,.32);transform:translateX(-50%) rotate(45deg)}
+.studio-tour-progress{display:flex;gap:5px;align-items:center;margin-bottom:7px;font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:var(--muted)}
+.studio-tour-card h2{margin:0 0 7px;font-size:18px;line-height:1.2}
+.studio-tour-card p{margin:0;min-height:42px;font-size:13px;line-height:1.5;color:var(--muted)}
+.studio-tour-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px}
+.studio-tour-nav{display:flex;gap:7px}
+.studio-tour-skip,.studio-tour-prev,.studio-tour-next{height:36px;padding:0 13px;border-radius:9px;border:1px solid var(--line);background:transparent;color:var(--text);font:inherit;font-size:12px;font-weight:800;cursor:pointer}
+.studio-tour-next{border-color:var(--accent);background:var(--accent);color:#fff}
+.studio-tour-skip{color:var(--muted);border-color:transparent}
+.studio-tour-skip:hover,.studio-tour-prev:hover{background:var(--hover);color:var(--text)}
+.studio-tour-next:hover{filter:brightness(1.05)}
+.studio-tour-prev:disabled{opacity:.4;cursor:default}
+.studio-tour-active .studio-nav,.studio-tour-active .canvas-tools{z-index:12002}
+@media (max-width:620px){
+  .studio-tour-card{max-width:calc(100vw - 24px);padding:16px}
+  .studio-tour-card h2{font-size:16px}
+  .studio-tour-card p{font-size:12px}
+  .studio-tour-actions{align-items:stretch}
+  .studio-tour-nav{flex:1;justify-content:flex-end}
+}
+
+/* Tour refinement: only the active control stays visible above the shade. */
+.studio-tour-active .studio-nav{background:transparent!important;border-right-color:transparent!important}
+.studio-tour-active .studio-nav .nav-brand,
+.studio-tour-active .studio-nav .nav-sep,
+.studio-tour-active .studio-nav .nav-item:not(.studio-tour-target),
+.studio-tour-active .studio-nav .nav-collapse,
+.studio-tour-active .studio-nav .nav-toggle:not(.studio-tour-target){visibility:hidden!important;pointer-events:none!important}
+/* The menu toggle is itself a tour step. Keep its real sticky position and
+   make sure it is not left as a white, clickable control above the overlay. */
+.studio-tour-active .studio-nav .nav-toggle.studio-tour-target{
+  visibility:visible!important;
+  pointer-events:auto!important;
+  z-index:12006!important;
+}
+.studio-tour-active .canvas-tools{background:transparent!important}
+.studio-tour-active .canvas-tools .ct-btn:not(.studio-tour-target){visibility:hidden!important;pointer-events:none!important}
+.studio-tour-active .canvas-tools .ct-modes,
+.studio-tour-active .canvas-tools .ct-hist,
+.studio-tour-active .canvas-tools .ct-zoom{background:transparent!important;border-color:transparent!important;box-shadow:none!important}
+.studio-tour-card{max-width:390px}
+.studio-tour-card.is-right:before{left:-7px;top:50%;border-left:0;border-top:1px solid rgba(124,92,255,.32);border-bottom:1px solid rgba(124,92,255,.32);transform:translateY(-50%) rotate(45deg)}
+.studio-tour-card.is-left:before{left:auto;right:-7px;top:50%;border-left:1px solid rgba(124,92,255,.32);border-top:0;border-right:1px solid rgba(124,92,255,.32);border-bottom:1px solid rgba(124,92,255,.32);transform:translateY(-50%) rotate(45deg)}
+.studio-tour-card.is-top:before{top:auto;bottom:-7px;border-left:0;border-top:0;border-right:1px solid rgba(124,92,255,.32);border-bottom:1px solid rgba(124,92,255,.32);transform:translateX(-50%) rotate(45deg)}
+.studio-tour-skip,.studio-tour-prev{color:var(--text)!important;background:var(--panel-2,transparent)!important}
+.studio-tour-skip{font-weight:800!important}
+.studio-tour-skip:hover,.studio-tour-prev:hover{background:var(--hover)!important;color:var(--text)!important}
+
+/* Tour: keep the active control above the dimmer. */
+body.studio-tour-active .studio-nav{
+  position:fixed!important;
+  z-index:12005!important;
+}
+body.studio-tour-active .canvas-tools{
+  position:absolute!important;
+  left:16px!important;
+  right:16px!important;
+  bottom:16px!important;
+  z-index:12005!important;
+}
+body.studio-tour-active .studio-tour-target{
+  z-index:12006!important;
+  visibility:visible!important;
+  opacity:1!important;
+  filter:none!important;
+}
+body.studio-tour-active .studio-nav .studio-tour-target .nav-ico,
+body.studio-tour-active .canvas-tools .studio-tour-target svg{
+  opacity:1!important;
+  visibility:visible!important;
+}
+body.studio-tour-active .studio-nav .studio-tour-target .nav-ico svg{
+  opacity:1!important;
+  visibility:visible!important;
+}
+
+/* Tour contrast fix: keep text readable in both themes. */
+.studio-tour-card{
+  background:#1a1f2b !important;
+  color:#eef2f7 !important;
+}
+.studio-tour-card h2{color:#eef2f7 !important}
+.studio-tour-card p{color:#9aa6ba !important}
+.studio-tour-progress{color:#9aa6ba !important}
+.studio-tour-skip,
+.studio-tour-prev{
+  color:#eef2f7 !important;
+  background:#232a39 !important;
+  border-color:#333c50 !important;
+}
+.studio-tour-skip:hover,
+.studio-tour-prev:hover{
+  color:#eef2f7 !important;
+  background:#2d3545 !important;
+}
+.studio-tour-next{
+  color:#fff !important;
+}
+
+/* Light theme: the tour card follows the light UI instead of the dark panel. */
+body.light .studio-tour-card{
+  background:#fff !important;
+  color:#20242a !important;
+  border-color:#cfd5df !important;
+  box-shadow:0 18px 55px rgba(20,30,45,.22) !important;
+}
+body.light .studio-tour-card h2{color:#20242a !important}
+body.light .studio-tour-card p{color:#68707a !important}
+body.light .studio-tour-progress{color:#68707a !important}
+body.light .studio-tour-skip,
+body.light .studio-tour-prev{
+  color:#20242a !important;
+  background:#f3f5f8 !important;
+  border-color:#d5d9df !important;
+}
+body.light .studio-tour-skip:hover,
+body.light .studio-tour-prev:hover{
+  color:#20242a !important;
+  background:#e7ebf0 !important;
+}
+body.light .studio-tour-card:before{
+  background:#fff !important;
+  border-color:#cfd5df !important;
+}
+
+body.studio-tour-active .studio-nav .nav-collapse{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
+/* Final tour stacking fix: the tour must always sit above the SVG/grid and
+   above every studio control.  The grid is interactive, so the tour shade
+   must also be the topmost hit-test layer while the active target/card sit
+   above it. */
+html body .studio-tour{
+  position:fixed!important;
+  inset:0!important;
+  z-index:2147483000!important;
+  isolation:isolate!important;
+  pointer-events:none!important;
+}
+html body .studio-tour .studio-tour-shade{
+  position:fixed!important;
+  inset:0!important;
+  z-index:0!important;
+  pointer-events:auto!important;
+}
+html body .studio-tour .studio-tour-spotlight{position:fixed!important;z-index:1!important}
+html body .studio-tour .studio-tour-target{z-index:12006!important;visibility:visible!important;opacity:1!important;filter:none!important}
+.studio-tour-blocker{
+  position:fixed!important;
+  z-index:2!important;
+  pointer-events:auto!important;
+  background:transparent!important;
+}
+html body .studio-tour .studio-tour-card{
+  position:fixed!important;
+  z-index:3!important;
+  pointer-events:auto!important;
+}
+
+/* ================================================================
+   FIRST-RUN TOUR SETUP — language / units / appearance
+   ================================================================ */
+.studio-tour-setup[hidden]{display:none!important}
+.studio-tour-setup{
+  position:fixed;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  z-index:4;
+  width:min(390px,calc(100vw - 28px));
+  box-sizing:border-box;
+  padding:20px;
+  border:1px solid rgba(124,92,255,.32);
+  border-radius:16px;
+  background:#1a1f2b;
+  color:#eef2f7;
+  box-shadow:0 20px 65px rgba(0,0,0,.34);
+  pointer-events:auto;
+}
+.studio-tour-setup-progress{display:flex;gap:5px;align-items:center;margin-bottom:7px;font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#9aa6ba}
+body.light .studio-tour-setup-progress{color:#68707a}
+.studio-tour-setup-kicker{
+  margin-bottom:5px;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1px;
+  color:#9aa6ba;
+}
+.studio-tour-setup h2{margin:0 0 6px;font-size:20px;line-height:1.2;color:#eef2f7}
+.studio-tour-setup-lede{margin:0 0 17px;font-size:12px;line-height:1.5;color:#9aa6ba}
+.studio-tour-setup-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.studio-tour-setup-group>span{display:block;margin-bottom:6px;font-size:10px;font-weight:800;color:#9aa6ba;text-transform:uppercase;letter-spacing:.6px}
+.studio-tour-setup-seg{display:flex;gap:4px;padding:3px;border:1px solid #333c50;border-radius:9px;background:#232a39}
+.studio-tour-setup-seg button{min-width:0;flex:1;height:31px;padding:0 7px;border:0;border-radius:6px;background:transparent;color:#9aa6ba;font:inherit;font-size:11px;font-weight:800;cursor:pointer}
+.studio-tour-setup-seg button.active{background:var(--accent);color:#fff}
+.studio-tour-setup-seg button:hover{color:#fff}
+.studio-tour-setup-continue{width:100%;height:36px;margin-top:17px;border:1px solid var(--accent);border-radius:9px;background:var(--accent);color:#fff;font:inherit;font-size:12px;font-weight:800;cursor:pointer}
+.studio-tour-setup-continue:hover{filter:brightness(1.05)}
+body.light .studio-tour-setup{background:#fff;color:#20242a;border-color:#cfd5df;box-shadow:0 20px 65px rgba(20,30,45,.22)}
+body.light .studio-tour-setup-kicker,body.light .studio-tour-setup-lede,body.light .studio-tour-setup-group>span{color:#68707a}
+body.light .studio-tour-setup h2{color:#20242a}
+body.light .studio-tour-setup-seg{background:#f0f3f7;border-color:#d5d9df}
+body.light .studio-tour-setup-seg button{color:#68707a}
+body.light .studio-tour-setup-seg button.active{background:var(--accent);color:var(--accentText,#fff)}
+body.light .studio-tour-setup-seg button:hover{color:#20242a}
+body.light .studio-tour-setup-seg button.active:hover{color:var(--accentText,#fff)}
+
+@media (max-width:720px){
+  .studio-tour-setup{top:auto;bottom:18px;transform:translateX(-50%)}
+  .studio-tour-setup-grid{grid-template-columns:1fr}
+  .studio-tour-setup-group{display:grid;grid-template-columns:74px 1fr;align-items:center;gap:8px}
+  .studio-tour-setup-group>span{margin:0}
+  .studio-tour-setup-continue{margin-top:13px}
+}
+
+/* Tour: hide the numeric zoom readout so it does not sit over the tour. */
+body.studio-tour-active .ct-zoom-val{
+  display:none !important;
+}
+
+/* ===================================================================
+   NARROW RAIL — unlimited accounts keep the same diamond as desktop.
+   The compact rail must never fall back to the signed-in credit counter.
+   =================================================================== */
+@media (max-width:620px){
+  .studio-nav .nav-credits .nav-free-rail,
+  .studio-nav .nav-credits .nav-credit-rail{
+    display:none!important;
+  }
+  .studio-nav:not(.expanded) .nav-credits.is-unlimited .cred-gem{
+    display:block!important;
+    width:23px;
+    height:23px;
+  }
+  .studio-nav:not(.expanded) .nav-credits.is-unlimited .nav-label{
+    display:none!important;
+  }
+}
+
+/* Tour: hide the drawer-size bubble so it cannot overlap the navigation/menu. */
+body.studio-tour-active #drawerChip{
+  display:none !important;
+}
+
+
+.workspace-sync-toast{position:fixed;right:18px;top:18px;z-index:2147483000;max-width:min(360px,calc(100vw - 36px));padding:12px 14px;border:1px solid var(--line,#d7deea);border-radius:14px;background:var(--panel,#fff);color:var(--text,#111);box-shadow:0 14px 40px rgba(0,0,0,.18);font:600 13px/1.35 system-ui,sans-serif;opacity:0;transform:translateY(-8px);pointer-events:none;transition:opacity .18s ease,transform .18s ease}.workspace-sync-toast.is-visible{opacity:1;transform:none}.workspace-sync-toast strong{display:block;margin-bottom:3px}.workspace-sync-toast span{display:block;font-weight:500;opacity:.72}.workspace-sync-toast.is-error{border-color:var(--bad,#d94a5b)}
+
+
+/* ================================================================
+   LIGHT MODE CONTRAST
+   Keep icons and controls readable on the light palette.
+   ================================================================ */
+body:not(.light){
+  color-scheme:dark;
+}
+body:not(.light) .canvas-tools .ct-btn,
+body:not(.light) .canvas-tools .ct-modes,
+body:not(.light) .canvas-tools .ct-hist,
+body:not(.light) .canvas-tools .ct-zoom,
+body:not(.light) .canvas-tools .ct-fs{
+  color:var(--text)!important;
+  border-color:var(--line)!important;
+}
+body:not(.light) .canvas-tools .ct-btn svg,
+body:not(.light) .canvas-tools .ct-modes svg,
+body:not(.light) .canvas-tools .ct-hist svg,
+body:not(.light) .canvas-tools .ct-zoom svg,
+body:not(.light) .canvas-tools .ct-fs svg{
+  color:inherit!important;
+  stroke:currentColor!important;
+  opacity:1!important;
+}
+body:not(.light) .ct-danger{
+  background:var(--panel2)!important;
+  color:var(--bad)!important;
+  border-color:var(--line)!important;
+}
+body:not(.light) .ct-danger:hover{
+  background:color-mix(in srgb,var(--bad) 18%,var(--panel2))!important;
+  color:var(--bad)!important;
+}
+body:not(.light) .studio-nav .nav-item,
+body:not(.light) .studio-nav .nav-toggle,
+body:not(.light) .studio-nav .nav-ico{
+  color:var(--text);
+}
+body:not(.light) .studio-nav .nav-item svg,
+body:not(.light) .studio-nav .nav-toggle svg{
+  stroke:currentColor!important;
+}
+body:not(.light) .studio-nav .nav-credits .nav-ico{
+  color:#e9b949!important;
+}
+
+/* Grid additions must remain visible on the light palette. */
+body:not(.light) .cell-add{
+  fill:var(--good)!important;
+  opacity:1!important;
+}
+body:not(.light) .bg-grid line{
+  stroke:color-mix(in srgb,var(--grid-color) 88%,white)!important;
+}
+
+/* ================================================================
+   TOUR TARGET ICON CONTRAST
+   The tour may spotlight the real control, but it must not recolor
+   or darken its actual icon.
+   ================================================================ */
+body.studio-tour-active .studio-tour-target,
+body.studio-tour-active .studio-tour-target .nav-ico,
+body.studio-tour-active .studio-tour-target svg{
+  opacity:1!important;
+  visibility:visible!important;
+  filter:none!important;
+}
+body:not(.light).studio-tour-active .studio-tour-target{
+  color:var(--text)!important;
+}
+body:not(.light).studio-tour-active .canvas-tools .studio-tour-target{
+  background:var(--panel2)!important;
+  border-color:var(--accent)!important;
+}
+body:not(.light).studio-tour-active .canvas-tools .studio-tour-target svg{
+  color:var(--text)!important;
+  stroke:currentColor!important;
+}
+body:not(.light).studio-tour-active .canvas-tools .studio-tour-target.ct-danger{
+  color:var(--bad)!important;
+}
+body:not(.light).studio-tour-active .canvas-tools .studio-tour-target.ct-danger svg{
+  color:var(--bad)!important;
+  stroke:currentColor!important;
+}
+
+/* Do not let the tour's dimmer turn the active icon into a black silhouette. */
+body.studio-tour-active .studio-tour-target *{
+  opacity:1!important;
+  visibility:visible!important;
+}
+
+
+/* h3d-palette-switch-fix-css */
+.palette-option.is-selected,
+.palette-card.is-selected,
+.theme-palette.is-selected,
+[data-palette].is-selected,
+[data-theme-palette].is-selected {
+  outline: 2px solid var(--accent, #1679d1);
+  outline-offset: 1px;
+}
+
+
+/* ============================================================
+   H3D PALETTE — LIGHT MODE HOVER FIX
+   Light mode hover surfaces use the same light palette.
+   ============================================================ */
+body.light .nav-item:hover,
+body.light .nav-collapse:hover{
+  background:#eef2f7 !important;
+  color:#20242a !important;
+}
+body.light .nav-item:hover .nav-ico,
+body.light .nav-collapse:hover .nav-ico{
+  color:inherit !important;
+}
+body.light .btn:not(.primary):hover,
+body.light .ct-btn:hover{
+  background:#eef3f8 !important;
+  color:#20242a !important;
+}
+body.light .ct-modes:hover,
+body.light .ct-zoom:hover,
+body.light .ct-hist:hover,
+body.light .ct-fs:hover{
+  background:#ffffff !important;
+  color:#20242a !important;
+}
+
+/* Single-theme studio: first-run setup is always the H3D Light surface. */
+html body .studio-tour-setup{
+  background:var(--panel,#fff)!important;
+  color:var(--text,#20242a)!important;
+  border-color:var(--line,#cfd5df)!important;
+  box-shadow:0 20px 65px rgba(20,30,45,.22)!important;
+}
+html body .studio-tour-setup h2{color:var(--text,#20242a)!important}
+html body .studio-tour-setup-progress,
+html body .studio-tour-setup-kicker,
+html body .studio-tour-setup-lede,
+html body .studio-tour-setup-group>span{color:var(--muted,#68707a)!important}
+html body .studio-tour-setup-seg{background:var(--panel2,#f0f3f7)!important;border-color:var(--line,#d5d9df)!important}
+html body .studio-tour-setup-seg button{color:var(--muted,#68707a)!important}
+html body .studio-tour-setup-seg button:hover{color:var(--text,#20242a)!important}
+html body .studio-tour-setup-seg button.active{background:var(--accent,#1769d1)!important;color:var(--accentText,#fff)!important}
+html body .studio-tour-setup-seg button.active:hover{color:var(--accentText,#fff)!important}
+html body .studio-tour-setup-continue{display:block!important;visibility:visible!important;opacity:1!important}
+
+/* Single-theme studio: first-run setup is always the H3D Light surface. */
+html body .studio-tour-setup{
+  background:var(--panel,#fff)!important;
+  color:var(--text,#20242a)!important;
+  border-color:var(--line,#cfd5df)!important;
+  box-shadow:0 20px 65px rgba(20,30,45,.22)!important;
+}
+html body .studio-tour-setup h2{color:var(--text,#20242a)!important}
+html body .studio-tour-setup-progress,
+html body .studio-tour-setup-kicker,
+html body .studio-tour-setup-lede,
+html body .studio-tour-setup-group>span{color:var(--muted,#68707a)!important}
+html body .studio-tour-setup-seg{background:var(--panel2,#f0f3f7)!important;border-color:var(--line,#d5d9df)!important}
+html body .studio-tour-setup-seg button{color:var(--muted,#68707a)!important}
+html body .studio-tour-setup-seg button:hover{color:var(--text,#20242a)!important}
+html body .studio-tour-setup-seg button.active{background:var(--accent,#1769d1)!important;color:var(--accentText,#fff)!important}
+html body .studio-tour-setup-seg button.active:hover{color:var(--accentText,#fff)!important}
+html body .studio-tour-setup-continue{display:block!important;visibility:visible!important;opacity:1!important}
+
+
+/* H3D support chat */
+.h3d-support-panel{width:min(430px,calc(100vw - 28px))!important;max-width:430px!important;padding:0!important;overflow:hidden;border-radius:18px!important}
+.h3d-support-panel .support-chat-shell{position:relative;display:flex;flex-direction:column;min-height:560px;max-height:min(760px,calc(100vh - 70px));background:var(--panel,#fff)}
+.support-chat-head{display:flex;align-items:center;gap:10px;padding:13px 14px;background:linear-gradient(135deg,#4f46c8,#6557d8);color:#fff}
+.support-avatar{width:34px;height:34px;flex:0 0 34px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.18);font-size:18px;font-weight:800}
+.support-avatar-small{width:26px;height:26px;flex-basis:26px;font-size:13px}
+.support-chat-title{display:grid;gap:1px;min-width:0;flex:1}
+.support-chat-title strong{font-size:14px}
+.support-chat-title span{font-size:10px;opacity:.8}
+.support-chat-close{border:0;background:transparent;color:#fff;font-size:21px;cursor:pointer;padding:3px 5px}
+.support-chat-body{padding:14px;overflow:auto;display:flex;flex-direction:column;gap:10px;flex:1;background:var(--panel2,#f7f8fb)}
+.support-message{display:flex;gap:7px;align-items:flex-end;max-width:92%}
+.support-message-user{margin-left:auto;flex-direction:row-reverse}
+.support-message-content{min-width:0}
+.support-message-name{font-size:9px;font-weight:800;color:var(--muted);margin:0 0 3px 4px}
+.support-message-user .support-message-name{text-align:right;margin-right:4px}
+.support-bubble{padding:9px 11px;border-radius:12px;background:var(--panel,#fff);border:1px solid var(--line);color:var(--text);font-size:12px;line-height:1.45;box-shadow:0 2px 8px rgba(20,40,70,.04)}
+.support-message-user .support-bubble{background:color-mix(in srgb,var(--accent,#1769d1) 12%,var(--panel,#fff) 88%);border-color:color-mix(in srgb,var(--accent,#1769d1) 22%,var(--line) 78%)}
+.support-quick{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 2px 33px}
+.support-chip{border:1px solid var(--line);background:var(--panel,#fff);color:var(--text);border-radius:14px;padding:7px 10px;font-size:10px;font-weight:700;cursor:pointer}
+.support-chip:hover{border-color:var(--accent,#1769d1);color:var(--accent,#1769d1)}
+.support-human-card,.support-feedback{border:1px solid var(--line);background:var(--panel,#fff);border-radius:12px;padding:11px;display:grid;gap:5px}
+.support-human-card span{font-size:9px;font-weight:800;letter-spacing:.7px;color:var(--accent,#1769d1)}
+.support-human-card strong{font-size:12px}
+.support-human-card small{font-size:10px;color:var(--muted)}
+.support-thread-title{font-size:10px;font-weight:800;letter-spacing:.7px;color:var(--muted);margin:4px 0}
+.support-thread-messages{display:flex;flex-direction:column;gap:8px}
+.support-human-compose{display:grid;gap:7px;margin-top:4px}
+.support-human-compose textarea,.support-feedback textarea{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:9px;background:var(--panel,#fff);color:var(--text);padding:9px;font:inherit;font-size:12px;resize:vertical}
+.support-feedback{margin-top:4px}
+.support-rating{display:flex;gap:6px}
+.support-rating button{flex:1;border:1px solid var(--line);background:var(--panel2,#f7f8fb);border-radius:9px;padding:7px 4px;cursor:pointer;font-size:17px;color:var(--text)}
+.support-rating button span{display:block;font-size:9px;margin-top:2px}
+.support-rating button.is-selected{border-color:var(--accent,#1769d1);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent,#1769d1) 15%,transparent)}
+.support-feedback-status{font-size:10px;color:var(--good,#168b57)}
+.support-feedback-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.support-feedback-actions .btn{flex:1 1 180px;min-height:34px}
+.support-feedback-actions #supportFeedbackSkip{background:color-mix(in srgb,var(--danger) 8%,var(--panel2,#f7f8fb) 92%);color:var(--danger);border:1px solid color-mix(in srgb,var(--danger) 32%,var(--line) 68%)}
+.support-feedback-actions #supportFeedbackSkip:hover{background:color-mix(in srgb,var(--danger) 16%,var(--panel2,#f7f8fb) 84%);border-color:var(--danger);color:var(--danger)}
+.support-feedback-close{width:100%;margin-top:7px}
+.support-chat-compose{display:flex;align-items:flex-end;gap:6px;padding:9px;border-top:1px solid var(--line);background:var(--panel,#fff)}
+.support-chat-compose textarea{min-height:34px;max-height:90px;flex:1;resize:vertical;border:1px solid var(--line);border-radius:10px;background:var(--panel2,#f7f8fb);color:var(--text);padding:8px 9px;font:inherit;font-size:12px}
+.support-send{width:34px;height:34px;border:0;border-radius:10px;background:var(--accent,#1769d1);color:#fff;font-weight:800;cursor:pointer}
+.support-end{border:1px solid color-mix(in srgb,var(--danger) 32%,var(--line) 68%);background:color-mix(in srgb,var(--danger) 8%,var(--panel,#fff) 92%);color:var(--danger);border-radius:9px;padding:6px 7px;font-size:9px;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+.support-end:hover:not(:disabled){background:color-mix(in srgb,var(--danger) 15%,var(--panel,#fff) 85%);border-color:var(--danger);color:var(--danger)}
+.support-dots{display:inline-flex;align-items:center;gap:3px;letter-spacing:0;opacity:.7;min-width:24px;height:18px;vertical-align:middle}
+.support-dots::before,.support-dots::after{content:"";display:block;width:5px;height:5px;border-radius:50%;background:currentColor;animation:support-dot-bounce 1.15s infinite ease-in-out}
+.support-dots::after{animation-delay:.18s}
+.support-dots{position:relative;font-size:0}
+.support-dots span{display:block;width:5px;height:5px;border-radius:50%;background:currentColor;animation:support-dot-bounce 1.15s infinite ease-in-out .09s}
+@keyframes support-dot-bounce{0%,60%,100%{transform:translateY(0);opacity:.35}30%{transform:translateY(-4px);opacity:1}}
+@media (prefers-reduced-motion:reduce){.support-dots::before,.support-dots::after,.support-dots span{animation:none}}
+@media (max-width:560px){
+  .h3d-support-panel{width:calc(100vw - 16px)!important;max-width:none!important}
+  .h3d-support-panel .support-chat-shell{min-height:calc(100vh - 35px);max-height:calc(100vh - 35px)}
+}
+
+
+
+/* The support panel is already the full chat window. The generic flyout wrapper
+   must not render a second frame or a second close button around it. */
+.flyout:has(.h3d-support-panel) > .flyout-close{display:none!important}
+.flyout.flyout-full:has(.h3d-support-panel){
+  position:fixed!important;
+  inset:0!important;
+  width:100vw!important;
+  height:100vh!important;
+  max-width:none!important;
+  max-height:none!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+  pointer-events:none!important;
+}
+.flyout.flyout-full:has(.h3d-support-panel) .h3d-support-panel{
+  pointer-events:auto!important;
+}
+
+/* H3D Pomoc — full-window modern chat.
+   The chat lives inside .flyoutLayer, so the full-screen wrapper itself must
+   own the viewport geometry. Keeping the chat panel absolute inside that
+   wrapper avoids fixed-position containing-block surprises when a parent is
+   animated/transformed. */
+.flyout.flyout-full:has(.h3d-support-panel){
+  position:fixed!important;
+  inset:0!important;
+  width:100vw!important;
+  height:100vh!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+  transform:none!important;
+  animation:none!important;
+  pointer-events:none!important;
+}
+.h3d-support-panel{
+  position:absolute!important;
+  top:8px!important;
+  right:8px!important;
+  bottom:8px!important;
+  left:8px!important;
+  width:auto!important;
+  max-width:none!important;
+  height:auto!important;
+  max-height:none!important;
+  padding:0!important;
+  margin:0!important;
+  border-radius:22px!important;
+  overflow:hidden!important;
+  background:var(--panel,#fff)!important;
+  box-shadow:0 24px 70px rgba(20,35,60,.22)!important;
+  z-index:20000!important;
+}
+.h3d-support-panel .support-chat-shell{
+  width:100%;
+  height:100%;
+  min-height:0!important;
+  max-height:none!important;
+  display:flex;
+  flex-direction:column;
+  background:var(--panel,#fff);
+}
+.support-chat-head{
+  min-height:68px;
+  padding:14px 20px;
+  gap:12px;
+  background:linear-gradient(135deg,#4f46c8 0%,#6557d8 55%,#7466e8 100%);
+  box-shadow:0 1px 0 rgba(255,255,255,.16) inset;
+}
+.support-avatar{
+  width:42px;
+  height:42px;
+  flex-basis:42px;
+  font-size:19px;
+  background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.22);
+}
+.support-chat-title strong{font-size:16px;line-height:1.15}
+.support-chat-title span{font-size:11px}
+.support-chat-close{
+  width:36px;height:36px;border-radius:10px;
+  margin-left:auto;
+  background:rgba(255,255,255,.10);
+  transition:background .15s,transform .15s;
+}
+.support-chat-close:hover{background:var(--danger);color:#fff;border-color:var(--danger);transform:scale(1.04)}
+.support-chat-body{
+  width: min(1960px, 100%);
+  box-sizing:border-box;
+  align-self:center;
+  flex:1;
+  padding: 18px 14px 16px;
+  gap:16px;
+  background:
+    radial-gradient(circle at 50% -20%,rgba(99,88,220,.08),transparent 42%),
+    var(--panel2,#f7f8fb);
+}
+.support-message{max-width:min(720px,86%);gap:10px}
+.support-avatar-small{
+  width:30px;height:30px;flex-basis:30px;font-size:13px;
+  color:#fff;background:#6358d8;border:0;
+}
+.support-message-user .support-avatar-small{
+  background:var(--accent,#1769d1);
+}
+.support-message-name{font-size:10px;margin-bottom:5px}
+.support-bubble{
+  padding:12px 15px;
+  border-radius:16px;
+  font-size:13px;
+  line-height:1.55;
+  box-shadow:0 3px 12px rgba(20,40,70,.055);
+}
+.support-message-helper .support-bubble{border-top-left-radius:5px}
+.support-message-user .support-bubble{
+  border-top-right-radius:5px;
+}
+.support-quick{
+  width:min(720px,calc(100% - 40px));
+  margin:0 auto 2px;
+  display:flex;
+  justify-content:center;
+  gap:8px;
+}
+.support-chip{
+  padding:9px 13px;
+  border-radius:18px;
+  font-size:11px;
+  transition:.15s;
+}
+.support-chip:hover{transform:translateY(-1px)}
+.support-human-card,
+.support-feedback{
+  width:min(720px,100%);
+  box-sizing:border-box;
+  align-self:center;
+  padding:16px;
+  border-radius:16px;
+  box-shadow:0 3px 14px rgba(20,40,70,.045);
+}
+.support-human-card strong{font-size:13px}
+.support-feedback{
+  margin-top:4px;
+}
+.support-feedback strong{font-size:14px}
+.support-rating button{
+  padding:10px 6px;
+  border-radius:11px;
+  transition:.15s;
+}
+.support-rating button:hover{transform:translateY(-1px)}
+.support-feedback textarea{min-height:76px}
+.support-chat-compose{
+  width:min(980px,100%);
+  box-sizing:border-box;
+  align-self:center;
+  padding:14px clamp(20px,4vw,64px) 18px;
+  background:var(--panel,#fff);
+  border-top:1px solid var(--line);
+}
+.support-chat-compose textarea{
+  min-height:42px;
+  padding:10px 12px;
+  border-radius:12px;
+  font-size:13px;
+  background:var(--panel2,#f7f8fb);
+}
+.support-send{
+  width:42px;height:42px;border-radius:12px;
+  font-size:16px;
+  box-shadow:0 4px 10px rgba(23,105,209,.18);
+}
+.support-end{
+  padding:8px 10px;
+  border-radius:10px;
+  font-size:10px;
+  white-space:nowrap;
+}
+.support-chat-compose.is-ended{
+  opacity:.7;
+}
+.support-chat-compose.is-ended .support-send,
+.support-chat-compose.is-ended .support-end{
+  display:none;
+}
+.support-human-thread{
+  width:min(720px,100%);
+  align-self:center;
+}
+.support-thread-messages{
+  max-height:none;
+}
+.support-human-compose textarea{font-size:13px}
+/* The chat must always remain inside the actual viewport, including short
+   windows and browser zoom. */
+.h3d-support-panel{
+  width:auto!important;
+  height:auto!important;
+  max-width:none!important;
+  max-height:none!important;
+}
+@supports (height:100dvh){
+  .flyout.flyout-full:has(.h3d-support-panel){height:100dvh!important}
+}
+@media (max-height:620px){
+  .h3d-support-panel{
+    top:4px!important;
+    right:4px!important;
+    bottom:4px!important;
+    left:4px!important;
+    border-radius:14px!important;
+  }
+  .support-chat-head{min-height:54px;padding:9px 12px}
+  .support-chat-body{padding:14px 12px}
+  .support-chat-compose{padding:8px 12px 10px}
+}
+
+@media (max-width:700px){
+  .h3d-support-panel{
+    inset:8px!important;
+    border-radius:16px!important;
+  }
+  .support-chat-head{padding:12px 14px}
+  .support-chat-body{padding:20px 12px 16px}
+  .support-message{max-width:94%}
+  .support-quick{width:100%;justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap}
+  .support-chip{white-space:nowrap}
+  .support-chat-compose{padding:10px 12px 12px}
+  .support-end{display:none}
+}
+
+
+.support-message-log{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  width:100%;
+}
+.support-system-line{
+  width:min(720px,100%);
+  align-self:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3px;
+  padding:10px 0;
+  margin:3px 0;
+  color:var(--muted);
+  text-align:center;
+}
+.support-system-line:before{
+  content:"";
+  width:100%;
+  height:1px;
+  background:var(--line);
+  margin-bottom:4px;
+}
+.support-system-line-title{
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:1px;
+  color:var(--accent,#1769d1);
+}
+.support-system-line-text{
+  font-size:10px;
+}
+.support-package-list{
+  width:min(720px,100%);
+  align-self:center;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:10px;
+}
+.support-package-card{
+  display:grid;
+  gap:5px;
+  padding:13px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:var(--panel,#fff);
+  box-shadow:0 3px 12px rgba(20,40,70,.045);
+}
+.support-package-card strong{font-size:12px;color:var(--text)}
+.support-package-value{font-size:11px;color:var(--muted)}
+.support-package-price{font-size:14px;font-weight:900;color:var(--text);margin-top:2px}
+.support-package-link{
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  margin-top:5px;
+  padding:7px 9px;
+  border-radius:9px;
+  background:var(--accent,#1769d1);
+  color:#fff!important;
+  font-size:10px;
+  font-weight:800;
+  text-decoration:none;
+}
+.support-package-link:hover{filter:brightness(.96)}
+.support-chat-compose.is-waiting{
+  background:var(--panel2,#f7f8fb);
+}
+.support-chat-compose.is-waiting .support-send{
+  opacity:.45;
+  cursor:not-allowed;
+}
+.support-chat-compose.is-waiting .support-end{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+
+/* H3D Pomoc — clean modern conversation layout */
+.support-chat-head{
+  position:relative;
+}
+.support-info-btn{
+  width:32px;height:32px;
+  margin-left:auto;
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:50%;
+  background:rgba(255,255,255,.12);
+  color:#fff;
+  font-weight:900;
+  font-size:14px;
+  cursor:pointer;
+}
+.support-info-btn:hover{background:rgba(255,255,255,.22)}
+.support-info-panel{
+  position:absolute;
+  z-index:5;
+  top:68px;
+  right:18px;
+  width:min(440px,calc(100% - 36px));
+  padding:18px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:var(--panel,#fff);
+  box-shadow:0 18px 45px rgba(20,35,60,.18);
+}
+.support-info-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.support-info-head strong{font-size:14px}
+.support-info-head button{
+  border:0;background:transparent;font-size:20px;color:var(--muted);cursor:pointer;
+}
+.support-info-panel p{
+  margin:7px 0 13px;
+  font-size:11px;
+  line-height:1.5;
+  color:var(--muted);
+}
+.support-info-topics{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+.support-info-topics button{
+  border:1px solid var(--line);
+  background:var(--panel2,#f7f8fb);
+  color:var(--text);
+  padding:10px 11px;
+  border-radius:10px;
+  text-align:left;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
+}
+.support-info-topics button:hover{
+  border-color:var(--accent,#1769d1);
+  color:var(--accent,#1769d1);
+  background:var(--panel,#fff);
+}
+.support-chat-body{
+  position:relative;
+}
+.support-message-log{
+  width:min(820px,100%);
+  margin:0 auto;
+  padding:0 0 10px;
+}
+.support-message{
+  width:fit-content;
+  max-width:min(680px,82%);
+  margin:0;
+}
+.support-message-user{
+  margin-left:auto;
+}
+.support-message-helper{
+  margin-right:auto;
+}
+.support-message-content{min-width:0}
+.support-message-user .support-message-content{text-align:right}
+.support-message-user .support-bubble{text-align:left}
+.support-bubble{
+  max-width:100%;
+  word-break:break-word;
+}
+.support-quick{
+  width:min(820px,100%);
+  margin:6px auto 0;
+  justify-content:flex-start;
+  flex-wrap:wrap;
+}
+.support-quick:empty{display:none}
+.support-quick[hidden]{display:none!important}
+.support-chat-compose{
+  position:relative;
+}
+.support-chat-compose.is-ended{
+  display:none;
+}
+.support-feedback{
+  width:min(680px,100%);
+  align-self:center;
+  margin:12px auto 0;
+}
+.support-feedback[hidden]{display:none!important}
+.support-system-line{
+  width:100%;
+  margin:8px 0;
+}
+.support-system-line:before{
+  background:linear-gradient(90deg,transparent,var(--line),transparent);
+}
+.support-package-list{
+  width:min(680px,100%);
+  margin:0 auto;
+}
+@media(max-width:700px){
+  .support-info-panel{right:10px;width:calc(100% - 20px)}
+  .support-message{max-width:90%}
+  .support-info-topics{grid-template-columns:1fr 1fr}
+}
+
+/* H3D Pomoc — user/avatar and single composer */
+.support-avatar-glyph{
+  display:grid;
+  place-items:center;
+  width:100%;
+  height:100%;
+}
+.support-avatar-glyph svg{
+  width:16px;
+  height:16px;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.support-message-user .support-avatar,
+.support-message-admin .support-avatar{
+  color:var(--accent,#1769d1);
+  background:var(--panel2,#eef4fc);
+  border-color:var(--line);
+}
+.support-message-helper .support-avatar{
+  color:#fff;
+  background:var(--accent,#1769d1);
+  border-color:transparent;
+}
+.support-human-compose{display:none!important}
+.support-human-thread .support-thread-messages{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.support-human-thread .support-message{
+  max-width:82%;
+}
+.support-human-thread .support-message-user{margin-left:auto}
+.support-human-thread .support-message-admin{margin-right:auto}
+.support-chat-compose[hidden]{display:none!important}
+.support-chat-compose:not([hidden]){
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto auto;
+  align-items:center;
+  gap:8px;
+}
+.support-chat-compose.is-waiting textarea{
+  opacity:.7;
+}
+.support-chat-compose textarea{
+  min-height:46px;
+  resize:vertical;
+}
+@media(max-width:700px){
+  .support-chat-compose:not([hidden]){
+    grid-template-columns:minmax(0,1fr) auto;
+  }
+  .support-chat-compose .support-end{grid-column:2}
+  .support-chat-compose .support-send{grid-column:2;grid-row:1}
+}
+
+/* H3D Pomoc archive and active human conversation */
+.support-chat-head{display:flex;align-items:center;gap:10px}
+.support-archive-btn{border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;border-radius:9px;padding:7px 11px;font-size:12px;font-weight:700;cursor:pointer;margin-left:auto}
+.support-archive-btn:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.55)}
+.support-info-btn{margin-left:0}
+.support-archive-panel{position:absolute;inset:60px 0 0;background:var(--panel,#f7f9fc);z-index:5;display:flex;flex-direction:column;border-top:1px solid var(--line,#d4dbe5)}
+.support-archive-panel[hidden]{display:none!important}
+.support-archive-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line,#d4dbe5)}
+.support-archive-head button{border:0;background:transparent;font-size:22px;cursor:pointer;color:#6b7280}
+.support-archive-table-head,.support-archive-row{display:grid;grid-template-columns:minmax(0,1fr) 105px;gap:12px;align-items:center}
+.support-archive-table-head{padding:9px 16px;color:#687487;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;background:#eef3f8}
+.support-archive-list{overflow:auto}
+.support-archive-row{width:100%;border:0;border-bottom:1px solid var(--line,#d4dbe5);background:#fff;padding:12px 16px;text-align:left;cursor:pointer;color:inherit}
+.support-archive-row:hover{background:#f5f8fc}
+.support-archive-subject{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.support-archive-rating{font-size:11px;font-weight:700;color:#657184;text-align:right}
+.support-archive-empty{padding:24px 16px;color:#788394;text-align:center;font-size:13px}
+.support-archive-detail{position:absolute;inset:0;background:#f7f9fc;overflow:auto;padding:14px 16px 22px;z-index:6}
+.support-archive-detail[hidden]{display:none!important}
+.support-archive-detail-head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:5px 10px;align-items:center;margin-bottom:16px}
+.support-archive-detail-head button{grid-row:span 2;border:1px solid var(--line,#d4dbe5);background:#fff;border-radius:8px;padding:7px 9px;cursor:pointer}
+.support-archive-detail-head strong{font-size:14px}
+.support-archive-detail-head span{font-size:11px;color:#748094}
+.support-archive-transcript{display:flex;flex-direction:column;gap:10px}
+.support-archive-msg{display:flex;gap:8px;max-width:88%;align-items:flex-end}
+.support-archive-msg.is-user{margin-left:auto;flex-direction:row-reverse}
+.support-archive-msg>div:last-child{min-width:0}
+.support-archive-msg small{display:block;color:#788394;font-size:10px;font-weight:700;margin:0 0 3px 5px}
+.support-archive-msg.is-user small{text-align:right;margin-left:0;margin-right:5px}
+.support-archive-msg .support-bubble{padding:10px 12px;border:1px solid var(--line,#d4dbe5);border-radius:13px;background:#fff;font-size:13px;line-height:1.45}
+.support-archive-msg.is-user .support-bubble{background:#e7f0ff;border-color:#b8d0f2}
+.support-human-thread.is-active{display:block}
+.support-human-thread.is-active .support-thread-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#6c7787;margin:4px 0 12px}
+.support-human-thread.is-active .support-thread-messages{display:flex;flex-direction:column;gap:12px}
+.support-human-thread.is-active .support-message{max-width:84%}
+.support-human-thread.is-active .support-message-user{margin-left:auto;flex-direction:row-reverse}
+.support-human-thread.is-active .support-message-user .support-message-name{text-align:right}
+.support-human-thread.is-active .support-message-user .support-bubble{background:#e7f0ff;border-color:#b8d0f2}
+.support-human-thread.is-active .support-message-admin .support-bubble{background:#fff}
+.support-human-thread.is-active .support-legacy-transcript{display:block;max-width:100%}
+.support-human-thread.is-active .support-legacy-transcript>.support-avatar{display:none}
+.support-human-thread.is-active .support-legacy-transcript .support-bubble{white-space:pre-wrap}
+@media(max-width:700px){.support-archive-table-head,.support-archive-row{grid-template-columns:minmax(0,1fr) 85px}.support-archive-msg{max-width:94%}}
+
+/* H3D Pomoc — flyout lifecycle */
+.h3d-support-panel[hidden]{display:none!important}
+.support-chat-body{
+  width:100%;
+  box-sizing:border-box;
+  min-width:0;
+}
+.flyout[hidden]{display:none!important}
+
+/* H3D Pomoc — structured order answers and readable archive */
+.support-orders{
+  display:grid;
+  gap:6px;
+  margin-top:2px;
+}
+.support-orders-title{
+  font-weight:800;
+  margin-bottom:3px;
+}
+.support-order-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:8px 10px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:var(--panel2,#f7f8fb);
+}
+.support-order-row strong{
+  white-space:nowrap;
+  font-size:11px;
+}
+.support-order-status{
+  text-align:right;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.3;
+}
+.support-archive-detail-actions{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.support-archive-detail-actions button{
+  border:1px solid var(--line);
+  background:var(--panel,#fff);
+  color:var(--text);
+  border-radius:8px;
+  padding:7px 10px;
+  font:700 10px/1.2 inherit;
+  cursor:pointer;
+}
+.support-archive-detail-actions button:hover{
+  border-color:var(--accent,#1769d1);
+  color:var(--accent,#1769d1);
+}
+.support-archive-detail-head{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:7px 12px;
+  align-items:center;
+}
+.support-archive-detail-head strong{
+  grid-column:1/-1;
+  font-size:14px;
+}
+.support-archive-detail-head > span{
+  grid-column:1/-1;
+  color:var(--muted);
+  font-size:10px;
+}
+
+/* End-chat action is available throughout the helper conversation. */
+.support-chat-compose #supportEndChat{
+  flex:0 0 auto;
+}
+.support-chat-compose #supportChatInput[hidden],
+.support-chat-compose .support-send[hidden]{
+  display:none!important;
+}
+
+/* H3D Pomoc — live administrator action */
+.support-quick .support-chip-admin{
+  border-color:#e4a13a;
+  background:#fff7e8;
+  color:#9a5a00;
+  font-weight:800;
+}
+.support-quick .support-chip-admin:hover,
+.support-quick .support-chip-admin:focus-visible{
+  border-color:#d78b17;
+  background:#ffefd0;
+  color:#7c4700;
+}
+
+/* H3D Pomoc — full-width composer */
+.support-chat-compose{
+  width:100%;
+  box-sizing:border-box;
+}
+
+/* Ukončit chat must be visually distinct from the normal send action. */
+.support-chat-compose #supportEndChat{
+  border:1px solid #e2a33a;
+  background:#fff4df;
+  color:#9a5a00;
+  font-weight:800;
+  cursor:pointer;
+}
+.support-chat-compose #supportEndChat:hover,
+.support-chat-compose #supportEndChat:focus-visible{
+  border-color:#d58a17;
+  background:#ffe9c2;
+  color:#7b4700;
+}
+.support-chat-compose #supportEndChat:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+/* H3D Pomoc — quick actions */
+.support-quick{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
+  padding:12px 14px;
+}
+.support-quick .support-chip{
+  min-height:40px;
+  padding:10px 16px;
+  border-radius:20px;
+  font-size:11px;
+  line-height:1.15;
+  white-space:nowrap;
+  box-sizing:border-box;
+}
+.support-quick .support-chip-admin{
+  border:1px solid #e3a13b;
+  background:#fff4df;
+  color:#975900;
+  box-shadow:0 1px 2px rgba(145,87,0,.08);
+  font-weight:800;
+}
+.support-quick .support-chip-admin:hover,
+.support-quick .support-chip-admin:focus-visible{
+  border-color:#cf8518;
+  background:#ffe9c2;
+  color:#774400;
+}
+.support-chat-compose #supportEndChat{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:38px;
+  padding:9px 14px;
+}
+
+@media (max-width:620px){
+  .support-chat-compose #supportEndChat{
+    display:inline-flex;
+  }
+  .support-quick .support-chip{
+    min-height:42px;
+    padding:11px 15px;
+    font-size:11px;
+  }
+}
+
+
+/* H3D Pomocník — live colleague composer and title */
+.support-live-title{
+  width:100%;
+  box-sizing:border-box;
+  padding:8px 14px 4px;
+  color:#667386;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+.support-live-title[hidden]{display:none!important}
+.support-chat-compose:not([hidden]){
+  display:block;
+  padding:10px 12px 12px;
+}
+.support-compose-main{
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+}
+.support-compose-main textarea{
+  min-width:0;
+  flex:1 1 auto;
+}
+.support-compose-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-top:8px;
+  padding-top:8px;
+  border-top:1px solid var(--line,#d4dbe5);
+}
+.support-message-limit{
+  color:#7a8493;
+  font-size:10px;
+  font-weight:700;
+}
+.support-message-limit[hidden]{display:none!important}
+.support-chat-compose #supportEndChat{
+  min-height:34px;
+  padding:7px 13px;
+  border:1px solid #e4b4b4;
+  border-radius:9px;
+  background:#fff5f5;
+  color:#a44949;
+  font-size:10px;
+  font-weight:800;
+}
+.support-chat-compose #supportEndChat:hover,
+.support-chat-compose #supportEndChat:focus-visible{
+  border-color:#d99a9a;
+  background:#ffeded;
+  color:#8f3636;
+}
+.support-chat-compose #supportEndChat:disabled{opacity:.55}
+@media(max-width:620px){
+  .support-compose-main{gap:6px}
+  .support-compose-footer{margin-top:7px}
+}
+
+
+/* H3D Pomocník — chat/archive navigation */
+.support-chat-head .support-chat-btn{margin-left:0}
+.support-chat-head .support-archive-btn{white-space:nowrap}
+.support-catalog{display:flex;flex-direction:column;gap:14px;width:min(760px,100%);align-self:center}
+.support-catalog-group{display:flex;flex-direction:column;gap:7px}
+.support-catalog-group-title{
+  font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.07em;color:#657184;
+}
+.support-promo-card{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:11px 13px;border:1px solid #e4b35b;border-radius:12px;background:#fff7e6;color:#815100;
+}
+.support-promo-card strong{font-size:12px}
+.support-promo-card span{font-size:10px;font-weight:800}
+.support-package-sale{font-size:10px;font-weight:800;color:#9a5a00}
+.support-orders-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+}
+.support-order-row{
+  min-width:0;
+  text-decoration:none;
+  color:inherit;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  gap:4px;
+  padding:10px 11px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:var(--panel2,#f7f8fb);
+}
+.support-order-row:hover{border-color:var(--accent,#1769d1);background:#fff}
+.support-order-row strong{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.support-order-status{text-align:left;font-size:10px}
+.support-order-history-note{margin-top:9px;font-size:10px;color:var(--muted)}
+.support-inline-action{
+  border:0;background:none;padding:0;color:var(--accent,#1769d1);
+  font:800 10px/1.2 inherit;cursor:pointer;text-decoration:underline;
+}
+.support-inline-action:hover{opacity:.8}
+.support-purchased-packages .support-package-purchased-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto auto;
+  gap:10px;align-items:center;
+  text-decoration:none;color:inherit;
+}
+@media(max-width:760px){
+  .support-orders-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:500px){
+  .support-orders-grid{grid-template-columns:1fr}
+  .support-promo-card{align-items:flex-start;flex-direction:column}
+}
+
+.support-package-old-price{font-size:10px;color:#8a94a3;text-decoration:line-through}.support-package-sale{font-size:10px;font-weight:800;color:#9a5a00}
+
+/* H3D Pomocník — purchased packages, polished cards */
+.support-purchased-packages{
+  width:min(100%, 620px);
+  box-sizing:border-box;
+  padding:14px;
+  border:1px solid #d6e0ed;
+  border-radius:16px;
+  background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);
+  box-shadow:0 7px 20px rgba(35,67,105,.08);
+}
+.support-purchased-packages .support-orders-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:0 0 10px;
+  padding:0 2px 9px;
+  border-bottom:1px solid #e5ebf3;
+  color:#1f2d3d;
+  font-size:13px;
+  font-weight:800;
+}
+.support-purchased-packages .support-orders-title::before{
+  content:'✓';
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:22px;
+  height:22px;
+  border-radius:7px;
+  background:#eaf3ff;
+  color:#1769d1;
+  font-size:12px;
+  font-weight:900;
+}
+.support-purchased-packages .support-package-purchased-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto auto;
+  align-items:center;
+  gap:12px;
+  min-height:52px;
+  margin:7px 0 0;
+  padding:10px 12px;
+  box-sizing:border-box;
+  border:1px solid #dce5f0;
+  border-radius:12px;
+  background:#fff;
+  text-decoration:none;
+  color:inherit;
+  transition:border-color .16s ease,background .16s ease,box-shadow .16s ease,transform .16s ease;
+}
+.support-purchased-packages .support-package-purchased-row:hover,
+.support-purchased-packages .support-package-purchased-row:focus-visible{
+  border-color:#8db8ea;
+  background:#f7fbff;
+  box-shadow:0 5px 14px rgba(35,88,145,.09);
+  transform:translateY(-1px);
+  outline:none;
+}
+.support-purchased-packages .support-package-purchased-row strong{
+  min-width:0;
+  color:#1769d1;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.02em;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.support-purchased-packages .support-package-purchased-row span{
+  color:#465568;
+  font-size:11px;
+  font-weight:700;
+  white-space:nowrap;
+}
+.support-purchased-packages .support-package-purchased-row em{
+  justify-self:end;
+  padding:5px 8px;
+  border:1px solid #efd8a8;
+  border-radius:999px;
+  background:#fff7e7;
+  color:#9a6200;
+  font-size:10px;
+  font-style:normal;
+  font-weight:800;
+  white-space:nowrap;
+}
+@media(max-width:560px){
+  .support-purchased-packages .support-package-purchased-row{
+    grid-template-columns:minmax(0,1fr) auto;
+  }
+  .support-purchased-packages .support-package-purchased-row span{
+    grid-column:2;
+    grid-row:1;
+  }
+  .support-purchased-packages .support-package-purchased-row em{
+    grid-column:1 / -1;
+    grid-row:2;
+    justify-self:start;
+  }
+}
+
+/* Box editing mode — compact tool buttons styled like the supplied design. */
+.wall-mode-control .wall-mode-choice{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.wall-mode-control .wall-edit-mode-btn{
+  min-height:42px;
+  height:42px;
+  padding:8px 14px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  border:1px solid #d7dce3;
+  border-radius:10px;
+  background:#dfe2e7;
+  color:#121923;
+  font:800 12px/1 Inter,system-ui,sans-serif;
+  letter-spacing:.2px;
+  cursor:pointer;
+  box-shadow:none;
+  transition:background .14s ease,border-color .14s ease,color .14s ease,transform .14s ease,box-shadow .14s ease;
+}
+.wall-mode-control .wall-edit-mode-btn:hover:not(:disabled){
+  background:#e7e9ed;
+  border-color:#cbd1d9;
+  transform:translateY(-1px);
+}
+.wall-mode-control .wall-edit-mode-btn.active{
+  background:#225a96;
+  border-color:#225a96;
+  color:#fff;
+  box-shadow:0 2px 4px rgba(34,90,150,.16);
+}
+.wall-mode-control .wall-edit-mode-btn.active:hover:not(:disabled){
+  background:#225a96;
+  border-color:#225a96;
+}
+.wall-mode-control .wall-edit-mode-icon{width:16px;height:16px;flex:0 0 16px;display:block}
+.wall-mode-control .wall-edit-mode-btn:not(.active) .wall-edit-mode-icon{color:#1c2530}
+.wall-mode-control .wall-edit-mode-btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* H3D scrollbar – unified light, compact and rounded */
+:root{
+  --h3d-scroll-track:transparent;
+  --h3d-scroll-thumb:#cbd3de;
+  --h3d-scroll-thumb-hover:#2377d8;
+}
+*{
+  scrollbar-width:thin;
+  scrollbar-color:var(--h3d-scroll-thumb) var(--h3d-scroll-track);
+}
+*::-webkit-scrollbar{width:7px;height:7px}
+*::-webkit-scrollbar-track{background:var(--h3d-scroll-track)}
+*::-webkit-scrollbar-thumb{
+  background:var(--h3d-scroll-thumb);
+  border:2px solid transparent;
+  border-radius:999px;
+  background-clip:padding-box;
+}
+*::-webkit-scrollbar-thumb:hover{background:var(--h3d-scroll-thumb-hover);background-clip:padding-box}
+*::-webkit-scrollbar-corner{background:transparent}
+body.dark{
+  --h3d-scroll-thumb:#5b6677;
+  --h3d-scroll-thumb-hover:#4d8fe5;
+}
+@media (max-width:700px){
+  *::-webkit-scrollbar{width:6px;height:6px}
+}
+
+/* Final light-theme override for Box Editing Mode buttons.
+   Matches the supplied Walls / Free Mode design and keeps the existing grid SVG icons. */
+body.light .wall-mode-control .wall-edit-mode-btn{
+  min-height:42px;
+  height:42px;
+  padding:8px 14px;
+  gap:8px;
+  border:1px solid #d7dce3;
+  border-radius:10px;
+  background:#dfe2e7;
+  color:#121923;
+  box-shadow:none;
+}
+body.light .wall-mode-control .wall-edit-mode-btn:hover:not(:disabled){
+  background:#e7e9ed;
+  border-color:#cbd1d9;
+  color:#121923;
+}
+body.light .wall-mode-control .wall-edit-mode-btn.active{
+  background:#225a96;
+  border-color:#225a96;
+  color:#fff;
+  box-shadow:0 2px 4px rgba(34,90,150,.16);
+}
+body.light .wall-mode-control .wall-edit-mode-btn.active:hover:not(:disabled){
+  background:#225a96;
+  border-color:#225a96;
+  color:#fff;
+}
+body.light .wall-mode-control .wall-edit-mode-btn .wall-edit-mode-icon{
+  width:16px;
+  height:16px;
+  color:currentColor;
+  flex:0 0 16px;
+}
+
+.flyout:has(.h3d-support-panel){
+  position:absolute!important;
+  left:14px!important;
+  top:14px!important;
+  right:auto!important;
+  bottom:auto!important;
+  min-width: 430px;
+  max-width:650px!important;
+  height:auto!important;
+  max-height:calc(100% - 28px)!important;
+  padding:8px 15px 15px!important;
+  margin:0!important;
+  border:1px solid var(--line)!important;
+  border-radius:16px!important;
+  background:var(--panel)!important;
+  box-shadow:0 26px 64px -22px rgba(0,0,0,.75),0 6px 18px rgba(0,0,0,.4)!important;
+  overflow:auto!important;
+  pointer-events:auto!important;
+  transform:none!important;
+  animation:flyin .16s ease!important;
+}
+.flyout:has(.h3d-support-panel) .h3d-support-panel{
+  position:relative!important;
+  inset:auto!important;
+  width:100%!important;
+  max-width:none!important;
+  height:auto!important;
+  max-height:none!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:18px!important;
+  box-shadow:none!important;
+  overflow:hidden!important;
+  z-index:auto!important;
+}
+.flyout:has(.h3d-support-panel) .support-chat-shell{
+  width:100%!important;
+  height:min(720px,calc(100vh - 90px))!important;
+  min-height:420px!important;
+  max-height:720px!important;
+}
+@media (max-width:560px){
+  .flyout:has(.h3d-support-panel){
+    left:8px!important;
+    top:8px!important;
+    width:calc(100vw - 16px)!important;
+    max-width:none!important;
+    max-height:calc(100dvh - 16px)!important;
+    padding:6px!important;
+  }
+  .flyout:has(.h3d-support-panel) .support-chat-shell{
+    height:min(720px,calc(100dvh - 28px))!important;
+    min-height:360px!important;
+  }
+}
+@media (max-height:620px) and (min-width:561px){
+  .flyout:has(.h3d-support-panel) .support-chat-shell{
+    height:calc(100vh - 75px)!important;
+    min-height:360px!important;
+  }
+}
+
+
+/* v34: unverified accounts are authenticated (so their design is protected
+   and saved), but Walls / Free Mode remain verification-locked. */
+.wall-mode-btn.guest-lock,
+.free-mode-btn.guest-lock{
+  position:relative;
+  color:var(--muted)!important;
+}
+.wall-mode-btn.guest-lock>svg:first-child,
+.free-mode-btn.guest-lock>svg:first-child{
+  opacity:.42;
+}
+.wall-mode-btn.guest-lock .ct-lock,
+.free-mode-btn.guest-lock .ct-lock{
+  display:inline-flex!important;
+}
+
+
+
+
+
+
+/* v37: show Chat for unverified accounts, but present it as locked. */
+.nav-messages.guest-lock{
+  position:relative;
+}
+.nav-messages.guest-lock .nav-ico{
+  opacity:.48;
+}
+.nav-messages.guest-lock .nav-label{
+  color:var(--muted);
+}
+.nav-messages.guest-lock .nav-lock{
+  display:inline-flex!important;
+}
+
+
+/* v40: the Chat popup itself owns the available height.
+   The header, message area and composer stay inside the same box; only the
+   message list scrolls when the conversation becomes long. */
+.flyout:has(.h3d-support-panel){
+  box-sizing:border-box!important;
+  display:flex!important;
+  flex-direction:column!important;
+  height:min(720px,calc(100dvh - 28px))!important;
+  max-height:calc(100dvh - 28px)!important;
+  overflow:hidden!important;
+}
+.flyout:has(.h3d-support-panel) .h3d-support-panel{
+  box-sizing:border-box!important;
+  width:100%!important;
+  max-width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  overflow:hidden!important;
+  display:flex!important;
+  flex-direction:column!important;
+}
+.flyout:has(.h3d-support-panel) .support-chat-shell{
+  box-sizing:border-box!important;
+  width:100%!important;
+  max-width:100%!important;
+  height:100%!important;
+  max-height:none!important;
+  min-height:0!important;
+  flex:1 1 auto!important;
+  display:flex!important;
+  flex-direction:column!important;
+  overflow:hidden!important;
+}
+.flyout:has(.h3d-support-panel) .support-chat-head{
+  flex:0 0 auto!important;
+}
+.flyout:has(.h3d-support-panel) .support-chat-body{
+  box-sizing:border-box!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  flex:1 1 auto!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  align-self:stretch!important;
+  padding:8px 6px 10px!important;
+}
+.flyout:has(.h3d-support-panel) .support-chat-compose{
+  flex:0 0 auto!important;
+  min-width:0!important;
+}
+
+@media (max-width:700px){
+  .flyout:has(.h3d-support-panel){
+    height:calc(100dvh - 16px)!important;
+    max-height:calc(100dvh - 16px)!important;
+  }
+  .flyout:has(.h3d-support-panel) .support-chat-body{
+    padding:7px 5px 9px!important;
+  }
+}
+
+@media (max-height:620px){
+  .flyout:has(.h3d-support-panel){
+    height:calc(100dvh - 16px)!important;
+    max-height:calc(100dvh - 16px)!important;
+  }
+}
+
+
+/* v53 — guest email verification helper */
+.nav-verification-mail .nav-ico{
+  color:#e9b949!important;
+  background:transparent!important;
+  border-color:transparent!important;
+}
+.nav-verification-mail:hover .nav-ico,
+.nav-verification-mail.active .nav-ico{
+  color:#f2c65f!important;
+  background:transparent!important;
+  border-color:transparent!important;
+}
+.nav-credits .nav-label b,
+.nav-credits .nav-label strong{
+  font-weight:500!important;
+}
+.nav-credits .nav-unlimited-label,
+.nav-credits .nav-free-label,
+.nav-credits .nav-credit-label{
+  font-weight:500!important;
+}
+.verification-modal-back{
+  position:fixed!important;
+  inset:0!important;
+  z-index:10000!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:18px!important;
+  background:rgba(16,24,40,.58)!important;
+  backdrop-filter:blur(5px)!important;
+}
+.verification-modal-back[hidden]{display:none!important}
+.verification-modal{
+  position:relative;
+  width:min(500px,calc(100vw - 32px));
+  max-height:min(760px,calc(100dvh - 32px));
+  overflow:auto;
+  box-sizing:border-box;
+  padding:28px;
+  border:1px solid #d8e0ec;
+  border-radius:18px;
+  background:#fff;
+  color:#182238;
+  box-shadow:0 28px 80px rgba(15,25,45,.28);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+.verification-modal h2{margin:0 34px 8px 0;font-size:22px;line-height:1.2}
+.verification-lede{margin:0 0 20px;color:#5d6879;font-size:13.5px;line-height:1.55}
+.verification-modal label{display:block;margin:0 0 6px;font-size:12px;font-weight:750}
+.verification-modal input[type=email]{
+  width:100%;box-sizing:border-box;padding:11px 12px;border:1px solid #cfd8e6;border-radius:10px;
+  background:#fbfdff;color:#182238;font:inherit;outline:none
+}
+.verification-modal input[type=email]:focus{border-color:#6f63e8;box-shadow:0 0 0 3px rgba(111,99,232,.12)}
+.verification-modal .captcha{margin:10px 0 14px}
+.verification-modal .hp-field-input{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;opacity:0!important}
+.verification-modal-close{
+  position:absolute;right:14px;top:14px;width:34px;height:34px;border:0;border-radius:9px;
+  background:#eef1f7;color:#657084;font-size:22px;line-height:1;cursor:pointer
+}
+.verification-modal-close:hover{background:#fee9e9;color:var(--bad,#c22)}
+.verification-mail-icon{
+  width:48px;height:48px;display:grid;place-items:center;margin-bottom:14px;border-radius:14px;
+  color:#b87900;background:#fff4cf;border:1px solid #f2d37d
+}
+.verification-mail-icon svg{width:25px;height:25px}
+.verification-status{margin-top:12px;padding:11px 12px;border-radius:10px;font-size:12.5px;line-height:1.45};white-space:pre-wrap;word-break:break-word;max-height:420px;overflow:auto
+.verification-status.ok{background:#eaf8f0;border:1px solid #bfe6cf;color:#176b46}
+.verification-status.err{background:#fff0f0;border:1px solid #f0c7c7;color:#9d3434}
+.verification-help{margin:15px 0 0;color:#778296;font-size:11.5px;line-height:1.5}
+
+/* v54 — hidden support flyout must actually be hidden.
+   v40 uses display:flex!important for the chat frame, so the generic
+   [hidden] rule loses the cascade. This rule is intentionally last. */
+.flyout:has(.h3d-support-panel)[hidden]{
+  display:none!important;
+}
+
+/* v55 — quota/menu labels use the same weight as the other rail entries. */
+.studio-nav .nav-credits .nav-label,
+.studio-nav .nav-credits .nav-label b,
+.studio-nav .nav-credits .nav-label strong,
+.studio-nav .nav-credits .nav-unlimited-label,
+.studio-nav .nav-credits .nav-free-label,
+.studio-nav .nav-credits .nav-credit-label{
+  font-weight:500!important;
+}
+.studio-nav .nav-credits .nav-free-label > span:first-child,
+.studio-nav .nav-credits .nav-credit-label > span:first-child{
+  font-weight:500!important;
+}
+
+
+/* v57 — verification UX cleanup */
+.verification-modal .hp-field{
+  position:absolute!important;
+  left:-10000px!important;
+  top:auto!important;
+  width:1px!important;
+  height:1px!important;
+  overflow:hidden!important;
+  clip:rect(0 0 0 0)!important;
+  white-space:nowrap!important;
+  border:0!important;
+  padding:0!important;
+  margin:0!important;
+}
+.verification-modal .captcha{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-height:22px;
+  margin:10px 0 14px;
+  color:#68758a;
+  font-size:12px;
+  font-weight:500;
+}
+.verification-modal .captcha-spinner{
+  width:8px;
+  height:8px;
+  flex:0 0 8px;
+  border-radius:50%;
+  background:#aab3c0;
+}
+.verification-modal .captcha.captcha-ok .captcha-spinner{
+  background:#25a66a;
+  box-shadow:0 0 0 3px rgba(37,166,106,.12);
+}
+.verification-modal .captcha.captcha-fail .captcha-spinner{
+  background:#d84a58;
+}
+.verification-modal .captcha.captcha-ok .captcha-text{
+  color:#238054;
+}
+.registration-verification-modal{
+  max-width:500px;
+}
+.verification-checklist{
+  display:grid;
+  gap:9px;
+  margin:0 0 18px;
+  padding:13px 14px;
+  border:1px solid #e0e6ef;
+  border-radius:11px;
+  background:#f8fafc;
+  color:#536075;
+  font-size:13px;
+  line-height:1.45;
+}
+.verification-checklist > div{
+  display:flex;
+  align-items:flex-start;
+  gap:9px;
+}
+.verification-check-dot{
+  width:7px;
+  height:7px;
+  flex:0 0 7px;
+  margin-top:6px;
+  border-radius:50%;
+  background:#2aa66d;
+}
+.registration-verification-resend{
+  width:auto!important;
+}
+.verification-account-email{
+  margin:12px 0 0;
+  color:#778296;
+  font-size:11.5px;
+}
+
+/* v58 — verification resend: clear cooldown/error states */
+.verification-status{display:block}
+.verification-status.ok{background:#eaf8f0;border:1px solid #bfe6cf;color:#176b46}
+.verification-status.err{background:#fff0f0;border:1px solid #f0c7c7;color:#9d3434}
+
+/* ---- FREE MODE switch in the generator ---------------------------------
+   A switch about the whole result, not one more number, so it spans the
+   panel's two columns and reads as a sentence. */
+.random-free{
+  grid-column:1/-1;display:flex;align-items:flex-start;gap:9px;
+  padding:10px 11px;margin:2px 0 4px;border-radius:10px;cursor:pointer;
+  border:1px dashed var(--line,#d8dde4);
+  /* A label, not a field: the global label rule would give it the muted
+     colour and a top margin meant for a field caption. */
+  color:inherit;font-size:inherit;
+}
+/* The stylesheet gives every input width:100% and 9px of padding, which
+   turned this checkbox into a full-width box with a tick lost at the top
+   of it and pushed the label out of the panel. A checkbox is not a text
+   field, so it is taken out of that rule explicitly. */
+.random-free input[type="checkbox"]{
+  flex:0 0 auto;width:16px;height:16px;min-width:0;padding:0;margin:1px 0 0;
+  border-radius:4px;accent-color:var(--accent,#1976d2);cursor:pointer;
+}
+/* The text may shrink; without this the flex item keeps its full width
+   and the sentence spills past the dashed border. */
+.random-free > span{min-width:0;flex:1 1 auto}
+.random-free strong{display:block;font-size:12px;letter-spacing:.4px}
+.random-free small{display:block;font-size:11px;line-height:1.4;color:var(--muted,#68707a);margin-top:2px}
+.random-free:hover{border-color:var(--accent,#1976d2)}
+
+/* ---- The drawer stretching when a row or column is added ----------------
+   Boxes glide from their old rectangles (FLIP, set from script); the cells
+   underneath fade in so the new strip arrives rather than appearing. */
+#svg.grid-changed .cell{animation:cellIn .42s cubic-bezier(.3,1.2,.5,1) both}
+@keyframes cellIn{
+  from{opacity:0;transform:scale(.94)}
+  to{opacity:1;transform:none}
+}
+#svg.grid-changed .cell{transform-box:fill-box;transform-origin:center}
+@media(prefers-reduced-motion:reduce){
+  #svg.grid-changed .cell{animation:none}
+}

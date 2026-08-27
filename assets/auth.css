@@ -1,0 +1,85 @@
+/* Shared styling for the standalone auth pages (login, register tab, forgot).
+   Follows the site theme: dark by default, light when body.light is set. */
+html,body{height:auto;overflow:auto}
+.auth-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px 18px}
+.auth-card{width:100%;max-width:410px;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:28px 26px 20px;box-shadow:0 34px 90px -34px rgba(0,0,0,.7),0 8px 24px rgba(0,0,0,.28)}
+.auth-brand{display:flex;align-items:center;gap:11px;justify-content:center;margin-bottom:6px;font-weight:800;font-size:19px;letter-spacing:.3px}
+.auth-brand img{width:34px;height:34px;filter:drop-shadow(0 4px 10px rgba(123,97,255,.35))}
+.auth-brand b{color:var(--accent)}
+.auth-lede{text-align:center;color:var(--muted);font-size:12.5px;margin:0 0 18px}
+.auth-tabs{display:flex;gap:4px;background:#12161f;border:1px solid var(--line);border-radius:13px;padding:4px;margin-bottom:18px}
+body.light .auth-tabs{background:#eef2f7;border-color:#d5d9df}
+.auth-tab{flex:1;padding:10px;border:0;background:transparent;color:var(--muted);font:700 13px Inter,system-ui,sans-serif;border-radius:9px;cursor:pointer;transition:background .15s,color .15s}
+.auth-tab.active{background:linear-gradient(135deg,#7b61ff,#9b7bff);color:#fff;box-shadow:0 6px 16px -6px rgba(123,97,255,.7)}
+.auth-form{display:none;flex-direction:column}
+.auth-form.active,.auth-form.solo{display:flex}
+.auth-form label{display:block;color:#b3bdcc;font-size:12px;font-weight:600;margin:13px 0 5px}
+.auth-form .hint{color:#8a94a6;font-size:11px;margin-top:5px}
+.auth-form input{background:#0f1724;border:1px solid #2b3548;color:#eef2f7;padding:11px 12px;border-radius:10px;font-size:14px;width:100%}
+.auth-form input::placeholder{color:#5b6678}
+.auth-form input:focus{border-color:var(--accentv,#7b61ff);outline:none;box-shadow:0 0 0 3px rgba(123,97,255,.18)}
+.auth-lede{color:#9aa6b8}
+.auth-err{background:rgba(255,107,122,.12);border:1px solid rgba(255,107,122,.4);color:var(--bad);padding:9px 12px;border-radius:10px;font-size:12.5px;margin-bottom:4px}
+.auth-ok{background:rgba(98,214,154,.12);border:1px solid rgba(98,214,154,.4);color:var(--good);padding:10px 12px;border-radius:10px;font-size:12.5px;margin-bottom:8px}
+body.light .auth-err{color:#c0392b}
+.auth-form .btn.primary,.auth-card>.btn.primary{margin-top:18px;background:linear-gradient(135deg,#7b61ff,#9b7bff);color:#fff;border:0;font-weight:750;padding:12px;font-size:14px;border-radius:11px}
+.auth-form .btn.primary:hover{filter:brightness(1.06)}
+.auth-links{display:flex;justify-content:center;gap:14px;margin-top:14px;font-size:12px}
+.auth-links a{color:var(--muted);text-decoration:none}
+.auth-links a:hover{color:var(--accent)}
+.auth-back{display:inline-flex;align-items:center;gap:7px;justify-content:center;width:100%;margin-top:16px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);text-decoration:none;font-size:13px;font-weight:600}
+.auth-back:hover{color:var(--text)}
+.auth-back svg{width:16px;height:16px}
+
+/* Captcha honeypot must stay invisible to people. */
+.hp-field{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.captcha{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-top:4px}
+.captcha-spinner{width:14px;height:14px;border:2px solid rgba(140,150,170,.3);border-top-color:#7b61ff;border-radius:50%;animation:h3d-spin .7s linear infinite}
+.captcha.captcha-ok .captcha-spinner{border-top-color:var(--good);border-color:rgba(98,214,154,.3)}
+.captcha.captcha-ok{color:var(--good)}
+.captcha.captcha-fail{color:var(--bad)}
+@keyframes h3d-spin{to{transform:rotate(360deg)}}
+
+/* Light theme */
+body.light .auth-card{background:#fff;border-color:#e0e4ea;box-shadow:0 30px 80px -34px rgba(30,50,90,.22),0 8px 22px rgba(30,50,90,.10)}
+body.light .auth-lede,body.light .auth-form .hint{color:#5b6472}
+body.light .auth-form label{color:#3a424e}
+body.light .auth-form input{background:#fff;border-color:#cbd2db;color:#20242a}
+body.light .auth-form input:focus{border-color:#7b61ff;box-shadow:0 0 0 3px rgba(123,97,255,.15)}
+body.light .auth-back{color:#5b6472;border-top-color:#e2e6ec}
+body.light .auth-back:hover{color:#20242a}
+
+/* Live password rules under the field: green once met, red while typing. */
+.pw-rules{list-style:none;margin:7px 0 0;padding:0;display:flex;flex-direction:column;gap:3px}
+.pw-rules li{position:relative;padding-left:20px;font-size:11.5px;color:var(--muted);transition:color .15s ease}
+.pw-rules li::before{content:'';position:absolute;left:2px;top:50%;transform:translateY(-50%);width:11px;height:11px;border-radius:50%;border:1.5px solid currentColor;opacity:.55}
+.pw-rules li.ok{color:var(--good)}
+.pw-rules li.ok::before{content:'';background:currentColor;border-color:currentColor;opacity:1}
+.pw-rules li.bad{color:var(--bad)}
+.auth-form input.field-ok{border-color:var(--good)!important;box-shadow:0 0 0 3px rgba(98,214,154,.15)!important}
+.auth-form input.field-bad{border-color:var(--bad)!important;box-shadow:0 0 0 3px rgba(255,107,122,.13)!important}
+body.light .pw-rules li{color:#68707a}
+body.light .pw-rules li.ok{color:#1e9e60}
+body.light .pw-rules li.bad{color:#c0392b}
+
+/* Live nickname availability line under the field. */
+.nick-status{min-height:14px;margin-top:5px}
+.nick-status.ok{color:var(--good,#1e9e60)}
+.nick-status.bad{color:var(--bad,#c0392b)}
+body.light .nick-status.ok{color:#1e9e60}
+body.light .nick-status.bad{color:#c0392b}
+
+
+/* h3d-palette-switch-fix-css */
+.palette-option.is-selected,
+.palette-card.is-selected,
+.theme-palette.is-selected,
+[data-palette].is-selected,
+[data-theme-palette].is-selected {
+  outline: 2px solid var(--accent, #1679d1);
+  outline-offset: 1px;
+}
+
+.remember-row{display:flex!important;flex-direction:row!important;align-items:center;gap:8px;margin:12px 0 0!important;color:var(--muted)!important;font-size:12px!important;font-weight:600!important;cursor:pointer}
+.remember-row input{width:16px!important;height:16px!important;margin:0!important;padding:0!important;accent-color:var(--accent,#7b61ff);cursor:pointer}
+body.light .remember-row{color:#5b6472!important}
