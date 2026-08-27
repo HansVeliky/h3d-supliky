@@ -1088,12 +1088,13 @@ final class Geometry
     }
 
     /**
-     * Rounds two corner-matched loops in lockstep: every convex corner emits
-     * the same number of points on both (an arc, or that many repeats of the
-     * corner when its radius clamps to nothing). Concave corners stay sharp:
-     * rounding them adds material into an L/T notch and shows up as a bulge
-     * in the wall. Repeated points keep both loops corner-matched so the rim
-     * can still be zipped into a watertight surface.
+     * Rounds two corner-matched loops in lockstep: every corner emits the
+     * same number of points on both (an arc, or that many repeats of the
+     * corner when its radius clamps to nothing). Concave corners curve the
+     * other way, and their cavity radius grows by the wall thickness so both
+     * arcs share a centre and the wall stays uniform through the bend.
+     * Repeated points keep both loops corner-matched so the rim can still be
+     * zipped into a watertight surface.
      *
      * @return array{0: array, 1: array}
      */
@@ -1119,8 +1120,23 @@ final class Geometry
             // fills the notch of a free shape and creates the reported
             // balloon-like wall. The matching inner convex arc is smaller
             // by one wall thickness, keeping that wall uniform.
-            $rOut = $convex ? $R : 0.0;
-            $rIn  = ($convex && $R > 1e-6) ? max(0.0, $R - $W) : 0.0;
+            /*
+             * Both kinds of corner are filleted, so a box that sits in the
+             * notch of a free shape nests against a rounded edge rather than
+             * against a sharp one.
+             *
+             * Concave corners were switched off for a while because a wall
+             * was coming out swollen there. That was not the fillet: the
+             * outline tracer was inventing a corner in the middle of a
+             * straight wall (see traceLoops) and the fillet was merely what
+             * made it visible. With the corner gone the arcs are safe, and
+             * they are also the only way to keep the wall even: at a concave
+             * corner the cavity arc is one wall THICKER and shares its
+             * centre with the outer one, which is exactly what holds the two
+             * surfaces a constant wall apart around the bend.
+             */
+            $rOut = $R;
+            $rIn  = $R <= 1e-6 ? 0.0 : ($concave ? $R + $W : max(0.0, $R - $W));
 
             foreach ([[$outer, $rOut, &$a], [$inner, $rIn, &$bLoop]] as [$loop, $r, &$dst]) {
                 $p2 = $loop[($i + $n - 1) % $n];
@@ -1139,7 +1155,10 @@ final class Geometry
                 }
                 $u1 = [$v1[0] / $l1, $v1[1] / $l1];
                 $start = [$q2[0] - $u1[0] * $rr, $q2[1] - $u1[1] * $rr];
-                $sgn = 1.0;
+                // A concave corner turns the other way; the larger cavity arc
+                // then shares its centre with the outer one and the wall
+                // stays a wall right through the bend.
+                $sgn = $convex ? 1.0 : -1.0;
                 $ctr = [$start[0] - $u1[1] * $rr * $sgn, $start[1] + $u1[0] * $rr * $sgn];
                 $a0 = atan2($start[1] - $ctr[1], $start[0] - $ctr[0]);
                 for ($k = 0; $k <= self::SEGMENTS; $k++) {

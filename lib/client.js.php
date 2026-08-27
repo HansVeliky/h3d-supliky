@@ -1567,14 +1567,19 @@ function polySubPath(lat,L){
    // Inward normal of a boundary edge (interior on the left of travel, in
    // screen coordinates with y pointing down) is (-y, x).
    const n1=[-v1[1]/l1,v1[0]/l1],n2=[-v2[1]/l2,v2[0]/l2];
+   // The mitre needs the (1 + n1.n2) divisor, or a point lying along a
+   // straight edge is pushed twice as far as the offset asks - the same
+   // fault the exporter had, where it showed up as a wedge on a wall.
+   const mitre=1+n1[0]*n2[0]+n1[1]*n2[1];
+   const k=mitre>1e-9?L.gap/2/mitre:L.gap/2;
    pts.push({
-     x:px(q[0])+(n1[0]+n2[0])*L.gap/2,
-     y:py(q[1])+(n1[1]+n2[1])*L.gap/2,
+     x:px(q[0])+(n1[0]+n2[0])*k,
+     y:py(q[1])+(n1[1]+n2[1])*k,
      convex:(v1[0]*v2[1]-v1[1]*v2[0])>0,
    });
  }
- // Match the exported contour: only exposed convex corners are rounded.
- // A concave arc fills an L/T notch and looks like a bulge in the wall.
+ // Match the exported contour: both kinds of corner are rounded, so a box
+ // standing in the notch of a free shape meets a rounded edge, not a spike.
  const radiusMM=Number(getMM('radius'));
  // An empty / zero radius is deliberately a sharp free-shape outline.  It
  // must never leave a residual SVG arc behind from a previous rounded draw.
@@ -1585,7 +1590,7 @@ function polySubPath(lat,L){
    const prev=pts[(i+m-1)%m],next=pts[(i+1)%m];
    const l1=Math.hypot(q.x-prev.x,q.y-prev.y);
    const l2=Math.hypot(next.x-q.x,next.y-q.y);
-   const rr=q.convex?Math.min(R,l1/2,l2/2):0;
+   const rr=Math.min(R,l1/2,l2/2);
    if(rr<0.4||l1<1e-6||l2<1e-6){
      seg.push(q.x.toFixed(2)+' '+q.y.toFixed(2));
      continue;

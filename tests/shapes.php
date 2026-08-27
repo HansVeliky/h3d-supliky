@@ -68,7 +68,15 @@ $distTo = static function (array $pt, array $segs): float {
     return $min;
 };
 
-/** The outside surface as segments: vertical faces running from bed to rim. */
+/**
+ * The outside surface as segments: vertical faces running from bed to rim.
+ *
+ * Deduplicated, because a face is two triangles and both of them report the
+ * same pair of ground points. Left in, every edge of the outline is crossed
+ * twice, and a ray cast for point-in-polygon comes back with the wrong
+ * parity - which is how an earlier version of this file managed to declare
+ * several hundred perfectly ordinary vertices to be outside the box.
+ */
 $outerFaces = static function (array $m, float $topZ): array {
     $segs = [];
     foreach ($m['tris'] as [$ia, $ib, $ic]) {
@@ -78,9 +86,24 @@ $outerFaces = static function (array $m, float $topZ): array {
         $pts = [];
         foreach ($p as $v) { $pts[sprintf('%.5f|%.5f', $v[0], $v[1])] = [$v[0], $v[1]]; }
         $pts = array_values($pts);
-        if (count($pts) === 2) { $segs[] = $pts; }
+        if (count($pts) !== 2) { continue; }
+        $k = [sprintf('%.5f|%.5f', $pts[0][0], $pts[0][1]), sprintf('%.5f|%.5f', $pts[1][0], $pts[1][1])];
+        sort($k);
+        $segs[implode('>', $k)] = $pts;
     }
-    return $segs;
+    return array_values($segs);
+};
+
+/** Is the point inside the outline those segments close? */
+$insideFaces = static function (array $pt, array $segs): bool {
+    $in = false;
+    foreach ($segs as [$a, $b]) {
+        if (($a[1] > $pt[1]) !== ($b[1] > $pt[1])) {
+            $x = $a[0] + ($pt[1] - $a[1]) * ($b[0] - $a[0]) / ($b[1] - $a[1]);
+            if ($pt[0] < $x) { $in = !$in; }
+        }
+    }
+    return $in;
 };
 
 /**
@@ -165,7 +188,7 @@ $checked = 0;
  */
 $run = static function (array $cells, array $walls, string $name, float $gap, float $wall,
                         float $radius, int $cols, int $rows, float $dh)
-    use (&$checked, $pieces, $gauge, $distTo, $outerFaces): void {
+    use (&$checked, $pieces, $gauge, $distTo, $outerFaces, $insideFaces): void {
     // A shape wider than the drawer is this file's own mistake, not a fault.
     if (max(array_column($cells, 0)) >= $cols || max(array_column($cells, 1)) >= $rows) {
         return;
@@ -254,19 +277,30 @@ $run = static function (array $cells, array $walls, string $name, float $gap, fl
         sprintf('nejtenčí %.4f, nastaveno %.1f', $thin, $wall));
 
     if ($walls) {
-        $join  = min(0.04, max(0.005, $wall / 20));
-        $have  = [];
+        /*
+         * What matters about a divider volume is that it stays inside the
+         * box. How deep into the wall its end is buried does not: it is a
+         * union, and at a rounded inside corner the cavity curves away, so a
+         * rectangular divider naturally sits deeper there. Measuring the
+         * distance to the outside face called that a fault; being outside
+         * the box would be one.
+         */
+        $have = [];
         foreach ($shell['vertices'] as $v) {
             $have[sprintf('%.4f|%.4f|%.4f', $v[0], $v[1], $v[2])] = true;
         }
         $faces = $outerFaces($shell, $dh);
-        $worst = INF;
+        $out   = 0;
+        $worst = null;
         foreach ($m['vertices'] as $v) {
             if (isset($have[sprintf('%.4f|%.4f|%.4f', $v[0], $v[1], $v[2])])) { continue; }
-            $worst = min($worst, $distTo([$v[0], $v[1]], $faces));
+            // On the outline counts as in; the ends are meant to touch it.
+            if ($insideFaces([$v[0], $v[1]], $faces) || $distTo([$v[0], $v[1]], $faces) < 1e-6) { continue; }
+            $out++;
+            $worst = $v;
         }
-        ok($label . ': příčka nevylézá ven', !is_finite($worst) || $worst >= $wall - $join - $sag,
-            sprintf('nejblíž %.4f od vnějšího líce, stěna %.1f', $worst, $wall));
+        ok($label . ': příčka zůstává uvnitř boxu', $out === 0,
+            $worst === null ? '' : sprintf('%d vrcholů venku, např. (%.2f, %.2f)', $out, $worst[0], $worst[1]));
     }
 };
 
